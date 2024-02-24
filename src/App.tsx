@@ -36,150 +36,148 @@ function App() {
   return loading ? (
     <Loader />
   ) : (
-    <>
-      <Routes>
-        <Route
-          index
-          element={
-            <>
-              <PageTitle title="DefiNodal" />
-              <HomePage />
-            </>
-          }
-        />
-        <Route
-          path="/dashboard"
-          element={
-            <>
-              <PageTitle title="Dashboard | Definodal" />
-              <DashBoard />
-            </>
-          }
-        />
+    <Routes>
+      <Route
+        index
+        element={
+          <>
+            <PageTitle title="DefiNodal" />
+            <HomePage />
+          </>
+        }
+      />
+      <Route
+        path="/dashboard"
+        element={
+          <>
+            <PageTitle title="Dashboard | Definodal" />
+            <DashBoard />
+          </>
+        }
+      />
 
-        <Route
-          path="/vaults"
-          element={
-            <>
-              <PageTitle title="Vaults | Definodal" />
-              <VaultList />
-            </>
-          }
-        />
+      <Route
+        path="/vaults"
+        element={
+          <>
+            <PageTitle title="Vaults | Definodal" />
+            <VaultList />
+          </>
+        }
+      />
 
-        <Route
-          path="/sdnod"
-          element={
-            <>
-              <PageTitle title="SDnod | Definodal" />
-              <SDnod />
-            </>
-          }
-        />
+      <Route
+        path="/sdnod"
+        element={
+          <>
+            <PageTitle title="SDnod | Definodal" />
+            <SDnod />
+          </>
+        }
+      />
 
-        <Route
-          path="/boardroom"
-          element={
-            <>
-              <PageTitle title="Boardroom | Definodal" />
-              <Boardroom />
-            </>
-          }
-        />
+      <Route
+        path="/boardroom"
+        element={
+          <>
+            <PageTitle title="Boardroom | Definodal" />
+            <Boardroom />
+          </>
+        }
+      />
 
-        <Route
-          path="/labs"
-          element={
-            <>
-              <PageTitle title="DeFiLabs | Definodal" />
-              <Labs />
-            </>
-          }
-        />
+      <Route
+        path="/labs"
+        element={
+          <>
+            <PageTitle title="DeFiLabs | Definodal" />
+            <Labs />
+          </>
+        }
+      />
 
-        <Route
-          path="/calendar"
-          element={
-            <>
-              <PageTitle title="Calendar | DefiNodal" />
-              <Calendar />
-            </>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <>
-              <PageTitle title="Profile | DefiNodal" />
-              <Profile />
-            </>
-          }
-        />
-        <Route
-          path="/forms/form-elements"
-          element={
-            <>
-              <PageTitle title="Form Elements | DefiNodal" />
-              <FormElements />
-            </>
-          }
-        />
-        <Route
-          path="/forms/form-layout"
-          element={
-            <>
-              <PageTitle title="Form Layout | DefiNodal" />
-              <FormLayout />
-            </>
-          }
-        />
-        <Route
-          path="/tables"
-          element={
-            <>
-              <PageTitle title="Tables | DefiNodal" />
-              <Tables />
-            </>
-          }
-        />
-        <Route
-          path="/settings"
-          element={
-            <>
-              <PageTitle title="Settings | DefiNodal" />
-              <Settings />
-            </>
-          }
-        />
-        <Route
-          path="/chart"
-          element={
-            <>
-              <PageTitle title="Basic Chart | DefiNodal" />
-              <Chart />
-            </>
-          }
-        />
-        <Route
-          path="/ui/alerts"
-          element={
-            <>
-              <PageTitle title="Alerts | DefiNodal" />
-              <Alerts />
-            </>
-          }
-        />
-        <Route
-          path="/ui/buttons"
-          element={
-            <>
-              <PageTitle title="Buttons | DefiNodal" />
-              <Buttons />
-            </>
-          }
-        />
-      </Routes>
-    </>
+      <Route
+        path="/calendar"
+        element={
+          <>
+            <PageTitle title="Calendar | DefiNodal" />
+            <Calendar />
+          </>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <>
+            <PageTitle title="Profile | DefiNodal" />
+            <Profile />
+          </>
+        }
+      />
+      <Route
+        path="/forms/form-elements"
+        element={
+          <>
+            <PageTitle title="Form Elements | DefiNodal" />
+            <FormElements />
+          </>
+        }
+      />
+      <Route
+        path="/forms/form-layout"
+        element={
+          <>
+            <PageTitle title="Form Layout | DefiNodal" />
+            <FormLayout />
+          </>
+        }
+      />
+      <Route
+        path="/tables"
+        element={
+          <>
+            <PageTitle title="Tables | DefiNodal" />
+            <Tables />
+          </>
+        }
+      />
+      <Route
+        path="/settings"
+        element={
+          <>
+            <PageTitle title="Settings | DefiNodal" />
+            <Settings />
+          </>
+        }
+      />
+      <Route
+        path="/chart"
+        element={
+          <>
+            <PageTitle title="Basic Chart | DefiNodal" />
+            <Chart />
+          </>
+        }
+      />
+      <Route
+        path="/ui/alerts"
+        element={
+          <>
+            <PageTitle title="Alerts | DefiNodal" />
+            <Alerts />
+          </>
+        }
+      />
+      <Route
+        path="/ui/buttons"
+        element={
+          <>
+            <PageTitle title="Buttons | DefiNodal" />
+            <Buttons />
+          </>
+        }
+      />
+    </Routes>
   );
 }
 

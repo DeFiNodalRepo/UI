@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply font-satoshi font-normal text-base text-body bg-whiten relative z-1;
+    @apply font-satoshi font-normal text-base text-stone-100 bg-whiten relative z-1;
   }
 }
 
@@ -65,7 +65,7 @@
 }
 .apexcharts-xaxistooltip,
 .apexcharts-yaxistooltip {
-  @apply dark:!border-meta-4 dark:!bg-meta-4 dark:!text-bodydark1;
+  @apply dark:!border-meta-4 dark:!bg-meta-4 dark:!text-stone-100;
 }
 .apexcharts-xaxistooltip-bottom:after {
   @apply !border-b-gray dark:!border-b-meta-4;
@@ -117,7 +117,9 @@ span.flatpickr-weekday,
 }
 .flatpickr-day.inRange {
   @apply dark:!shadow-7;
-  box-shadow: -5px 0 0 #EFF4FB, 5px 0 0 #EFF4FB;
+  box-shadow:
+    -5px 0 0 #eff4fb,
+    5px 0 0 #eff4fb;
 }
 .flatpickr-day.inRange,
 .flatpickr-day.prevMonthDay.inRange,
