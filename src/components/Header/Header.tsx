@@ -1,4 +1,5 @@
 import DarkModeSwitcher from './DarkModeSwitcher';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
@@ -60,7 +61,7 @@ const Header = (props: {
           <ul className="flex items-center gap-2 2xsm:gap-4">
             <DarkModeSwitcher />
           </ul>
-          RainbowKit Here
+          <ConnectButton />
         </div>
       </div>
     </header>
