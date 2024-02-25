@@ -63,6 +63,7 @@ createWeb3Modal({
   themeVariables: {
     '--w3m-color-mix': '#3f3f46',
     '--w3m-color-mix-strength': 40,
+    '--w3m-accent': '#1A222C',
   },
 });
 
