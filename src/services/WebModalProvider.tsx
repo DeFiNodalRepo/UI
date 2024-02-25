@@ -2,7 +2,8 @@ import { createWeb3Modal } from '@web3modal/wagmi/react';
 import { defaultWagmiConfig } from '@web3modal/wagmi/react/config';
 
 import { WagmiProvider } from 'wagmi';
-import { arbitrum, mainnet } from 'wagmi/chains';
+import { arbitrum, mainnet, polygon } from 'wagmi/chains';
+import { defineChain } from 'viem';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // 0. Setup queryClient
@@ -19,7 +20,31 @@ const metadata = {
   icons: ['https://avatars.githubusercontent.com/u/37784886'],
 };
 
-const chains = [mainnet, arbitrum] as const;
+// Test Chain
+const testchain = defineChain({
+  id: 1337,
+  name: 'Test Chain',
+  nativeCurrency: { name: 'Teth', symbol: 'TETH', decimals: 18 },
+
+  network: 'testchain',
+  iconBackground: '#fff',
+  // blockExplorers: {
+  //   default: { name: 'Etherscan', url: 'https://etherscan.io' },
+  // },
+  rpcUrls: {
+    public: { http: ['http://127.0.0.1:8545'] },
+    default: { http: ['http://127.0.0.1:8545'] },
+  },
+
+  contracts: {
+    multicall3: {
+      address: '0xDef31ab6Bf0B405441ae8A80a09BD27a687E36d6',
+    },
+  },
+  testnet: true,
+});
+
+const chains = [mainnet, testchain, arbitrum, polygon] as const;
 const config = defaultWagmiConfig({
   chains, // required
   projectId, // required
@@ -35,6 +60,10 @@ createWeb3Modal({
   wagmiConfig: config,
   projectId,
   enableAnalytics: true, // Optional - defaults to your Cloud configuration
+  themeVariables: {
+    '--w3m-color-mix': '#3f3f46',
+    '--w3m-color-mix-strength': 40,
+  },
 });
 
 export function Web3ModalProvider({ children }) {
