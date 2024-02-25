@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
-import Providers from './services/Providers';
 import { Web3ModalProvider } from './services/WebModalProvider';
 
 // Styles
@@ -15,9 +13,7 @@ import 'flatpickr/dist/flatpickr.min.css';
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Web3ModalProvider>
-      <Router>
-        <App />
-      </Router>
+      <App />
     </Web3ModalProvider>
   </React.StrictMode>,
 );
