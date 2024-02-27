@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply font-satoshi font-normal text-base text-stone-100 bg-whiten relative z-1;
+    @apply font-satoshi font-normal text-lg  text-main bg-whiten relative z-1;
   }
 }
 
@@ -17,14 +17,31 @@
     display: none;
   }
 
+  .bg-main {
+    @apply bg-card dark:bg-boxdark;
+  }
+
+  .text-main {
+    @apply text-strokedark dark:text-stroke;
+  }
+
+  .divider-main {
+    @apply divide-zinc-200 dark:divide-zinc-800;
+  }
+
+  .border-main {
+    @apply border-zinc-200 dark:border-zinc-800;
+  }
+
+  .ring-main {
+    @apply ring-zinc-200 dark:ring-zinc-800;
+  }
+
   .no-scrollbar {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
 
-  .chat-height {
-    @apply h-[calc(100vh_-_8.125rem)] lg:h-[calc(100vh_-_5.625rem)];
-  }
   .inbox-height {
     @apply h-[calc(100vh_-_8.125rem)] lg:h-[calc(100vh_-_5.625rem)];
   }
