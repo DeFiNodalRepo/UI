@@ -1,4 +1,5 @@
 import Loader from '../../../common/Loader';
+import VaultCardDisplay from './VaultCardDisplay';
 
 import { useQuery } from '@tanstack/react-query';
 import { getStrats } from '../../../services/apiFetches';
@@ -67,6 +68,8 @@ const people = [
 function StartsData() {}
 
 export default function VaultsCard() {
+  // Note #tanstack stale time explanation https://coursehunter.net/course/react-2023-react-redux-i-mnogoe-drugoe?lesson=343
+
   const {
     data: strategies,
     isLoading,
@@ -75,8 +78,6 @@ export default function VaultsCard() {
     queryKey: ['strats'],
     queryFn: getStrats,
   });
-
-  console.log(strategies);
 
   if (isLoading) {
     return <Loader />;
@@ -88,53 +89,33 @@ export default function VaultsCard() {
 
   const strategiesArray = Object.values(strategies);
 
+  const uniqueStrategies = strategiesArray.reduce((array, strategy) => {
+    if (!array.map((el) => el.tokenId).includes(strategy.tokenId))
+      return [
+        ...array,
+        {
+          id: strategy.id,
+          tokenId: strategy.tokenId,
+          createdOn: strategy.createdOn,
+          retiredOn: strategy.retiredOn,
+          tokens: strategy.tokens,
+          rewards: strategy.rewards,
+          stratId: strategy.stratId,
+          stablePer: strategy.stablePer,
+          poolGroup: strategy.poolGroup,
+          stratGroup: strategy.stratGroup,
+        },
+      ];
+    else return array;
+  }, []);
+
   return (
     <ul
       role="list"
       className="divide-y divider-main overflow-hidden bg-main shadow-sm ring-1 ring-main sm:rounded-xl"
     >
-      {strategiesArray.map((strategy) => (
-        <li
-          key={strategy.id}
-          className="relative flex justify-between gap-x-6 px-4 py-5  sm:px-6"
-        >
-          <div className="flex gap-x-4">
-            {/* <img
-              className="h-12 w-12 flex-none rounded-full bg-gray-500"
-              src={person.imageUrl}
-              alt=""
-            /> */}
-            IMG
-            <div className="min-w-0 flex-auto">
-              <p className="text-sm font-semibold leading-6 text-main">
-                <span className="absolute inset-x-0 -top-px bottom-0" />
-                {strategy.poolGroup}
-              </p>
-              {/* <p className="mt-1 flex text-xs leading-5 text-black dark:text-slate-100">
-                <a
-                  href={`mailto:${person.email}`}
-                  className="relative truncate "
-                >
-                  {person.email}
-                </a>
-              </p> */}
-            </div>
-          </div>
-          <div className="flex items-center gap-x-4">
-            <div className="hidden sm:flex sm:flex-col sm:items-end">
-              <p className="text-sm leading-6 text-black dark:text-slate-100">
-                {strategy.tokenId}
-              </p>
-
-              {/* <p className="mt-1 text-xs leading-5 text-black dark:text-slate-100">
-                Last seen{' '}
-                <time dateTime={person.lastSeenDateTime}>
-                  {person.lastSeen}
-                </time>
-              </p> */}
-            </div>
-          </div>
-        </li>
+      {uniqueStrategies.map((strategy) => (
+        <VaultCardDisplay strategy={strategy} />
       ))}
     </ul>
   );
