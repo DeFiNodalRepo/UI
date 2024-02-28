@@ -1,6 +1,5 @@
 import WebConnect from '../../services/WebConnect';
 import DarkModeSwitcher from './DarkModeSwitcher';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
@@ -55,7 +54,7 @@ const Header = (props: {
         </div>
 
         <div className="hidden sm:block">
-          <h1 className="text-2xl text-slate-100">Banner Here</h1>
+          <h1 className="text-2xl ">Banner Here</h1>
         </div>
 
         <div className="flex items-center gap-3 2xsm:gap-7">

@@ -1,4 +1,4 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
+const defaultTheme = require('tailwindcss/defaultTheme');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -16,6 +16,7 @@ module.exports = {
     },
     extend: {
       colors: {
+        card: '#EAEFF5',
         current: 'currentColor',
         transparent: 'transparent',
         white: '#FFFFFF',
@@ -250,5 +251,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
-}
+  // plugins: [require('@tailwindcss/forms')],
+};

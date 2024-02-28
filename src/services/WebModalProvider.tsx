@@ -1,10 +1,10 @@
 import { createWeb3Modal } from '@web3modal/wagmi/react';
 import { defaultWagmiConfig } from '@web3modal/wagmi/react/config';
-
 import { WagmiProvider } from 'wagmi';
 import { arbitrum, mainnet, polygon } from 'wagmi/chains';
 import { defineChain } from 'viem';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 // 0. Setup queryClient
 const queryClient = new QueryClient();
@@ -70,7 +70,10 @@ createWeb3Modal({
 export function Web3ModalProvider({ children }) {
   return (
     <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        {children}
+        <ReactQueryDevtools initialIsOpen={true} />
+      </QueryClientProvider>
     </WagmiProvider>
   );
 }
