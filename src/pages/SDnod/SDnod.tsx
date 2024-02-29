@@ -2,33 +2,25 @@ import DefaultLayout from '../../layout/DefaultLayout';
 import { useState } from 'react';
 import { RadioGroup } from '@headlessui/react';
 import { CheckCircleIcon } from '@heroicons/react/20/solid';
-
-const mailingLists = [
-  {
-    id: 1,
-    title: 'Newsletter',
-    description: 'Last message sent an hour ago',
-    users: '621 users',
-  },
-  {
-    id: 2,
-    title: 'Existing Customers',
-    description: 'Last message sent 2 weeks ago',
-    users: '1200 users',
-  },
-  {
-    id: 3,
-    title: 'Trial Users',
-    description: 'Last message sent 4 days ago',
-    users: '2740 users',
-  },
-];
+import { collateralSelection } from '../../constants/sdnodCollateral';
+import WebConnect from '../../services/WebConnect';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-function SDnod() {
+function SDnod({ chain }: any) {
+  // console.log(chain);
+  // console.log(collateralSelection);
+
+  let collateralsAvailable;
+
+  if (!chain) {
+    collateralsAvailable = collateralSelection[1];
+  } else {
+    collateralsAvailable = collateralSelection[chain.id];
+  }
+
   const [isMintClicked, setIsMintClicked] = useState(false);
   const [isRedeemClicked, setIsRedeemClicked] = useState(false);
 
@@ -42,20 +34,42 @@ function SDnod() {
     setIsMintClicked(false);
   };
 
-  const [selectedMailingLists, setSelectedMailingLists] = useState(
-    mailingLists[0],
-  );
+  const [selectedCollateral, setSelectedCollateral] =
+    useState(collateralsAvailable);
+
+  console.log(selectedCollateral);
 
   return (
     <DefaultLayout>
       {/* Header Section */}
       <header className="text-3xl">SDnod</header>
       <div className="flex justify-center items-center mt-12 mb-8">
+        {!chain ? (
+          <div className="grid grid-cols-1 gap-y-6 place-items-center sm:gap-x-4">
+            <h1 className="text-xl w-2/3">
+              Currently your wallet is not connect. Please connect your wallet.
+              Once connected you will be able to exchange your stable coins with
+              the overcollaterilized stable SDnod.
+            </h1>
+            <p>
+              <WebConnect />
+            </p>
+          </div>
+        ) : (
+          <h1>
+            Currently you are on the{' '}
+            <span className="text-red-500 font-bold">{chain.name}</span>. The
+            following collaterals are available to be exchanged with SDnod
+          </h1>
+        )}
+      </div>
+      {/* Buttons Section */}
+      <div className="flex justify-center items-center mt-12 mb-8">
         <div className="flex justify-center items-center w-1/2">
           <span className="w-full rounded-md bg-main shadow-sm">
             <button
               type="button"
-              className={`relative h-16 w-1/2 flex-1 rounded-l-md border-main  px-3 py-2 text-xl font-semibold text-main shadow-sm ring-2 ring-inset ring-main hover:bg-main-600 focus:z-10 ${
+              className={`relative h-16 w-1/2 flex-1 rounded-l-md border-main  px-3 py-2 text-xl font-semibold text-main shadow-sm ring-2 ring-inset ring-main  focus:z-10 ${
                 isMintClicked ? 'bg-red-500' : ''
               }`}
               onClick={handleMintClick}
@@ -78,20 +92,17 @@ function SDnod() {
 
       {/* Collateral List Section */}
       <div className="flex justify-center items-center">
-        <RadioGroup
-          value={selectedMailingLists}
-          onChange={setSelectedMailingLists}
-        >
-          <div className="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-3 sm:gap-x-4">
-            {mailingLists.map((mailingList) => (
+        <RadioGroup value={selectedCollateral} onChange={setSelectedCollateral}>
+          <div className="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-3 sm:gap-x-4 ">
+            {collateralsAvailable.map((collateral) => (
               <RadioGroup.Option
-                key={mailingList.id}
-                value={mailingList}
+                key={collateral.name}
+                value={collateral}
                 className={({ checked, active }) =>
                   classNames(
-                    checked ? 'border-transparent' : 'border-gray-300',
+                    checked ? 'border-transparent' : 'border-main',
                     active ? 'border-indigo-600 ring-2 ring-indigo-600' : '',
-                    'relative flex cursor-pointer rounded-lg border bg-main p-4 shadow-sm focus:outline-none',
+                    'relative flex cursor-pointer rounded-lg border bg-main p-4 shadow-sm focus:outline-none min-w-64',
                   )
                 }
               >
@@ -103,19 +114,24 @@ function SDnod() {
                           as="span"
                           className="block text-sm font-medium "
                         >
-                          {mailingList.title}
+                          {collateral.name}
                         </RadioGroup.Label>
                         <RadioGroup.Description
                           as="span"
                           className="mt-1 flex items-center text-sm "
                         >
-                          {mailingList.description}
+                          {collateral.name}
                         </RadioGroup.Description>
                         <RadioGroup.Description
                           as="span"
                           className="mt-6 text-sm font-medium "
                         >
-                          {mailingList.users}
+                          <img
+                            src={collateral.icon}
+                            width={20}
+                            height={20}
+                            alt={collateral.name}
+                          />
                         </RadioGroup.Description>
                       </span>
                     </span>
@@ -147,13 +163,13 @@ function SDnod() {
         <div className="bg-main shadow sm:rounded-lg max-w-80 mt-8">
           <div className="px-4 py-5 sm:p-6">
             <h3 className="text-base font-semibold leading-6 text-main">
-              Update your email
+              Balance Available:
             </h3>
-            <div className="mt-2 max-w-xl text-sm text-main">
+            {/* <div className="mt-2 max-w-xl text-sm text-main">
               <p>
                 Change the email address you want associated with your account.
               </p>
-            </div>
+            </div> */}
             <form className="mt-5 sm:flex sm:items-center">
               <div className="w-full sm:max-w-xs">
                 <label htmlFor="email" className="sr-only">

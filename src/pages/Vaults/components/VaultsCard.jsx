@@ -115,7 +115,7 @@ export default function VaultsCard() {
       className="divide-y divider-main overflow-hidden bg-main shadow-sm ring-1 ring-main sm:rounded-xl"
     >
       {uniqueStrategies.map((strategy) => (
-        <VaultCardDisplay strategy={strategy} />
+        <VaultCardDisplay strategy={strategy} key={strategy.id} />
       ))}
     </ul>
   );

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
+import { useAccount } from 'wagmi';
+
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
 
@@ -13,6 +15,7 @@ import Labs from './pages/Labs/Labs';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
+  const { address, chain } = useAccount();
   // const { pathname } = useLocation();
 
   // useEffect(() => {
@@ -62,7 +65,7 @@ function App() {
           element={
             <>
               <PageTitle title="SDnod | Definodal" />
-              <SDnod />
+              <SDnod address={address} chain={chain} />
             </>
           }
         />
