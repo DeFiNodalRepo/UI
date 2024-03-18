@@ -3,26 +3,23 @@ import { useState } from 'react';
 import { RadioGroup } from '@headlessui/react';
 import { CheckCircleIcon } from '@heroicons/react/20/solid';
 import { collateralSelection } from '../../constants/sdnodCollateral';
-import WebConnect from '../../services/WebConnect';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-function SDnod({ chain }: any) {
-  // console.log(chain);
-  // console.log(collateralSelection);
-
+function SDnod({ chain, chainId }: any) {
   let collateralsAvailable;
-
-  if (!chain) {
+  if (chainId !== 1337) {
     collateralsAvailable = collateralSelection[1];
   } else {
-    collateralsAvailable = collateralSelection[chain.id];
+    collateralsAvailable = collateralSelection[chainId];
   }
-
   const [isMintClicked, setIsMintClicked] = useState(false);
   const [isRedeemClicked, setIsRedeemClicked] = useState(false);
+  const [selectedCollateral, setSelectedCollateral] = useState(
+    collateralsAvailable[0],
+  );
 
   const handleMintClick = () => {
     setIsMintClicked(true);
@@ -34,10 +31,8 @@ function SDnod({ chain }: any) {
     setIsMintClicked(false);
   };
 
-  const [selectedCollateral, setSelectedCollateral] =
-    useState(collateralsAvailable);
-
-  console.log(selectedCollateral);
+  // console.log(selectedCollateral);
+  // console.log(collateralSelection);
 
   return (
     <DefaultLayout>
@@ -47,13 +42,11 @@ function SDnod({ chain }: any) {
         {!chain ? (
           <div className="grid grid-cols-1 gap-y-6 place-items-center sm:gap-x-4">
             <h1 className="text-xl w-2/3">
-              Currently your wallet is not connect. Please connect your wallet.
-              Once connected you will be able to exchange your stable coins with
-              the overcollaterilized stable SDnod.
+              Currently your wallet is not connect to a network supported by
+              DefiNodal. Please connect your wallet to the Polygon network. Once
+              connected you will be able to exchange your stable coins with the
+              overcollaterilized stable SDnod.
             </h1>
-            <p>
-              <WebConnect />
-            </p>
           </div>
         ) : (
           <h1>
@@ -94,7 +87,7 @@ function SDnod({ chain }: any) {
       <div className="flex justify-center items-center">
         <RadioGroup value={selectedCollateral} onChange={setSelectedCollateral}>
           <div className="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-3 sm:gap-x-4 ">
-            {collateralsAvailable.map((collateral) => (
+            {collateralsAvailable.map((collateral, index) => (
               <RadioGroup.Option
                 key={collateral.name}
                 value={collateral}
@@ -161,10 +154,7 @@ function SDnod({ chain }: any) {
       {/* Form Section */}
       <div className="flex justify-center items-center">
         <div className="bg-main shadow sm:rounded-lg max-w-80 mt-8">
-          <div className="px-4 py-5 sm:p-6">
-            <h3 className="text-base font-semibold leading-6 text-main">
-              Balance Available:
-            </h3>
+          <div className="px-4 py-2 sm:p-6">
             {/* <div className="mt-2 max-w-xl text-sm text-main">
               <p>
                 Change the email address you want associated with your account.
@@ -172,8 +162,10 @@ function SDnod({ chain }: any) {
             </div> */}
             <form className="mt-5 sm:flex sm:items-center">
               <div className="w-full sm:max-w-xs">
-                <label htmlFor="email" className="sr-only">
-                  Email
+                <label htmlFor="email">
+                  <h3 className="text-base font-semibold leading-6 text-main pb-2">
+                    Amount to {isMintClicked ? 'Mint' : 'Redeem'}
+                  </h3>
                 </label>
                 <input
                   type="email"

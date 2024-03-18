@@ -15,7 +15,7 @@ import Labs from './pages/Labs/Labs';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
-  const { address, chain } = useAccount();
+  const { address, chain, chainId } = useAccount();
   // const { pathname } = useLocation();
 
   // useEffect(() => {
@@ -65,7 +65,7 @@ function App() {
           element={
             <>
               <PageTitle title="SDnod | Definodal" />
-              <SDnod address={address} chain={chain} />
+              <SDnod address={address} chain={chain} chainId={chainId} />
             </>
           }
         />
