@@ -15,7 +15,7 @@ function SDnod({ chain, chainId }: any) {
   } else {
     collateralsAvailable = collateralSelection[chainId];
   }
-  const [isMintClicked, setIsMintClicked] = useState(false);
+  const [isMintClicked, setIsMintClicked] = useState(true);
   const [isRedeemClicked, setIsRedeemClicked] = useState(false);
   const [selectedCollateral, setSelectedCollateral] = useState(
     collateralsAvailable[0],
