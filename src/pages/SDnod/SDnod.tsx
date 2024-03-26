@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { RadioGroup } from '@headlessui/react';
 import { CheckCircleIcon } from '@heroicons/react/20/solid';
 import { collateralSelection } from '../../constants/sdnodCollateral';
+import { useSimulateContract } from 'wagmi';
+import CollSdnodABI from '../../abi/StableTokenBalancer.json';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -15,7 +17,7 @@ function SDnod({ chain, chainId }: any) {
   } else {
     collateralsAvailable = collateralSelection[chainId];
   }
-  const [isMintClicked, setIsMintClicked] = useState(false);
+  const [isMintClicked, setIsMintClicked] = useState(true);
   const [isRedeemClicked, setIsRedeemClicked] = useState(false);
   const [selectedCollateral, setSelectedCollateral] = useState(
     collateralsAvailable[0],
@@ -31,7 +33,18 @@ function SDnod({ chain, chainId }: any) {
     setIsMintClicked(false);
   };
 
-  // console.log(selectedCollateral);
+  console.log(selectedCollateral.address);
+
+  console.log(CollSdnodABI);
+
+  const simulateResult = useSimulateContract({
+    abi: CollSdnodABI,
+    address: '0xb0e77224e214e902dE434b51125a775F6339F6C9',
+    functionName: 'toSDNOD',
+    args: [selectedCollateral.address, 100n, 0],
+  });
+
+  console.log(simulateResult);
   // console.log(collateralSelection);
 
   return (
@@ -162,15 +175,15 @@ function SDnod({ chain, chainId }: any) {
             </div> */}
             <form className="mt-5 sm:flex sm:items-center">
               <div className="w-full sm:max-w-xs">
-                <label htmlFor="email">
+                <label htmlFor="amount">
                   <h3 className="text-base font-semibold leading-6 text-main pb-2">
                     Amount to {isMintClicked ? 'Mint' : 'Redeem'}
                   </h3>
                 </label>
                 <input
-                  type="email"
-                  name="email"
-                  id="email"
+                  type="amount"
+                  name="amount"
+                  id="amount"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-main placeholder:text-main focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   placeholder="you@example.com"
                 />
