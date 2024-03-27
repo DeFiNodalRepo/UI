@@ -1,0 +1,43 @@
+[
+  {
+    "inputs": [],
+    "name": "AddressZero",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "AmountZero",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DecimalsTooLarge",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DuplicateCollateral",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "MinAmount",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NoValidCollateral",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "UnknownCollateral",
+    "type": "error"
+  }
+]

@@ -4,7 +4,8 @@ import { RadioGroup } from '@headlessui/react';
 import { CheckCircleIcon } from '@heroicons/react/20/solid';
 import { collateralSelection } from '../../constants/sdnodCollateral';
 import { useSimulateContract } from 'wagmi';
-import CollSdnodABI from '../../abi/StableTokenBalancer.json';
+import CollSdnodABI from '../../abi/STBalancer.json';
+import { parseEther, formatUnits } from 'viem';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -41,10 +42,15 @@ function SDnod({ chain, chainId }: any) {
     abi: CollSdnodABI,
     address: '0xb0e77224e214e902dE434b51125a775F6339F6C9',
     functionName: 'toSDNOD',
-    args: [selectedCollateral.address, 100n, 0],
+    args: [selectedCollateral.address, 100000000n, 0],
   });
 
-  console.log(simulateResult);
+  if (simulateResult && simulateResult.data) {
+    console.log(simulateResult.data.result);
+  } else {
+    console.log('simulateResult or simulateResult.data is undefined');
+  }
+
   // console.log(collateralSelection);
 
   return (
@@ -184,7 +190,7 @@ function SDnod({ chain, chainId }: any) {
                   type="amount"
                   name="amount"
                   id="amount"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-main placeholder:text-main focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-main placeholder:text-main focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 text-black pl-2"
                   placeholder="you@example.com"
                 />
               </div>
@@ -192,10 +198,18 @@ function SDnod({ chain, chainId }: any) {
                 type="submit"
                 className="mt-3 inline-flex w-full items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-main shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:ml-3 sm:mt-0 sm:w-auto"
               >
-                Save
+                {isMintClicked ? 'Mint' : 'Redeem'}
               </button>
             </form>
           </div>
+          You will receive{' '}
+          {simulateResult && simulateResult.data ? (
+            <span className="text-bold">
+              {formatUnits(simulateResult.data.result.toString(), 18)} sDNOD
+            </span>
+          ) : (
+            <div>Loading...</div>
+          )}
         </div>
       </div>
     </DefaultLayout>
