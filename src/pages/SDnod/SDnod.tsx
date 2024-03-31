@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { RadioGroup } from '@headlessui/react';
 import { CheckCircleIcon } from '@heroicons/react/20/solid';
 import { collateralSelection } from '../../constants/sdnodCollateral';
-import { useSimulateContract } from 'wagmi';
+import { useSimulateContract, useWriteContract } from 'wagmi';
 import CollSdnodABI from '../../abi/STBalancer.json';
-import { parseEther, formatUnits } from 'viem';
+import { formatUnits, parseUnits } from 'viem';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -23,6 +23,7 @@ function SDnod({ chain, chainId }: any) {
   const [selectedCollateral, setSelectedCollateral] = useState(
     collateralsAvailable[0],
   );
+  const [inputValue, setInputValue] = useState('1');
 
   const handleMintClick = () => {
     setIsMintClicked(true);
@@ -34,24 +35,64 @@ function SDnod({ chain, chainId }: any) {
     setIsMintClicked(false);
   };
 
-  console.log(selectedCollateral.address);
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.value === '') {
+      setInputValue('1');
+    } else {
+      setInputValue(event.target.value);
+    }
+  };
 
-  console.log(CollSdnodABI);
+  console.log('rerender');
+  console.log(selectedCollateral.address);
 
   const simulateResult = useSimulateContract({
     abi: CollSdnodABI,
     address: '0xb0e77224e214e902dE434b51125a775F6339F6C9',
     functionName: 'toSDNOD',
-    args: [selectedCollateral.address, 100000000n, 0],
+    args: [
+      selectedCollateral.address,
+      parseUnits(inputValue.toString(), selectedCollateral.numberOfDecimals),
+      0,
+    ],
+    query: {
+      // enabled: false,
+      // refetchInterval: 10000,
+      refetchOnReconnect: false,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      retry: false,
+      // initialDataUpdatedAt: 2000,
+      // retry: false,
+      // staleTime: Infinity,
+      // retryOnMount: false,
+    },
   });
 
-  if (simulateResult && simulateResult.data) {
-    console.log(simulateResult.data.result);
+  let renderedSimulatedResult;
+  if (inputValue > 10 && simulateResult && simulateResult.data) {
+    renderedSimulatedResult = (
+      <span className="text-bold">
+        You will receive {formatUnits(simulateResult.data.result, 18)} sDNOD
+      </span>
+    );
   } else {
-    console.log('simulateResult or simulateResult.data is undefined');
+    renderedSimulatedResult = <div>The amount should be higher than 10</div>;
   }
 
-  // console.log(collateralSelection);
+  // console.log(inputValue.toString());
+  // console.log(
+  //   parseUnits(inputValue.toString(), selectedCollateral.numberOfDecimals),
+  // );
+
+  // if (simulateResult && simulateResult.data) {
+  //   console.log(formatUnits(simulateResult.data.result, 18));
+  // } else {
+  //   console.log('simulateResult or simulateResult.data is undefined');
+  // }
+
+  // console.log(selectedCollateral.numberOfDecimals);
+  // console.log(debouncedValue);
 
   return (
     <DefaultLayout>
@@ -187,11 +228,12 @@ function SDnod({ chain, chainId }: any) {
                   </h3>
                 </label>
                 <input
-                  type="amount"
+                  type="number"
                   name="amount"
                   id="amount"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-main placeholder:text-main focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 text-black pl-2"
                   placeholder="you@example.com"
+                  onChange={handleInputChange}
                 />
               </div>
               <button
@@ -202,14 +244,7 @@ function SDnod({ chain, chainId }: any) {
               </button>
             </form>
           </div>
-          You will receive{' '}
-          {simulateResult && simulateResult.data ? (
-            <span className="text-bold">
-              {formatUnits(simulateResult.data.result.toString(), 18)} sDNOD
-            </span>
-          ) : (
-            <div>Loading...</div>
-          )}
+          {renderedSimulatedResult}
         </div>
       </div>
     </DefaultLayout>
