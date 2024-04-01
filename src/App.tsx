@@ -65,7 +65,7 @@ function App() {
           element={
             <>
               <PageTitle title="SDnod | Definodal" />
-              <SDnod address={address} chain={chain} chainId={chainId} />
+              <SDnod userAddress={address} chain={chain} chainId={chainId} />
             </>
           }
         />
