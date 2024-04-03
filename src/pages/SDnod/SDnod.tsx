@@ -5,13 +5,14 @@ import { CheckCircleIcon } from '@heroicons/react/20/solid';
 import { collateralSelection } from '../../constants/sdnodCollateral';
 import {
   useSimulateContract,
+  useReadContract,
   useWriteContract,
   useWaitForTransactionReceipt,
   useConfig as useWagmiConfig,
 } from 'wagmi';
 import CollSdnodABI from '../../abi/STBalancer.json';
 import { formatUnits, parseUnits, erc20Abi, numberToHex } from 'viem';
-import { readContract } from '@wagmi/core';
+// import { readContract } from '@wagmi/core';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -36,6 +37,16 @@ function SDnod({ chain, chainId, userAddress }: any) {
   );
   const config = useWagmiConfig();
 
+  const result = useReadContract({
+    abi: erc20Abi,
+    address: selectedCollateral.address,
+    functionName: 'balanceOf',
+    // args: [selectedCollateral.address],
+  });
+
+  console.log(result);
+
+  console.log(erc20Abi);
   const handleMintClick = () => {
     setIsMintClicked(true);
     setIsRedeemClicked(false);
@@ -101,13 +112,15 @@ function SDnod({ chain, chainId, userAddress }: any) {
     // console.log(txAllowance, 'allowance completed');
 
     if (isMintClicked) {
-      const result = await readContract(config, {
-        abi: erc20Abi,
-        address: selectedCollateral.address,
-        functionName: 'allowance',
-        args: [userAddress, '0xb0e77224e214e902dE434b51125a775F6339F6C9'],
-      });
-      console.log(result);
+      // const result = await readContract(config, {
+      //   abi: erc20Abi,
+      //   address: selectedCollateral.address,
+      //   functionName: 'allowance',
+      //   args: [userAddress, '0xb0e77224e214e902dE434b51125a775F6339F6C9'],
+      // });
+      // console.log(result);
+      // console.log(config);
+
       const tx = await writeContract({
         abi: CollSdnodABI,
         address: '0xb0e77224e214e902dE434b51125a775F6339F6C9',
