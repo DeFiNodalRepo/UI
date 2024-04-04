@@ -37,16 +37,19 @@ function SDnod({ chain, chainId, userAddress }: any) {
   );
   const config = useWagmiConfig();
 
-  const result = useReadContract({
-    abi: erc20Abi,
-    address: selectedCollateral.address,
-    functionName: 'balanceOf',
-    // args: [selectedCollateral.address],
-  });
+  console.log(CollSdnodABI);
 
-  console.log(result);
+  // const result = useReadContract({
+  //   abi: erc20Abi,
+  //   address: selectedCollateral.address,
+  //   functionName: 'balanceOf',
+  //   args: [userAddress],
+  //   account: userAddress,
+  // });
 
-  console.log(erc20Abi);
+  // console.log(result);
+
+  // console.log(erc20Abi);
   const handleMintClick = () => {
     setIsMintClicked(true);
     setIsRedeemClicked(false);
@@ -67,8 +70,8 @@ function SDnod({ chain, chainId, userAddress }: any) {
 
   const buttonSelected = isMintClicked ? 'Mint' : 'Redeem';
 
-  console.log('rerender');
-  console.log(selectedCollateral.address);
+  // console.log('rerender');
+  // console.log(selectedCollateral.address);
 
   const simulateResult = useSimulateContract({
     abi: CollSdnodABI,
@@ -103,24 +106,15 @@ function SDnod({ chain, chainId, userAddress }: any) {
   async function handleTransactionSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    // const txAllowance = await writeContract({
-    //   abi: erc20Abi,
-    //   address: selectedCollateral.address,
-    //   functionName: 'approve',
-    //   args: ['0xb0e77224e214e902dE434b51125a775F6339F6C9', maxAllowance],
-    // });
-    // console.log(txAllowance, 'allowance completed');
+    const txAllowance = await writeContract({
+      abi: erc20Abi,
+      address: selectedCollateral.address,
+      functionName: 'approve',
+      args: ['0xb0e77224e214e902dE434b51125a775F6339F6C9', maxAllowance],
+    });
+    console.log(txAllowance, 'allowance completed');
 
     if (isMintClicked) {
-      // const result = await readContract(config, {
-      //   abi: erc20Abi,
-      //   address: selectedCollateral.address,
-      //   functionName: 'allowance',
-      //   args: [userAddress, '0xb0e77224e214e902dE434b51125a775F6339F6C9'],
-      // });
-      // console.log(result);
-      // console.log(config);
-
       const tx = await writeContract({
         abi: CollSdnodABI,
         address: '0xb0e77224e214e902dE434b51125a775F6339F6C9',
@@ -139,19 +133,17 @@ function SDnod({ chain, chainId, userAddress }: any) {
     } else {
       const tx = writeContract({
         abi: CollSdnodABI,
-        address: '0xb0e77224e214e902dE434b51125a775F6339F6C9',
+        address: selectedCollateral.address,
         functionName: 'fromSDNOD',
         args: [
-          selectedCollateral.address,
-          parseUnits(
-            inputValue.toString(),
-            selectedCollateral.numberOfDecimals,
-          ),
+          '0xb0e77224e214e902dE434b51125a775F6339F6C9',
+          parseUnits(inputValue.toString(), 18),
           0,
         ],
       });
       console.log(tx, 'redeem completed');
     }
+    console.log(txAllowance, 'allowance completed');
   }
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
@@ -159,7 +151,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
       hash: writeHash,
     });
 
-  console.log(writeHash);
+  // console.log(writeHash);
 
   return (
     <DefaultLayout>
