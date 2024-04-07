@@ -74,7 +74,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
     if (event.target.value === '') {
       setInputValue('1');
     } else {
-      setInputValue(event.target.value);
+      setTimeout(() => setInputValue(event.target.value), 2000);
     }
   };
 
@@ -101,7 +101,12 @@ function SDnod({ chain, chainId, userAddress }: any) {
   });
 
   let renderedSimulatedResult;
-  if (inputValue > 10 && simulateResult && simulateResult.data) {
+  if (
+    inputValue > 10 &&
+    simulateResult &&
+    simulateResult.data &&
+    redeemAllowance
+  ) {
     renderedSimulatedResult = (
       <span className="text-bold">
         You will receive {formatUnits(simulateResult.data.result, 18)} sDNOD
@@ -117,6 +122,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
     e.preventDefault();
 
     if (isMintClicked) {
+      console.log(mintAllowance);
       if (
         mintAllowance.data <
         parseUnits(inputValue.toString(), selectedCollateral.numberOfDecimals)
