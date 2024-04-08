@@ -6,9 +6,9 @@ import { collateralSelection } from '../../constants/sdnodCollateral';
 import {
   useSimulateContract,
   useReadContract,
+  useReadContracts,
   useWriteContract,
   useWaitForTransactionReceipt,
-  useConfig as useWagmiConfig,
 } from 'wagmi';
 import CollSdnodABI from '../../abi/STBalancer.json';
 import { formatUnits, parseUnits, erc20Abi, numberToHex } from 'viem';
@@ -35,10 +35,8 @@ function SDnod({ chain, chainId, userAddress }: any) {
   const maxAllowance = numberToHex(
     '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
   );
-  const config = useWagmiConfig();
 
-  // console.log(CollSdnodABI);
-
+  // Allowances read
   const mintAllowance = useReadContract({
     abi: erc20Abi,
     address: selectedCollateral.address,
@@ -46,8 +44,6 @@ function SDnod({ chain, chainId, userAddress }: any) {
     args: [userAddress, '0xb0e77224e214e902dE434b51125a775F6339F6C9'],
     account: userAddress,
   });
-
-  console.log('Allowance amount: ', mintAllowance.data);
 
   const redeemAllowance = useReadContract({
     abi: erc20Abi,
@@ -57,9 +53,51 @@ function SDnod({ chain, chainId, userAddress }: any) {
     account: userAddress,
   });
 
+  console.log('Mint Allowance amount: ', mintAllowance.data);
   console.log('Redeem Allowance amount: ', redeemAllowance.data);
 
-  // console.log(erc20Abi);
+  // Read Coll Balances
+  const collBalanceOfConfig = {
+    abi: erc20Abi,
+    functionName: 'balanceOf',
+    args: [userAddress],
+    chainId: chainId,
+  };
+
+  let balancesToGet = [];
+
+  collateralSelection[chainId].map((coll: any) => {
+    balancesToGet.push({ address: coll.address, ...collBalanceOfConfig });
+  });
+
+  console.log(balancesToGet);
+
+  // const { data: collBalanceOfData } = useReadContracts({
+  //   contracts: [
+  //     {
+  //       address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+  //       abi: erc20Abi,
+  //       functionName: 'balanceOf',
+  //       args: [userAddress],
+  //       chainId: chainId,
+  //     },
+  //     {
+  //       address: '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
+  //       abi: erc20Abi,
+  //       functionName: 'balanceOf',
+  //       args: [userAddress],
+  //       chainId: chainId,
+  //     },
+  //   ],
+  // });
+  // console.log(collBalanceOfData);
+
+  const { data } = useReadContracts({
+    contracts: balancesToGet,
+  });
+
+  console.log(data);
+
   const handleMintClick = () => {
     setIsMintClicked(true);
     setIsRedeemClicked(false);
@@ -82,6 +120,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
 
   // console.log('rerender');
   // console.log(selectedCollateral.address);
+  console.log(CollSdnodABI);
 
   const simulateResult = useSimulateContract({
     abi: CollSdnodABI,
@@ -151,9 +190,21 @@ function SDnod({ chain, chainId, userAddress }: any) {
       console.log(tx, 'mint completed');
       console.log('writecontract');
     } else {
-      const tx = writeContract({
+      if (
+        redeemAllowance.data <
+        parseUnits(inputValue.toString(), selectedCollateral.numberOfDecimals)
+      ) {
+        const txAllowance = await writeContract({
+          abi: erc20Abi,
+          address: '0xb0e77224e214e902dE434b51125a775F6339F6C9',
+          functionName: 'approve',
+          args: ['0xb0e77224e214e902dE434b51125a775F6339F6C9', maxAllowance],
+        });
+        console.log(txAllowance, 'allowance completed');
+      }
+      const tx = await writeContract({
         abi: CollSdnodABI,
-        address: selectedCollateral.address,
+        address: '0xb0e77224e214e902dE434b51125a775F6339F6C9',
         functionName: 'fromSDNOD',
         args: [
           '0xb0e77224e214e902dE434b51125a775F6339F6C9',

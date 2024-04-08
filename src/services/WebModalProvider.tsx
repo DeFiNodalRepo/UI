@@ -38,7 +38,7 @@ const testchain = defineChain({
 
   contracts: {
     multicall3: {
-      address: '0xDef31ab6Bf0B405441ae8A80a09BD27a687E36d6',
+      address: '0x354d452E708E8B8fEFafA6504c08402BEaFee775',
     },
   },
   testnet: true,
