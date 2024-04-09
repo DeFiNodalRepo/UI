@@ -110,10 +110,6 @@ function SDnod({ chain, chainId, userAddress }: any) {
 
   const buttonSelected = isMintClicked ? 'Mint' : 'Redeem';
 
-  // console.log('rerender');
-  // console.log(selectedCollateral.address);
-  // console.log(CollSdnodABI);
-
   const simulateResult = useSimulateContract({
     abi: CollSdnodABI,
     address: '0xb0e77224e214e902dE434b51125a775F6339F6C9',
@@ -208,14 +204,26 @@ function SDnod({ chain, chainId, userAddress }: any) {
     }
   }
 
-  // console.log(erc20Abi);
+  let balanceCheck;
+
+  //Todo Issue to refresh balance. It should be a state change
+  //Todo Check why checkboxes are not checked when the input field is clicked
+
+  collWithBalances.map((coll) => {
+    if (coll.address === selectedCollateral.address) {
+      if (coll.balance < inputValue) {
+        balanceCheck = <p>You do not have enough balance</p>;
+        console.log(coll.balance);
+      }
+    }
+  });
+  // console.log(collWithBalances);
+  console.log(selectedCollateral.name);
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
       hash: writeHash,
     });
-
-  // console.log(writeHash);
 
   return (
     <DefaultLayout>
@@ -270,7 +278,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
       <div className="flex justify-center items-center">
         <RadioGroup value={selectedCollateral} onChange={setSelectedCollateral}>
           <div className="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-3 sm:gap-x-4 ">
-            {collWithBalances.map((collateral, index) => (
+            {collWithBalances.map((collateral) => (
               <RadioGroup.Option
                 key={collateral.name}
                 value={collateral}
@@ -356,7 +364,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
               </div>
               <button
                 type="submit"
-                disabled={isPending}
+                disabled={isPending || balanceCheck}
                 className="mt-3 inline-flex w-full items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-main shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:ml-3 sm:mt-0 sm:w-auto"
               >
                 {buttonSelected}
@@ -364,6 +372,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
             </form>
           </div>
           <p>
+            {balanceCheck}
             {isPending ? 'Please confirm transaction in your wallet' : null}
           </p>
           {writeHash && <div>Transaction Hash: {writeHash}</div>}
