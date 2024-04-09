@@ -20,10 +20,23 @@ function classNames(...classes) {
 
 function SDnod({ chain, chainId, userAddress }: any) {
   let collateralsAvailable;
+  let balancesToGet = [];
   if (chainId !== 1337) {
     collateralsAvailable = collateralSelection[1];
   } else {
     collateralsAvailable = collateralSelection[chainId];
+
+    const collBalanceOfConfig = {
+      abi: erc20Abi,
+      functionName: 'balanceOf',
+      args: [userAddress],
+      chainId: chainId,
+    };
+    collateralsAvailable.map((coll: any) => {
+      balancesToGet.push({ address: coll.address, ...collBalanceOfConfig });
+    });
+
+    // console.log(balancesToGet);
   }
   const [isMintClicked, setIsMintClicked] = useState(true);
   const [isRedeemClicked, setIsRedeemClicked] = useState(false);
@@ -56,47 +69,26 @@ function SDnod({ chain, chainId, userAddress }: any) {
   console.log('Mint Allowance amount: ', mintAllowance.data);
   console.log('Redeem Allowance amount: ', redeemAllowance.data);
 
-  // Read Coll Balances
-  const collBalanceOfConfig = {
-    abi: erc20Abi,
-    functionName: 'balanceOf',
-    args: [userAddress],
-    chainId: chainId,
-  };
-
-  let balancesToGet = [];
-
-  collateralSelection[chainId].map((coll: any) => {
-    balancesToGet.push({ address: coll.address, ...collBalanceOfConfig });
-  });
-
-  console.log(balancesToGet);
-
-  // const { data: collBalanceOfData } = useReadContracts({
-  //   contracts: [
-  //     {
-  //       address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
-  //       abi: erc20Abi,
-  //       functionName: 'balanceOf',
-  //       args: [userAddress],
-  //       chainId: chainId,
-  //     },
-  //     {
-  //       address: '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
-  //       abi: erc20Abi,
-  //       functionName: 'balanceOf',
-  //       args: [userAddress],
-  //       chainId: chainId,
-  //     },
-  //   ],
-  // });
-  // console.log(collBalanceOfData);
-
   const { data } = useReadContracts({
     contracts: balancesToGet,
   });
 
-  console.log(data);
+  let collWithBalances = [];
+
+  if (data) {
+    data.map((balance: any, i) => {
+      collWithBalances.push({
+        ...collateralsAvailable[i],
+        balance: formatUnits(
+          balance.result,
+          collateralsAvailable[i].numberOfDecimals,
+        ),
+      });
+    });
+    // console.log(data);
+  }
+
+  // console.log(collWithBalances);
 
   const handleMintClick = () => {
     setIsMintClicked(true);
@@ -120,7 +112,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
 
   // console.log('rerender');
   // console.log(selectedCollateral.address);
-  console.log(CollSdnodABI);
+  // console.log(CollSdnodABI);
 
   const simulateResult = useSimulateContract({
     abi: CollSdnodABI,
@@ -216,7 +208,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
     }
   }
 
-  console.log(erc20Abi);
+  // console.log(erc20Abi);
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
@@ -278,7 +270,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
       <div className="flex justify-center items-center">
         <RadioGroup value={selectedCollateral} onChange={setSelectedCollateral}>
           <div className="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-3 sm:gap-x-4 ">
-            {collateralsAvailable.map((collateral, index) => (
+            {collWithBalances.map((collateral, index) => (
               <RadioGroup.Option
                 key={collateral.name}
                 value={collateral}
@@ -296,19 +288,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
                       <span className="flex flex-col">
                         <RadioGroup.Label
                           as="span"
-                          className="block text-sm font-medium "
-                        >
-                          {collateral.name}
-                        </RadioGroup.Label>
-                        <RadioGroup.Description
-                          as="span"
-                          className="mt-1 flex items-center text-sm "
-                        >
-                          {collateral.name}
-                        </RadioGroup.Description>
-                        <RadioGroup.Description
-                          as="span"
-                          className="mt-6 text-sm font-medium "
+                          className="flex items-center text-sm font-medium gap-2"
                         >
                           <img
                             src={collateral.icon}
@@ -316,6 +296,15 @@ function SDnod({ chain, chainId, userAddress }: any) {
                             height={20}
                             alt={collateral.name}
                           />
+                          {collateral.name}
+                        </RadioGroup.Label>
+
+                        <RadioGroup.Description
+                          as="span"
+                          className="mt-1 flex items-center text-sm "
+                        >
+                          Available Balance: {collateral.balance}{' '}
+                          {collateral.name}
                         </RadioGroup.Description>
                       </span>
                     </span>
