@@ -1,5 +1,9 @@
+//Todo Issue to refresh balance. It should be a state change
+//Todo Check why checkboxes are not checked when the input field is clicked
+// Todo: Do not allow minting if balance is less than zero or there is no value for inputValue
+
 import DefaultLayout from '../../layout/DefaultLayout';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { RadioGroup } from '@headlessui/react';
 import { CheckCircleIcon } from '@heroicons/react/20/solid';
 import { collateralSelection } from '../../constants/sdnodCollateral';
@@ -12,7 +16,6 @@ import {
 } from 'wagmi';
 import CollSdnodABI from '../../abi/STBalancer.json';
 import { formatUnits, parseUnits, erc20Abi, numberToHex } from 'viem';
-// import { readContract } from '@wagmi/core';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -35,19 +38,20 @@ function SDnod({ chain, chainId, userAddress }: any) {
     collateralsAvailable.map((coll: any) => {
       balancesToGet.push({ address: coll.address, ...collBalanceOfConfig });
     });
-
-    // console.log(balancesToGet);
   }
+
+  const maxAllowance = numberToHex(
+    '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
+  );
+
   const [isMintClicked, setIsMintClicked] = useState(true);
   const [isRedeemClicked, setIsRedeemClicked] = useState(false);
   const [selectedCollateral, setSelectedCollateral] = useState(
     collateralsAvailable[0],
   );
   const [inputValue, setInputValue] = useState('1');
+
   const { data: writeHash, isPending, writeContract } = useWriteContract();
-  const maxAllowance = numberToHex(
-    '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
-  );
 
   // Allowances read
   const mintAllowance = useReadContract({
@@ -85,20 +89,17 @@ function SDnod({ chain, chainId, userAddress }: any) {
         ),
       });
     });
-    // console.log(data);
   }
 
-  // console.log(collWithBalances);
-
-  const handleMintClick = () => {
+  const handleMintClick = useCallback(() => {
     setIsMintClicked(true);
     setIsRedeemClicked(false);
-  };
+  }, []);
 
-  const handleRedeemClick = () => {
+  const handleRedeemClick = useCallback(() => {
     setIsRedeemClicked(true);
     setIsMintClicked(false);
-  };
+  }, []);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value === '') {
@@ -206,9 +207,6 @@ function SDnod({ chain, chainId, userAddress }: any) {
 
   let balanceCheck;
 
-  //Todo Issue to refresh balance. It should be a state change
-  //Todo Check why checkboxes are not checked when the input field is clicked
-
   collWithBalances.map((coll) => {
     if (coll.address === selectedCollateral.address) {
       if (coll.balance < inputValue) {
@@ -217,7 +215,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
       }
     }
   });
-  // console.log(collWithBalances);
+
   console.log(selectedCollateral.name);
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
