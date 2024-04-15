@@ -3,7 +3,7 @@
 // Todo: Do not allow minting if balance is less than zero or there is no value for inputValue
 
 import DefaultLayout from '../../layout/DefaultLayout';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { RadioGroup } from '@headlessui/react';
 import { CheckCircleIcon } from '@heroicons/react/20/solid';
 import { collateralSelection } from '../../constants/sdnodCollateral';
@@ -73,9 +73,14 @@ function SDnod({ chain, chainId, userAddress }: any) {
   console.log('Mint Allowance amount: ', mintAllowance.data);
   console.log('Redeem Allowance amount: ', redeemAllowance.data);
 
-  const { data } = useReadContracts({
+  const { data, refetch } = useReadContracts({
     contracts: balancesToGet,
   });
+
+  // Refetching balance when there is change in the writehash
+  useEffect(() => {
+    refetch();
+  }, [writeHash]);
 
   let collWithBalances = [];
 
@@ -108,6 +113,21 @@ function SDnod({ chain, chainId, userAddress }: any) {
       setTimeout(() => setInputValue(event.target.value), 2000);
     }
   };
+
+  const handleClearInput = () => {
+    setInputValue('');
+  };
+
+  let balanceCheck;
+
+  collWithBalances.map((coll) => {
+    if (coll.address === selectedCollateral.address) {
+      if (coll.balance < inputValue) {
+        balanceCheck = <p>You do not have enough balance</p>;
+        console.log(coll.balance);
+      }
+    }
+  });
 
   const buttonSelected = isMintClicked ? 'Mint' : 'Redeem';
 
@@ -176,9 +196,12 @@ function SDnod({ chain, chainId, userAddress }: any) {
           0,
         ],
       });
+      handleClearInput();
       console.log(tx, 'mint completed');
       console.log('writecontract');
-    } else {
+    }
+    if (isRedeemClicked) {
+      console.log('Redeem Clocked');
       if (
         redeemAllowance.data <
         parseUnits(inputValue.toString(), selectedCollateral.numberOfDecimals)
@@ -204,17 +227,6 @@ function SDnod({ chain, chainId, userAddress }: any) {
       console.log(tx, 'redeem completed');
     }
   }
-
-  let balanceCheck;
-
-  collWithBalances.map((coll) => {
-    if (coll.address === selectedCollateral.address) {
-      if (coll.balance < inputValue) {
-        balanceCheck = <p>You do not have enough balance</p>;
-        console.log(coll.balance);
-      }
-    }
-  });
 
   console.log(selectedCollateral.name);
 
@@ -362,8 +374,12 @@ function SDnod({ chain, chainId, userAddress }: any) {
               </div>
               <button
                 type="submit"
-                disabled={isPending || balanceCheck}
-                className="mt-3 inline-flex w-full items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-main shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:ml-3 sm:mt-0 sm:w-auto"
+                disabled={isPending}
+                className={`mt-3 inline-flex w-full items-center justify-center rounded-md px-3 py-2 text-sm font-semibold text-main shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:ml-3 sm:mt-0 sm:w-auto ${
+                  isPending
+                    ? 'bg-gray-900'
+                    : 'bg-indigo-600 hover:bg-indigo-500'
+                }`}
               >
                 {buttonSelected}
               </button>
