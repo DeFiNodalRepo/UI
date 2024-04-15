@@ -1,3 +1,5 @@
+import Faq from './faq';
+import Footer from './footer';
 import HeroSection from './heroSection';
 import FeaturesSection from './homeFeaturesSection';
 
@@ -6,6 +8,8 @@ const HomePage = () => {
     <>
       <HeroSection />
       <FeaturesSection />
+      <Faq />
+      <Footer />
     </>
   );
 };
