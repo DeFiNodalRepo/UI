@@ -29,14 +29,129 @@ Platform token address: 0xEAfaf3DdC06770CC4fAf122d150E6a37aaD213A3
 127.0.0.1:8081/tokens
 127.0.0.1:8081/tokenprices
 
-AI For Marketing
-https://rapidgator.net/file/0eb6c4f5a9854a3ca62eb54b498842e7/Billys-10-Day-A.I.-Business-Blueprint.part01.rar.html ----
-https://rapidgator.net/file/1e95f90a0c7d82dd5bd130cff37a75ca/Billys-10-Day-A.I.-Business-Blueprint.part02.rar.html
-https://rapidgator.net/file/d2eb8d1810613a46bd251f3d26ae3d91/Billys-10-Day-A.I.-Business-Blueprint.part03.rar.html
-https://rapidgator.net/file/9b547cca51451e7db93e8bcc14a1a7b8/Billys-10-Day-A.I.-Business-Blueprint.part04.rar.html
-https://rapidgator.net/file/a4940cc7e5371acbcf885af32f945476/Billys-10-Day-A.I.-Business-Blueprint.part05.rar.html
-https://rapidgator.net/file/5baa7ebf46b26208e2f22c24a2e44b7f/Billys-10-Day-A.I.-Business-Blueprint.part06.rar.html
-https://rapidgator.net/file/67e63cb8a0153c21f317a1e00733ed5e/Billys-10-Day-A.I.-Business-Blueprint.part07.rar.html
-https://rapidgator.net/file/3734650846399a43b078a5874bf66421/Billys-10-Day-A.I.-Business-Blueprint.part08.rar.html
-https://rapidgator.net/file/c9ed388f3f78a2daa8340b5f48e9965d/Billys-10-Day-A.I.-Business-Blueprint.part09.rar.html
-https://rapidgator.net/file/96b60d90e03a5ea87a423bc0acfe43e9/Billys-10-Day-A.I.-Business-Blueprint.part10.rar.html
+npx hardhat run --network local ./scripts/testChain/deployTestChain.js
+
+# TokenExchange.json for the ICO
+
+Platform token address (contract address DNOD): 0x8c49AFcEBFEA804d307a8068e4112b25E3a79d05
+
+    function exchange(uint256 _amount) external nonReentrant ifNotPaused(TokenExchangeStorage.EX_PAUSE_KEY) {
+        TokenExchangeStorage.Layout storage s = TokenExchangeStorage.s();
+        require(block.timestamp >= s.startTime, "exchange not started yet");
+        require(block.timestamp < s.endTime, "exchange period finished");
+
+        uint256 balance = IERC20(s.token).balanceOf(s.platformAddress);
+        IERC20(s.token).transferFrom(msg.sender, s.platformAddress, _amount);
+        _amount = IERC20(s.token).balanceOf(s.platformAddress) - balance;
+
+        uint256 amount = (_amount / s.rate) * 1E3;
+
+        s.exchangedAmount += amount;
+        require(s.exchangedAmount <= s.cap, "exchange: exchange cap exceeded");
+        require(_totalSupply() + amount <= TokenStorage.s().cap, "exchange: mint cap exceeded");
+
+        _mint(msg.sender, amount);
+
+        emit Exchange(msg.sender, _amount, amount);
+    }
+
+    Call function exchange => amount to exhngae from sDNOD se DNOD
+
+## Event useWatchEvent
+
+event Exchange(address indexed user, uint256 stableAmount(sDNOD), uint256 receivedAmount(DNOD));
+
+import { useSimulateContract } from 'wagmi'
+import { abi } from './abi'
+
+function App() {
+const result = useSimulateContract({
+abi,
+address: '0x8c49AFcEBFEA804d307a8068e4112b25E3a79d05' (this is the platform token DNOD contract address),
+functionName: 'exchange',
+args: [
+'get the amount from the form 18decimal points'
+],
+account: user.account(check if needed),
+})
+}
+
+**Since it is a fixed rate we can use amount = (\_amount / s.rate) \* 1E3;**
+
+# StableTokenBalancer.json
+
+function toSDNOD(address \_token, uint256 \_amount, uint256 \_minAmount) external nonReentrant returns (uint256 \_out) {
+STBalStorage.Layout storage sb = STBalStorage.s();
+
+address \_token (USDT, USDC or DAI)
+\_amount from form "amount" at decimals of each address token (DAI etc)
+\_minAmount === 0
+\_minAmount = \_out \* 0.98
+
+import { useSimulateContract } from 'wagmi'
+import { abi } from './abi'
+
+function App() {
+const result = useSimulateContract({
+abi,
+address: '0xb0e77224e214e902dE434b51125a775F6339F6C9' sDNOD address,
+functionName: 'toSDNOD',
+args: [
+address DAI etc (get from form selection)
+amount (det from selection token decimals of coll)
+0 (minAmmount)
+],
+})
+}
+
+returns uint256 \_out (amount of sDNOD)
+
+import { useWriteContract } from 'wagmi'
+import { abi } from './abi'
+function App() {
+function onSubmit = useSimulateContract({
+abi,
+address: '0xb0e77224e214e902dE434b51125a775F6339F6C9' sDNOD address,,
+functionName: 'toSDNOD',
+args: [
+address DAI etc (get from form selection)
+amount (det from selection token decimals of coll)
+output of simulate call * 0.98 (minAmmount not displayed)
+],
+})
+}
+
+returns uint256 \_out (amount of sDNOD)
+
+## useWatchContractEvemt
+
+event toSDNOD(address user, address token, uint256 tokenAmount, uint256 SDNODAmount);
+
+# Redeem
+
+    function fromSDNOD(address _token, uint256 _amount, uint256 _minAmount) external nonReentrant returns (uint256 _out)
+
+    address _token = coll address (DAI etc)
+    uint256 _amount = amount to redeem
+    uint256 _minAmount = expected as before
+
+### simulate and then write contract
+
+APPROVE ALL CONTRACT FUNCTIONS
+AT EXCHANGE (ICO) APPROVE SDNOD
+
+---
+
+MINT
+AT TO APPROVE THE COLL (DAI ETC)
+
+---
+
+REDEEM
+FROM APPROVE SDNOD
+
+##
+
+                USDT: {address: "0xc2132D05D31c914a87C6611C10748AEb04B58e8F", share: 100, decimals: 6},
+                USDC: {address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174", share: 100, decimals: 6},
+                DAI: {address: "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063", share: 100, decimals: 18},

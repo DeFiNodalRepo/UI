@@ -1,10 +1,16 @@
-import DefaultLayout from '../../layout/DefaultLayout';
+import Faq from './faq';
+import Footer from './footer';
+import HeroSection from './heroSection';
+import FeaturesSection from './homeFeaturesSection';
 
 const HomePage = () => {
   return (
-    <DefaultLayout>
-      <h1>HomePage</h1>
-    </DefaultLayout>
+    <>
+      <HeroSection />
+      <FeaturesSection />
+      <Faq />
+      <Footer />
+    </>
   );
 };
 
