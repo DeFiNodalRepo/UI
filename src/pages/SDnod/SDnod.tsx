@@ -23,7 +23,7 @@ function classNames(...classes) {
 
 function SDnod({ chain, chainId, userAddress }: any) {
   let collateralsAvailable;
-  let balancesToGet = [];
+
   if (chainId !== 1337) {
     collateralsAvailable = collateralSelection[1];
   } else {
@@ -57,6 +57,23 @@ function SDnod({ chain, chainId, userAddress }: any) {
 
   console.log('Mint Allowance amount: ', mintAllowance.data);
   console.log('Redeem Allowance amount: ', redeemAllowance.data);
+
+  const balancesConfig = {
+    abi: erc20Abi,
+    functionName: 'balanceOf',
+    args: [userAddress],
+  };
+
+  let balancesToGet = [];
+
+  collateralsAvailable.map((collateral) => {
+    balancesToGet.push({
+      address: collateral.address,
+      ...balancesConfig,
+    });
+  });
+
+  console.log(balancesToGet);
 
   const { data, refetch } = useReadContracts({
     contracts: balancesToGet,
@@ -184,8 +201,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
       handleClearInput();
       console.log(tx, 'mint completed');
       console.log('writecontract');
-    }
-    if (isRedeemClicked) {
+    } else {
       console.log('Redeem Clocked');
       if (
         redeemAllowance.data <
