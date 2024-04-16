@@ -22,6 +22,8 @@ function classNames(...classes) {
 }
 
 function SDnod({ chain, chainId, userAddress }: any) {
+  const maxAllowance = numberToHex('11111111111111');
+
   let collateralsAvailable;
 
   if (chainId !== 1337) {
@@ -168,6 +170,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
     );
   }
 
+  console.log(selectedCollateral.numberOfDecimals);
   async function handleTransactionSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -183,7 +186,6 @@ function SDnod({ chain, chainId, userAddress }: any) {
           functionName: 'approve',
           args: ['0xb0e77224e214e902dE434b51125a775F6339F6C9', maxAllowance],
         });
-        console.log(txAllowance, 'allowance completed');
       }
       const tx = await writeContract({
         abi: CollSdnodABI,
@@ -198,7 +200,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
           0,
         ],
       });
-      handleClearInput();
+      // handleClearInput();
       console.log(tx, 'mint completed');
       console.log('writecontract');
     } else {
@@ -227,9 +229,8 @@ function SDnod({ chain, chainId, userAddress }: any) {
       });
       console.log(tx, 'redeem completed');
     }
+    console.log(txAllowance);
   }
-
-  console.log(selectedCollateral.name);
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
