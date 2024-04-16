@@ -1,4 +1,3 @@
-//Todo Issue to refresh balance. It should be a state change
 //Todo Check why checkboxes are not checked when the input field is clicked
 // Todo: Do not allow minting if balance is less than zero or there is no value for inputValue
 
@@ -222,7 +221,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
         address: '0xb0e77224e214e902dE434b51125a775F6339F6C9',
         functionName: 'fromSDNOD',
         args: [
-          '0xb0e77224e214e902dE434b51125a775F6339F6C9',
+          selectedCollateral.address,
           parseUnits(inputValue.toString(), 18),
           0,
         ],
@@ -236,6 +235,8 @@ function SDnod({ chain, chainId, userAddress }: any) {
     useWaitForTransactionReceipt({
       hash: writeHash,
     });
+  console.log(CollSdnodABI);
+  console.log(inputValue);
 
   return (
     <DefaultLayout>
@@ -391,7 +392,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
             {balanceCheck}
             {isPending ? 'Please confirm transaction in your wallet' : null}
           </p>
-          {writeHash && <div>Transaction Hash: {writeHash}</div>}
+
           {isConfirming && <div>Waiting for confirmation...</div>}
           {isConfirmed && <div>Transaction confirmed.</div>}
           {renderedSimulatedResult}
