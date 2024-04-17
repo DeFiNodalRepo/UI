@@ -5,7 +5,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 
 // Icons
 import { PiVault } from 'react-icons/pi';
-import { MdOutlineDashboard } from 'react-icons/md';
+import { MdOutlineDashboard, MdOutlineRocketLaunch } from 'react-icons/md';
 import { HiOutlineCurrencyDollar } from 'react-icons/hi2';
 import { CgShutterstock } from 'react-icons/cg';
 import { SlChemistry } from 'react-icons/sl';
@@ -176,6 +176,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 >
                   <SlChemistry size={20} />
                   Labs
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/fair-launch"
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-stone-100 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    pathname.includes('fair-launch') &&
+                    'bg-graydark dark:bg-meta-4'
+                  }`}
+                >
+                  <MdOutlineRocketLaunch size={20} />
+                  Fair Launch
                 </NavLink>
               </li>
 

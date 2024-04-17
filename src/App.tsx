@@ -8,10 +8,11 @@ import PageTitle from './components/PageTitle';
 
 import VaultList from './pages/Vaults/VaultList';
 import HomePage from './pages/HomePage/HomePage';
-import { DashBoard } from './pages/Dashboard/DashBoard';
+import DashBoard from './pages/Dashboard/DashBoard';
 import SDnod from './pages/SDnod/SDnod';
 import Boardroom from './pages/Boardroom/Boardroom';
 import Labs from './pages/Labs/Labs';
+import FairLaunch from './pages/FairLaunch/FairLaunch';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -86,6 +87,15 @@ function App() {
             <>
               <PageTitle title="DeFiLabs | Definodal" />
               <Labs />
+            </>
+          }
+        />
+        <Route
+          path="/fair-launch"
+          element={
+            <>
+              <PageTitle title="Fair Launch |DefiNodal" />
+              <FairLaunch />
             </>
           }
         />

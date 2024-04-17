@@ -1,12 +1,10 @@
-import React from 'react';
 import DefaultLayout from '../../layout/DefaultLayout';
-
-const DashBoard = () => {
+function FairLaunch() {
   return (
     <DefaultLayout>
-      <div>DashBoard</div>
+      <div>FairLaunch</div>{' '}
     </DefaultLayout>
   );
-};
+}
 
-export default DashBoard;
+export default FairLaunch;
