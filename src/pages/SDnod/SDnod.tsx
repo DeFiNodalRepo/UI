@@ -1,5 +1,6 @@
-//Todo Check why checkboxes are not checked when the input field is clicked
+// Todo Check why checkboxes are not checked when the input field is clicked
 // Todo: Do not allow minting if balance is less than zero or there is no value for inputValue
+// Todo Simulate contract 1 to 0.995 if no simulation is found
 
 import DefaultLayout from '../../layout/DefaultLayout';
 import { useState, useCallback, useEffect } from 'react';
