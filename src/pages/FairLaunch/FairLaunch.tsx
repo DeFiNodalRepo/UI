@@ -2,7 +2,7 @@ import DefaultLayout from '../../layout/DefaultLayout';
 function FairLaunch() {
   return (
     <DefaultLayout>
-      <div>FairLaunch</div>{' '}
+      <div className="text-main">FairLaunch</div>{' '}
     </DefaultLayout>
   );
 }

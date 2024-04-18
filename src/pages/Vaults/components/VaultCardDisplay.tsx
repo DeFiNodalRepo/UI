@@ -27,7 +27,7 @@ function VaultCardDisplay({ strategy }) {
     /> */}
         IMG
         <div className="min-w-0 flex-auto">
-          <p className="text-sm font-semibold leading-6 text-main">
+          <p className="text-sm font-semibold leading-6">
             <span className="absolute inset-x-0 -top-px bottom-0" />
             {poolGroup}
           </p>

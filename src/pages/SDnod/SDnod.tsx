@@ -267,7 +267,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
           <span className="w-full rounded-md bg-main shadow-sm">
             <button
               type="button"
-              className={`relative h-16 w-1/2 flex-1 rounded-l-md border-main  px-3 py-2 text-xl font-semibold text-main shadow-sm ring-2 ring-inset ring-main  focus:z-10 ${
+              className={`relative h-16 w-1/2 flex-1 rounded-l-md border-main  px-3 py-2 text-xl font-semibold shadow-sm ring-2 ring-inset ring-main  focus:z-10 ${
                 isMintClicked ? 'bg-red-500' : ''
               }`}
               onClick={handleMintClick}
@@ -277,7 +277,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
 
             <button
               type="button"
-              className={`relative h-16 w-1/2 rounded-r-md  px-3 py-2 text-xl font-semibold text-main ring-2 ring-inset ring-main  focus:z-10 ${
+              className={`relative h-16 w-1/2 rounded-r-md  px-3 py-2 text-xl font-semibold ring-2 ring-inset ring-main  focus:z-10 ${
                 isRedeemClicked ? 'bg-red-500' : ''
               }`}
               onClick={handleRedeemClick}
@@ -333,7 +333,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
                     <CheckCircleIcon
                       className={classNames(
                         !checked ? 'invisible' : '',
-                        'h-5 w-5 text-main',
+                        'h-5 w-5',
                       )}
                       aria-hidden="true"
                     />
@@ -363,7 +363,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
             >
               <div className="w-full sm:max-w-xs">
                 <label htmlFor="amount">
-                  <h3 className="text-base font-semibold leading-6 text-main pb-2">
+                  <h3 className="text-base font-semibold leading-6 pb-2">
                     Amount to {isMintClicked ? 'Mint' : 'Redeem'}
                   </h3>
                 </label>
@@ -371,7 +371,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
                   type="number"
                   name="amount"
                   id="amount"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-main placeholder:text-main focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 text-black pl-2"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-main focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 text-black pl-2"
                   placeholder="123"
                   onChange={handleInputChange}
                 />
@@ -379,7 +379,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
               <button
                 type="submit"
                 disabled={isPending}
-                className={`mt-3 inline-flex w-full items-center justify-center rounded-md px-3 py-2 text-sm font-semibold text-main shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:ml-3 sm:mt-0 sm:w-auto ${
+                className={`mt-3 inline-flex w-full items-center justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:ml-3 sm:mt-0 sm:w-auto ${
                   isPending
                     ? 'bg-gray-900'
                     : 'bg-indigo-600 hover:bg-indigo-500'
