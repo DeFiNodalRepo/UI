@@ -1,5 +1,6 @@
 // Todo Add icon at the place of the img tag
 import heroImage from '../../images/hero-image.jpg';
+import logo from '../../images/logo/df-modern-dark.png';
 
 export default function HeroSection() {
   return (
@@ -7,11 +8,7 @@ export default function HeroSection() {
       <div className="mx-auto max-w-7xl lg:grid lg:grid-cols-12 lg:gap-x-8 lg:px-8">
         <div className="px-6 pb-24 pt-10 sm:pb-32 lg:col-span-7 lg:px-0 lg:pb-56 lg:pt-48 xl:col-span-6">
           <div className="mx-auto max-w-2xl lg:mx-0">
-            <img
-              className="h-11"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-              alt="DeFiNodal"
-            />
+            <img className="h-11" src={logo} alt="DeFiNodal" />
             <h1 className="mt-24 text-4xl font-bold tracking-tight text-trueblack sm:mt-10 sm:text-6xl">
               The Decentralized Finance Nodal
             </h1>
