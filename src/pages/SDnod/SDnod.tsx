@@ -26,7 +26,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
 
   let collateralsAvailable;
 
-  if (chainId !== 1337) {
+  if (chainId !== 1337 || !chainId) {
     collateralsAvailable = collateralSelection[1];
   } else {
     collateralsAvailable = collateralSelection[chainId];
@@ -57,8 +57,8 @@ function SDnod({ chain, chainId, userAddress }: any) {
     account: userAddress,
   });
 
-  console.log('Mint Allowance amount: ', mintAllowance.data);
-  console.log('Redeem Allowance amount: ', redeemAllowance.data);
+  // console.log('Mint Allowance amount: ', mintAllowance.data);
+  // console.log('Redeem Allowance amount: ', redeemAllowance.data);
 
   const balancesConfig = {
     abi: erc20Abi,
@@ -75,8 +75,6 @@ function SDnod({ chain, chainId, userAddress }: any) {
     });
   });
 
-  console.log(balancesToGet);
-
   const { data, refetch } = useReadContracts({
     contracts: balancesToGet,
   });
@@ -90,14 +88,28 @@ function SDnod({ chain, chainId, userAddress }: any) {
 
   if (data) {
     data.map((balance: any, i) => {
-      collWithBalances.push({
-        ...collateralsAvailable[i],
-        balance: formatUnits(
-          balance.result,
-          collateralsAvailable[i].numberOfDecimals,
-        ),
-      });
+      if (balance.result !== undefined) {
+        collWithBalances.push({
+          ...collateralsAvailable[i],
+          balance: formatUnits(
+            balance.result,
+            collateralsAvailable[i].numberOfDecimals,
+          ),
+        });
+      } else {
+        // Correctly handle the case where balance.result is undefined
+        console.warn(
+          `Balance result is undefined for collateral at index ${i}`,
+        );
+        collWithBalances.push({
+          ...collateralsAvailable[i],
+          balance: '0', // Default value or handle as needed
+        });
+      }
     });
+  } else {
+    // Handle the case where data is not available
+    collWithBalances = collateralsAvailable;
   }
 
   const handleMintClick = useCallback(() => {
@@ -170,12 +182,10 @@ function SDnod({ chain, chainId, userAddress }: any) {
     );
   }
 
-  console.log(selectedCollateral.numberOfDecimals);
   async function handleTransactionSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (isMintClicked) {
-      console.log(mintAllowance);
       if (
         mintAllowance.data <
         parseUnits(inputValue.toString(), selectedCollateral.numberOfDecimals)
@@ -201,10 +211,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
         ],
       });
       // handleClearInput();
-      console.log(tx, 'mint completed');
-      console.log('writecontract');
     } else {
-      console.log('Redeem Clocked');
       if (
         redeemAllowance.data <
         parseUnits(inputValue.toString(), selectedCollateral.numberOfDecimals)
@@ -215,7 +222,6 @@ function SDnod({ chain, chainId, userAddress }: any) {
           functionName: 'approve',
           args: ['0xb0e77224e214e902dE434b51125a775F6339F6C9', maxAllowance],
         });
-        console.log(txAllowance, 'allowance completed');
       }
       const tx = await writeContract({
         abi: CollSdnodABI,
@@ -227,17 +233,13 @@ function SDnod({ chain, chainId, userAddress }: any) {
           0,
         ],
       });
-      console.log(tx, 'redeem completed');
     }
-    console.log(txAllowance);
   }
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
       hash: writeHash,
     });
-  console.log(CollSdnodABI);
-  console.log(inputValue);
 
   return (
     <DefaultLayout>
@@ -389,8 +391,8 @@ function SDnod({ chain, chainId, userAddress }: any) {
               </button>
             </form>
           </div>
+          {balanceCheck}
           <p>
-            {balanceCheck}
             {isPending ? 'Please confirm transaction in your wallet' : null}
           </p>
 
