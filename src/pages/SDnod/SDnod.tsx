@@ -1,28 +1,35 @@
 // Todo Check why checkboxes are not checked when the input field is clicked
 // Todo: Do not allow minting if balance is less than zero or there is no value for inputValue
 // Todo Simulate contract 1 to 0.995 if no simulation is found
+// Todo note in front end when chain is down
 
-import DefaultLayout from '../../layout/DefaultLayout';
-import { useState, useCallback, useEffect } from 'react';
-import { RadioGroup } from '@headlessui/react';
-import { CheckCircleIcon } from '@heroicons/react/20/solid';
-import { collateralSelection } from '../../constants/sdnodCollateral';
+import DefaultLayout from "../../layout/DefaultLayout";
+import { useState, useCallback, useEffect } from "react";
+import { RadioGroup } from "@headlessui/react";
+import { CheckCircleIcon } from "@heroicons/react/20/solid";
+import { collateralSelection } from "../../constants/sdnod";
 import {
   useSimulateContract,
   useReadContract,
   useReadContracts,
   useWriteContract,
   useWaitForTransactionReceipt,
-} from 'wagmi';
-import CollSdnodABI from '../../abi/STBalancer.json';
-import { formatUnits, parseUnits, erc20Abi, numberToHex } from 'viem';
+} from "wagmi";
+import CollSdnodABI from "../../abi/STBalancer.json";
+import {
+  formatUnits,
+  parseUnits,
+  erc20Abi,
+  numberToHex,
+  maxUint256,
+} from "viem";
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(" ");
 }
 
 function SDnod({ chain, chainId, userAddress }: any) {
-  const maxAllowance = numberToHex('11111111111111');
+  const maxAllowance = numberToHex(maxUint256);
 
   let collateralsAvailable;
 
@@ -34,9 +41,9 @@ function SDnod({ chain, chainId, userAddress }: any) {
   const [isMintClicked, setIsMintClicked] = useState(false);
   const [isRedeemClicked, setIsRedeemClicked] = useState(false);
   const [selectedCollateral, setSelectedCollateral] = useState(
-    collateralsAvailable[0],
+    collateralsAvailable[0]
   );
-  const [inputValue, setInputValue] = useState('1');
+  const [inputValue, setInputValue] = useState("1");
 
   const { data: writeHash, isPending, writeContract } = useWriteContract();
 
@@ -44,16 +51,16 @@ function SDnod({ chain, chainId, userAddress }: any) {
   const mintAllowance = useReadContract({
     abi: erc20Abi,
     address: selectedCollateral.address,
-    functionName: 'allowance',
-    args: [userAddress, '0xb0e77224e214e902dE434b51125a775F6339F6C9'],
+    functionName: "allowance",
+    args: [userAddress, "0xb0e77224e214e902dE434b51125a775F6339F6C9"],
     account: userAddress,
   });
 
   const redeemAllowance = useReadContract({
     abi: erc20Abi,
-    address: '0xb0e77224e214e902dE434b51125a775F6339F6C9',
-    functionName: 'allowance',
-    args: [userAddress, '0xb0e77224e214e902dE434b51125a775F6339F6C9'],
+    address: "0xb0e77224e214e902dE434b51125a775F6339F6C9",
+    functionName: "allowance",
+    args: [userAddress, "0xb0e77224e214e902dE434b51125a775F6339F6C9"],
     account: userAddress,
   });
 
@@ -62,7 +69,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
 
   const balancesConfig = {
     abi: erc20Abi,
-    functionName: 'balanceOf',
+    functionName: "balanceOf",
     args: [userAddress],
   };
 
@@ -93,17 +100,17 @@ function SDnod({ chain, chainId, userAddress }: any) {
           ...collateralsAvailable[i],
           balance: formatUnits(
             balance.result,
-            collateralsAvailable[i].numberOfDecimals,
+            collateralsAvailable[i].numberOfDecimals
           ),
         });
       } else {
         // Correctly handle the case where balance.result is undefined
         console.warn(
-          `Balance result is undefined for collateral at index ${i}`,
+          `Balance result is undefined for collateral at index ${i}`
         );
         collWithBalances.push({
           ...collateralsAvailable[i],
-          balance: '0', // Default value or handle as needed
+          balance: "0", // Default value or handle as needed
         });
       }
     });
@@ -123,15 +130,15 @@ function SDnod({ chain, chainId, userAddress }: any) {
   }, []);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value === '') {
-      setInputValue('1');
+    if (event.target.value === "") {
+      setInputValue("1");
     } else {
       setTimeout(() => setInputValue(event.target.value), 2000);
     }
   };
 
   const handleClearInput = () => {
-    setInputValue('');
+    setInputValue("");
   };
 
   let balanceCheck;
@@ -145,12 +152,12 @@ function SDnod({ chain, chainId, userAddress }: any) {
     }
   });
 
-  const buttonSelected = isMintClicked ? 'Mint' : 'Redeem';
+  const buttonSelected = isMintClicked ? "Mint" : "Redeem";
 
   const simulateResult = useSimulateContract({
     abi: CollSdnodABI,
-    address: '0xb0e77224e214e902dE434b51125a775F6339F6C9',
-    functionName: 'toSDNOD',
+    address: "0xb0e77224e214e902dE434b51125a775F6339F6C9",
+    functionName: "toSDNOD",
     args: [
       selectedCollateral.address,
       parseUnits(inputValue.toString(), selectedCollateral.numberOfDecimals),
@@ -193,19 +200,19 @@ function SDnod({ chain, chainId, userAddress }: any) {
         const txAllowance = await writeContract({
           abi: erc20Abi,
           address: selectedCollateral.address,
-          functionName: 'approve',
-          args: ['0xb0e77224e214e902dE434b51125a775F6339F6C9', maxAllowance],
+          functionName: "approve",
+          args: ["0xb0e77224e214e902dE434b51125a775F6339F6C9", maxAllowance],
         });
       }
       const tx = await writeContract({
         abi: CollSdnodABI,
-        address: '0xb0e77224e214e902dE434b51125a775F6339F6C9',
-        functionName: 'toSDNOD',
+        address: "0xb0e77224e214e902dE434b51125a775F6339F6C9",
+        functionName: "toSDNOD",
         args: [
           selectedCollateral.address,
           parseUnits(
             inputValue.toString(),
-            selectedCollateral.numberOfDecimals,
+            selectedCollateral.numberOfDecimals
           ),
           0,
         ],
@@ -218,15 +225,15 @@ function SDnod({ chain, chainId, userAddress }: any) {
       ) {
         const txAllowance = await writeContract({
           abi: erc20Abi,
-          address: '0xb0e77224e214e902dE434b51125a775F6339F6C9',
-          functionName: 'approve',
-          args: ['0xb0e77224e214e902dE434b51125a775F6339F6C9', maxAllowance],
+          address: "0xb0e77224e214e902dE434b51125a775F6339F6C9",
+          functionName: "approve",
+          args: ["0xb0e77224e214e902dE434b51125a775F6339F6C9", maxAllowance],
         });
       }
       const tx = await writeContract({
         abi: CollSdnodABI,
-        address: '0xb0e77224e214e902dE434b51125a775F6339F6C9',
-        functionName: 'fromSDNOD',
+        address: "0xb0e77224e214e902dE434b51125a775F6339F6C9",
+        functionName: "fromSDNOD",
         args: [
           selectedCollateral.address,
           parseUnits(inputValue.toString(), 18),
@@ -257,7 +264,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
           </div>
         ) : (
           <h1>
-            Currently you are on the{' '}
+            Currently you are on the{" "}
             <span className="text-red-500 font-bold">{chain.name}</span>. The
             following collaterals are available to be exchanged with SDnod
           </h1>
@@ -270,7 +277,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
             <button
               type="button"
               className={`relative h-16 w-1/2 flex-1 rounded-l-md border-main  px-3 py-2 text-xl font-semibold shadow-sm ring-2 ring-inset ring-main  focus:z-10 ${
-                isMintClicked ? 'bg-red-500' : ''
+                isMintClicked ? "bg-red-500" : ""
               }`}
               onClick={handleMintClick}
             >
@@ -280,7 +287,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
             <button
               type="button"
               className={`relative h-16 w-1/2 rounded-r-md  px-3 py-2 text-xl font-semibold ring-2 ring-inset ring-main  focus:z-10 ${
-                isRedeemClicked ? 'bg-red-500' : ''
+                isRedeemClicked ? "bg-red-500" : ""
               }`}
               onClick={handleRedeemClick}
             >
@@ -300,9 +307,9 @@ function SDnod({ chain, chainId, userAddress }: any) {
                 value={collateral}
                 className={({ checked, active }) =>
                   classNames(
-                    checked ? 'border-transparent' : 'border-main',
-                    active ? 'border-indigo-600 ring-2 ring-indigo-600' : '',
-                    'relative flex cursor-pointer rounded-lg border bg-main p-4 shadow-sm focus:outline-none min-w-64',
+                    checked ? "border-transparent" : "border-main",
+                    active ? "border-indigo-600 ring-2 ring-indigo-600" : "",
+                    "relative flex cursor-pointer rounded-lg border bg-main p-4 shadow-sm focus:outline-none min-w-64"
                   )
                 }
               >
@@ -327,23 +334,23 @@ function SDnod({ chain, chainId, userAddress }: any) {
                           as="span"
                           className="mt-1 flex items-center text-sm "
                         >
-                          Available Balance: {collateral.balance}{' '}
+                          Available Balance: {collateral.balance}{" "}
                           {collateral.name}
                         </RadioGroup.Description>
                       </span>
                     </span>
                     <CheckCircleIcon
                       className={classNames(
-                        !checked ? 'invisible' : '',
-                        'h-5 w-5',
+                        !checked ? "invisible" : "",
+                        "h-5 w-5"
                       )}
                       aria-hidden="true"
                     />
                     <span
                       className={classNames(
-                        active ? 'border' : 'border-2',
-                        checked ? 'border-indigo-600' : 'border-transparent',
-                        'pointer-events-none absolute -inset-px rounded-lg',
+                        active ? "border" : "border-2",
+                        checked ? "border-indigo-600" : "border-transparent",
+                        "pointer-events-none absolute -inset-px rounded-lg"
                       )}
                       aria-hidden="true"
                     />
@@ -366,7 +373,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
               <div className="w-full sm:max-w-xs">
                 <label htmlFor="amount">
                   <h3 className="text-base font-semibold leading-6 pb-2">
-                    Amount to {isMintClicked ? 'Mint' : 'Redeem'}
+                    Amount to {isMintClicked ? "Mint" : "Redeem"}
                   </h3>
                 </label>
                 <input
@@ -383,8 +390,8 @@ function SDnod({ chain, chainId, userAddress }: any) {
                 disabled={isPending}
                 className={`mt-3 inline-flex w-full items-center justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:ml-3 sm:mt-0 sm:w-auto ${
                   isPending
-                    ? 'bg-gray-900'
-                    : 'bg-indigo-600 hover:bg-indigo-500'
+                    ? "bg-gray-900"
+                    : "bg-indigo-600 hover:bg-indigo-500"
                 }`}
               >
                 {buttonSelected}
@@ -393,7 +400,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
           </div>
           {balanceCheck}
           <p>
-            {isPending ? 'Please confirm transaction in your wallet' : null}
+            {isPending ? "Please confirm transaction in your wallet" : null}
           </p>
 
           {isConfirming && <div>Waiting for confirmation...</div>}

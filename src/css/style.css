@@ -22,7 +22,7 @@
   }
 
   .text-main {
-    @apply text-strokedark dark:text-stroke;
+    @apply text-boxdark-2 dark:text-stroke;
   }
 
   .divider-main {

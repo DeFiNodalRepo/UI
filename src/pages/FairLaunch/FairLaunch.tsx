@@ -1,9 +1,11 @@
-import DefaultLayout from '../../layout/DefaultLayout';
-import Faq from './Faq';
+import DefaultLayout from "../../layout/DefaultLayout";
+import Faq from "./Faq";
 
-import logoLight from '../../images/logo/DefiNodal_Logo-light-modern-removebg.png';
-import logoDark from '../../images/logo/df-modern-dark.png';
-function FairLaunch() {
+import logoLight from "../../images/logo/DefiNodal_Logo-light-modern-removebg.png";
+import logoDark from "../../images/logo/df-modern-dark.png";
+import FairLaunchSwap from "./FairLaunchSwap";
+
+function FairLaunch({ userAddress }) {
   return (
     <DefaultLayout>
       <div className="flex flex-col sm:flex-row max-w-full justify-center items-center gap-10 mt-10">
@@ -17,8 +19,9 @@ function FairLaunch() {
           alt="FairLaunch"
           className="basis-1/8 w-28 h-28 hidden dark:block"
         />
-        <div className="basis-7/8 sm:text-9xl text-7xl">Fair Launch</div>
+        <div className="basis-7/8 sm:text-9xl text-7xl ">Fair Launch</div>
       </div>
+      <FairLaunchSwap userAddress={userAddress} />
       <Faq />
     </DefaultLayout>
   );

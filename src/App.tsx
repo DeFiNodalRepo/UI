@@ -1,18 +1,18 @@
-import { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-import { useAccount } from 'wagmi';
+import { useAccount } from "wagmi";
 
-import Loader from './common/Loader';
-import PageTitle from './components/PageTitle';
+import Loader from "./common/Loader";
+import PageTitle from "./components/PageTitle";
 
-import VaultList from './pages/Vaults/VaultList';
-import HomePage from './pages/HomePage/HomePage';
-import DashBoard from './pages/Dashboard/DashBoard';
-import SDnod from './pages/SDnod/SDnod';
-import Boardroom from './pages/Boardroom/Boardroom';
-import Labs from './pages/Labs/Labs';
-import FairLaunch from './pages/FairLaunch/FairLaunch';
+import VaultList from "./pages/Vaults/VaultList";
+import HomePage from "./pages/HomePage/HomePage";
+import DashBoard from "./pages/Dashboard/DashBoard";
+import SDnod from "./pages/SDnod/SDnod";
+import Boardroom from "./pages/Boardroom/Boardroom";
+import Labs from "./pages/Labs/Labs";
+import FairLaunch from "./pages/FairLaunch/FairLaunch";
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -95,7 +95,11 @@ function App() {
           element={
             <>
               <PageTitle title="Fair Launch |DefiNodal" />
-              <FairLaunch />
+              <FairLaunch
+                userAddress={address}
+                chain={chain}
+                chainId={chainId}
+              />
             </>
           }
         />
