@@ -1,51 +1,27 @@
-import { FaGithub, FaDiscord } from 'react-icons/fa';
-import { RiTwitterXLine } from 'react-icons/ri';
-import { TbBrandTelegram } from 'react-icons/tb';
+import { FaGithub, FaDiscord } from "react-icons/fa";
+import { RiTwitterXLine } from "react-icons/ri";
+import { TbBrandTelegram } from "react-icons/tb";
 
 const navigation = {
-  solutions: [
-    { name: 'Marketing', href: '#' },
-    { name: 'Analytics', href: '#' },
-    { name: 'Commerce', href: '#' },
-    { name: 'Insights', href: '#' },
-  ],
-  support: [
-    { name: 'Pricing', href: '#' },
-    { name: 'Documentation', href: '#' },
-    { name: 'Guides', href: '#' },
-    { name: 'API Status', href: '#' },
-  ],
-  company: [
-    { name: 'About', href: '#' },
-    { name: 'Blog', href: '#' },
-    { name: 'Jobs', href: '#' },
-    { name: 'Press', href: '#' },
-    { name: 'Partners', href: '#' },
-  ],
-  legal: [
-    { name: 'Claim', href: '#' },
-    { name: 'Privacy', href: '#' },
-    { name: 'Terms', href: '#' },
-  ],
   social: [
     {
-      name: 'Telegram',
-      href: '#',
+      name: "Telegram",
+      href: "https://t.me/definodal",
       icon: TbBrandTelegram,
     },
     {
-      name: 'GitHub',
-      href: '#',
+      name: "Discord",
+      href: "https://discord.gg/9pQzYDxG2P",
       icon: FaDiscord,
     },
     {
-      name: 'X (Twitter)',
-      href: '#',
+      name: "X (Twitter)",
+      href: "https://twitter.com/DeFiNodal",
       icon: RiTwitterXLine,
     },
     {
-      name: 'GitHub',
-      href: '#',
+      name: "GitHub",
+      href: "#",
       icon: FaGithub,
     },
   ],
@@ -66,6 +42,7 @@ export default function Footer() {
                   key={item.name}
                   href={item.href}
                   className="text-trueblack hover:text-body"
+                  target="_blank"
                 >
                   <span className="sr-only">{item.name}</span>
                   <item.icon className="h-6 w-6" aria-hidden="true" />
@@ -75,14 +52,14 @@ export default function Footer() {
           </div>
           <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
             <a
-              href="/dashboard"
+              href="#"
               className="rounded-md bg-trueblack px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-black w-full sm:w-1/2"
             >
               Launch App
             </a>
 
             <a
-              href="/"
+              href="#"
               className="rounded-md bg-trueblack px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-black w-full sm:w-1/2"
             >
               Docs
