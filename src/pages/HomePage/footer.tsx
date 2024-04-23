@@ -53,7 +53,6 @@ export default function Footer() {
           <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
             <a
               href="/dashboard"
-              target="_blank"
               className="rounded-md bg-trueblack px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-black w-full sm:w-1/2"
             >
               Launch App

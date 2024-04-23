@@ -16,7 +16,6 @@ export default function HeroSection() {
             <div className="mt-10 flex items-center gap-x-6">
               <a
                 href="/dashboard"
-                target="_blank"
                 className="rounded-md bg-trueblack px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-black"
               >
                 Launch App
