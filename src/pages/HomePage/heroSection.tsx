@@ -1,6 +1,6 @@
 // Todo Add icon at the place of the img tag
-import heroImage from '../../images/hero-image.jpg';
-import logo from '../../images/logo/df-modern-dark.png';
+import heroImage from "../../images/hero-image.jpg";
+import logo from "../../images/logo/df-modern-dark.png";
 
 export default function HeroSection() {
   return (
@@ -16,6 +16,7 @@ export default function HeroSection() {
             <div className="mt-10 flex items-center gap-x-6">
               <a
                 href="/dashboard"
+                target="_blank"
                 className="rounded-md bg-trueblack px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-black"
               >
                 Launch App

@@ -1,31 +1,31 @@
-import { SlChemistry } from 'react-icons/sl';
-import { BsCurrencyDollar } from 'react-icons/bs';
-import { IoBriefcaseOutline } from 'react-icons/io5';
+import { SlChemistry } from "react-icons/sl";
+import { BsCurrencyDollar } from "react-icons/bs";
+import { IoBriefcaseOutline } from "react-icons/io5";
 
 const features = [
   {
-    name: 'Overcollateralized Stable Coin',
+    name: "Overcollateralized Stable Coin",
     description:
-      'SDNOD is an overcollaterilezed decentralized stable coin backed by other major stable coins. Minting and redeeming has a fee of 0.05% which goes to the SDNOD collateral treasury. There are zero swapping fees or any other fees unlike other swaping services.',
-    href: '/sdnod',
+      "sDNOD is an overcollaterilezed decentralized stable coin backed by other major stable coins. Minting and redeeming has a fee of 0.05% which goes to the SDNOD collateral treasury. There are zero swapping fees or any other fees for sDNOD.",
+    href: "/sdnod",
     icon: BsCurrencyDollar,
-    url: 'SDNOD',
+    url: "SDNOD",
   },
   {
-    name: 'Decentralized Crypto Portfolios',
+    name: "Decentralized Crypto Portfolios",
     description:
-      'Invest in crypto portfolios. Create your own or copy one of the existing user managed portfolios. Users receive a commission based on the value of their portfolio crypto holdings.',
-    href: '/boardroom',
+      "Invest in crypto portfolios. Create your own or copy one of the existing user managed portfolios. Users receive a commission based on the value of their portfolio crypto holdings.",
+    href: "/boardroom",
     icon: IoBriefcaseOutline,
-    url: 'Collections',
+    url: "Collections",
   },
   {
-    name: 'Ongoing Projects',
+    name: "Ongoing Projects",
     description:
-      "DeFiNodal's team is working on a number projects. Check our roadmap and see what's next. ",
-    href: '/labs',
+      "DeFiNodal's team is working on a number projects. Check our labs page and see what's next. ",
+    href: "/labs",
     icon: SlChemistry,
-    url: 'Roadmap',
+    url: "Labs",
   },
 ];
 

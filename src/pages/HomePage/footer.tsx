@@ -52,14 +52,16 @@ export default function Footer() {
           </div>
           <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
             <a
-              href="#"
+              href="/dashboard"
+              target="_blank"
               className="rounded-md bg-trueblack px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-black w-full sm:w-1/2"
             >
               Launch App
             </a>
 
             <a
-              href="#"
+              href="https://definodal.gitbook.io/definodal"
+              target="_blank"
               className="rounded-md bg-trueblack px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-black w-full sm:w-1/2"
             >
               Docs
@@ -68,7 +70,7 @@ export default function Footer() {
         </div>
         <div className="mt-16 border-t border-gray-900/10 pt-8 sm:mt-20 lg:mt-24">
           <p className="text-xs leading-5 text-gray-500">
-            &copy; 2020 Your Company, Inc. All rights reserved.
+            &copy; Made with ❤️ by DefiNodal.
           </p>
         </div>
       </div>
