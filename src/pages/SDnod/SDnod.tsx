@@ -64,6 +64,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
     account: userAddress,
   });
 
+  console.log(erc20Abi);
   // console.log('Mint Allowance amount: ', mintAllowance.data);
   // console.log('Redeem Allowance amount: ', redeemAllowance.data);
 
