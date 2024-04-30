@@ -1,13 +1,24 @@
 import { useState } from "react";
-import { useWriteContract, useReadContracts } from "wagmi";
+import { useWriteContract, useReadContracts, useAccount } from "wagmi";
 import dnodABI from "../../abi/TokenExchange.json";
+import { allowedChains } from "../../constants/sideWide";
 import { parseUnits, numberToHex, maxUint256, erc20Abi } from "viem";
 import { sDNODAddress } from "../../constants/sdnod";
 
-function FairLaunchSwap({ userAddress, chainId }) {
+function FairLaunchSwap() {
   const [inputValue, setInputValue] = useState("");
   const { data: writeHash, isPending, writeContract } = useWriteContract();
   const maxAllowance = numberToHex(maxUint256);
+
+  const { address: userAddress, chainId } = useAccount();
+
+  let connectedWallet;
+
+  if (!chainId || !allowedChains.includes(chainId)) {
+    connectedWallet = false;
+  }
+
+  const isEnable = !!userAddress && !connectedWallet;
 
   const getSDNODBalanceConfiq = {
     address: "0xb0e77224e214e902dE434b51125a775F6339F6C9",
