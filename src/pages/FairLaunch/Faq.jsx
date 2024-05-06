@@ -57,6 +57,12 @@ export default function Faq() {
             any ICO, airdrop or private sale. Thus, giving everyone the chance
             to participate in this community based project.
           </p>
+          <p>
+            You can buy $DNOD using the stable currency $
+            <span>
+              <a href="/sdnod">sDNOD</a>
+            </span>
+          </p>
         </div>
         <div className="mt-20">
           <dl className="space-y-16 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-16 sm:space-y-0 lg:grid-cols-3 lg:gap-x-10">

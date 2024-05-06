@@ -65,8 +65,6 @@ function SDnod({ chain, chainId, userAddress }: any) {
   });
 
   console.log(erc20Abi);
-  // console.log('Mint Allowance amount: ', mintAllowance.data);
-  // console.log('Redeem Allowance amount: ', redeemAllowance.data);
 
   const balancesConfig = {
     abi: erc20Abi,
@@ -86,6 +84,8 @@ function SDnod({ chain, chainId, userAddress }: any) {
   const { data, refetch } = useReadContracts({
     contracts: balancesToGet,
   });
+
+  console.log(data);
 
   // Refetching balance when there is change in the writehash
   useEffect(() => {
