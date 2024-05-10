@@ -42,6 +42,10 @@ function FairLaunchSwap() {
 
   const { balances, refetch } = useGetBalance(balanceConfig);
 
+  useEffect(() => {
+    refetch();
+  }, [writeHash]);
+
   console.log(maxAllowance);
 
   const mintAllowance = useReadContract({
@@ -53,10 +57,6 @@ function FairLaunchSwap() {
   });
 
   console.log("mint allow", mintAllowance.data);
-
-  useEffect(() => {
-    refetch();
-  }, [writeHash]);
 
   const DNODAmmount = inputValue / 0.1;
 
