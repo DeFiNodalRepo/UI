@@ -16,6 +16,7 @@ import {
   parseUnits,
 } from "viem";
 import useGetBalance from "../../hooks/web3/useGetBalance";
+import BouncingBalls from "../../ui/bouncingBalls";
 
 function FairLaunchSwap() {
   const [inputValue, setInputValue] = useState("");
@@ -82,7 +83,10 @@ function FairLaunchSwap() {
   }
 
   return (
-    <form className="flex justify-center my-5 h-78" onSubmit={handleGetDNOD}>
+    <form
+      className="flex justify-center my-5 h-78 pt-10"
+      onSubmit={handleGetDNOD}
+    >
       <div className="bg-main  py-2 px-4 rounded-md border border-main w-4/5 sm:w-1/3 flex flex-col items-center">
         <input
           type="text"
@@ -100,14 +104,27 @@ function FairLaunchSwap() {
         >
           Get DNOD
         </button>
-        <p className="pt-6">
-          $sDNOD balance:{" "}
-          {balances[0] ? formatUnits(balances[0].result, 18) : "Loading..."}
-        </p>
-        <p className="py-2">
-          $DNOD balance:{" "}
-          {balances[0] ? formatUnits(balances[1].result, 18) : "Loading..."}
-        </p>
+
+        <div className="flex items-center pt-6">
+          <p className="mr-1">$DNOD balance: </p>
+          <div>
+            {balances[0] ? (
+              Number(formatUnits(balances[0].result, 18)).toFixed(2)
+            ) : (
+              <BouncingBalls />
+            )}
+          </div>
+        </div>
+        <div className="flex items-center py-2">
+          <p className="mr-1">$DNOD balance:</p>
+          <div>
+            {balances[0] ? (
+              Number(formatUnits(balances[1].result, 18)).toFixed(2)
+            ) : (
+              <BouncingBalls />
+            )}
+          </div>
+        </div>
       </div>
     </form>
   );
