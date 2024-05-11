@@ -76,7 +76,7 @@ function Boardroom() {
       <div>Boardroom</div>
       <div className="flex flex-col justify-center items-center">
         <div className=" ring-1 ring-main sm:rounded-xl w-full flex justify-center ">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-22">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-28">
             {stats.map((stat) => (
               <div key={stat.name} className=" px-4 py-6 sm:px-6 lg:px-8">
                 <p className="text-sm font-medium leading-6 ">{stat.name}</p>
