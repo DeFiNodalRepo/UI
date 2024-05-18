@@ -116,7 +116,7 @@ function FairLaunchSwap() {
           </div>
         </div>
         <div className="flex items-center py-2">
-          <p className="mr-1">$DNOD balance:</p>
+          <p className="mr-1">$sDNOD balance:</p>
           <div>
             {balances[0] ? (
               Number(formatUnits(balances[1].result, 18)).toFixed(2)

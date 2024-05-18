@@ -25,6 +25,10 @@
     @apply text-boxdark-2 dark:text-stroke;
   }
 
+  .card-main {
+    @apply bg-white dark:bg-boxdark;
+  }
+
   .divider-main {
     @apply divide-zinc-200 dark:divide-zinc-800;
   }
