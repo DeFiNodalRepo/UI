@@ -1,5 +1,3 @@
-import React from 'react';
-
 function VaultCardDisplay({ strategy }) {
   const {
     id,
@@ -13,6 +11,8 @@ function VaultCardDisplay({ strategy }) {
     poolGroup,
     stratGroup,
   } = strategy;
+
+  console.log(strategy);
 
   return (
     <li

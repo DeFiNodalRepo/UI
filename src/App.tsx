@@ -13,6 +13,7 @@ import SDnod from "./pages/SDnod/SDnod";
 import Boardroom from "./pages/Boardroom/Boardroom";
 import Labs from "./pages/Labs/Labs";
 import FairLaunch from "./pages/FairLaunch/FairLaunch";
+import Collections from "./pages/Collections/Collections";
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -77,6 +78,16 @@ function App() {
             <>
               <PageTitle title="Boardroom | Definodal" />
               <Boardroom />
+            </>
+          }
+        />
+
+        <Route
+          path="/collections"
+          element={
+            <>
+              <PageTitle title="Collections | Definodal" />
+              <Collections />
             </>
           }
         />

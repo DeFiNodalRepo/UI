@@ -1,5 +1,5 @@
 // Todo Add icon at the place of the img tag
-import heroImage from "../../images/hero-image.jpg";
+import heroImage from "../../images/hero-definodal.jpg";
 import logo from "../../images/logo/df-modern-dark.png";
 
 export default function HeroSection() {

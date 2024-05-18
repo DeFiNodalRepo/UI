@@ -1,15 +1,19 @@
-import { useEffect, useRef, useState } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { useEffect, useRef, useState } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
 
 // import Logo from '../../images/logo/logo.svg';
 
 // Icons
-import { PiVault } from 'react-icons/pi';
-import { MdOutlineDashboard, MdOutlineRocketLaunch } from 'react-icons/md';
-import { HiOutlineCurrencyDollar } from 'react-icons/hi2';
-import { CgShutterstock } from 'react-icons/cg';
-import { SlChemistry } from 'react-icons/sl';
-import { IoDocumentsOutline } from 'react-icons/io5';
+import { PiVault } from "react-icons/pi";
+import {
+  MdOutlineDashboard,
+  MdOutlineRocketLaunch,
+  MdOutlineCollectionsBookmark,
+} from "react-icons/md";
+import { HiOutlineCurrencyDollar } from "react-icons/hi2";
+import { CgShutterstock } from "react-icons/cg";
+import { SlChemistry } from "react-icons/sl";
+import { IoDocumentsOutline } from "react-icons/io5";
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -23,9 +27,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const trigger = useRef<any>(null);
   const sidebar = useRef<any>(null);
 
-  const storedSidebarExpanded = localStorage.getItem('sidebar-expanded');
+  const storedSidebarExpanded = localStorage.getItem("sidebar-expanded");
   const [sidebarExpanded, setSidebarExpanded] = useState(
-    storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true',
+    storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"
   );
 
   // close on click outside
@@ -40,8 +44,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         return;
       setSidebarOpen(false);
     };
-    document.addEventListener('click', clickHandler);
-    return () => document.removeEventListener('click', clickHandler);
+    document.addEventListener("click", clickHandler);
+    return () => document.removeEventListener("click", clickHandler);
   });
 
   // close if the esc key is pressed
@@ -50,16 +54,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       if (!sidebarOpen || keyCode !== 27) return;
       setSidebarOpen(false);
     };
-    document.addEventListener('keydown', keyHandler);
-    return () => document.removeEventListener('keydown', keyHandler);
+    document.addEventListener("keydown", keyHandler);
+    return () => document.removeEventListener("keydown", keyHandler);
   });
 
   useEffect(() => {
-    localStorage.setItem('sidebar-expanded', sidebarExpanded.toString());
+    localStorage.setItem("sidebar-expanded", sidebarExpanded.toString());
     if (sidebarExpanded) {
-      document.querySelector('body')?.classList.add('sidebar-expanded');
+      document.querySelector("body")?.classList.add("sidebar-expanded");
     } else {
-      document.querySelector('body')?.classList.remove('sidebar-expanded');
+      document.querySelector("body")?.classList.remove("sidebar-expanded");
     }
   }, [sidebarExpanded]);
   // Todo add svg logo
@@ -67,7 +71,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     <aside
       ref={sidebar}
       className={`absolute left-0 top-0 z-9999 flex h-screen w-55 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
-        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        sidebarOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
@@ -117,8 +121,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <NavLink
                   to="/dashboard"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-stone-100 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes('dashboard') &&
-                    'bg-graydark dark:bg-meta-4'
+                    pathname.includes("dashboard") &&
+                    "bg-graydark dark:bg-meta-4"
                   }`}
                 >
                   <MdOutlineDashboard size={20} />
@@ -131,7 +135,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <NavLink
                   to="/vaults"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-stone-100 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes('vaults') && 'bg-graydark dark:bg-meta-4'
+                    pathname.includes("vaults") && "bg-graydark dark:bg-meta-4"
                   }`}
                 >
                   <PiVault size={20} />
@@ -144,7 +148,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <NavLink
                   to="/sdnod"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-stone-100 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes('sdnod') && 'bg-graydark dark:bg-meta-4'
+                    pathname.includes("sdnod") && "bg-graydark dark:bg-meta-4"
                   }`}
                 >
                   <HiOutlineCurrencyDollar size={20} />
@@ -157,12 +161,25 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <NavLink
                   to="/boardroom"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-stone-100 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes('boardroom') &&
-                    'bg-graydark dark:bg-meta-4'
+                    pathname.includes("boardroom") &&
+                    "bg-graydark dark:bg-meta-4"
                   }`}
                 >
                   <CgShutterstock size={20} />
                   Boardroom
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink
+                  to="/collections"
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-stone-100 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    pathname.includes("boardroom") &&
+                    "bg-graydark dark:bg-meta-4"
+                  }`}
+                >
+                  <MdOutlineCollectionsBookmark size={20} />
+                  Collections
                 </NavLink>
               </li>
 
@@ -171,7 +188,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <NavLink
                   to="/labs"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-stone-100 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes('labs') && 'bg-graydark dark:bg-meta-4'
+                    pathname.includes("labs") && "bg-graydark dark:bg-meta-4"
                   }`}
                 >
                   <SlChemistry size={20} />
@@ -182,8 +199,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <NavLink
                   to="/fair-launch"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-stone-100 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes('fair-launch') &&
-                    'bg-graydark dark:bg-meta-4'
+                    pathname.includes("fair-launch") &&
+                    "bg-graydark dark:bg-meta-4"
                   }`}
                 >
                   <MdOutlineRocketLaunch size={20} />
@@ -206,7 +223,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <Link
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-stone-100 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 `}
-                  to={'https://definodal.gitbook.io/definodal/'}
+                  to={"https://definodal.gitbook.io/definodal/"}
                   target="_blank"
                 >
                   <IoDocumentsOutline size={20} />
