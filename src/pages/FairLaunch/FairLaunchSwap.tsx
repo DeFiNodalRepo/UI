@@ -87,42 +87,43 @@ function FairLaunchSwap() {
       className="flex justify-center my-5 h-78 pt-10"
       onSubmit={handleGetDNOD}
     >
-      <div className="bg-main  py-2 px-4 rounded-md border border-main w-4/5 sm:w-1/3 flex flex-col items-center">
+      <div className="bg-main  py-2 px-4 rounded-xl border border-main w-4/5 sm:w-1/3 flex flex-col items-center">
         <input
           type="text"
           name="amount"
           placeholder="0.0"
-          className="w-5/6 rounded-md dark:bg-boxdark-2 px-4 py-4 mt-6"
+          className="w-5/6 rounded-xl dark:bg-boxdark-2 px-4 py-4 mt-6"
           onChange={(e) =>
             setTimeout(() => setInputValue(e.target.value), 2000)
           }
         />
         <p className="pt-4 text-sm">You will receive {DNODAmmount} $DNOD</p>
         <button
-          className="w-5/6 rounded-md bg-boxdark-2 px-4 py-4 mt-4  text-white text-bold"
+          className="w-5/6 rounded-xl bg-boxdark-2 px-4 py-4 mt-4  text-white text-bold"
           type="submit"
         >
           Get DNOD
         </button>
-
-        <div className="flex items-center pt-6">
-          <p className="mr-1">$DNOD balance: </p>
-          <div>
-            {balances[0] ? (
-              Number(formatUnits(balances[0].result, 18)).toFixed(2)
-            ) : (
-              <BouncingBalls />
-            )}
+        <div className="flex items-center py-6 gap-6">
+          <div className="flex items-center">
+            <p className="mr-1">$DNOD: </p>
+            <div>
+              {balances[0] ? (
+                Number(formatUnits(balances[0].result, 18)).toFixed(2)
+              ) : (
+                <BouncingBalls />
+              )}
+            </div>
           </div>
-        </div>
-        <div className="flex items-center py-2">
-          <p className="mr-1">$sDNOD balance:</p>
-          <div>
-            {balances[0] ? (
-              Number(formatUnits(balances[1].result, 18)).toFixed(2)
-            ) : (
-              <BouncingBalls />
-            )}
+          <div className="flex items-center">
+            <p className="mr-1">$sDNOD:</p>
+            <div>
+              {balances[0] ? (
+                Number(formatUnits(balances[1].result, 18)).toFixed(2)
+              ) : (
+                <BouncingBalls />
+              )}
+            </div>
           </div>
         </div>
       </div>
