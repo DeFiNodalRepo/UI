@@ -10,14 +10,6 @@ function TierCards() {
           </div>
           <div className="mt-8">
             <p className="text-xl font-semibold my-2">30 day Lockup</p>
-            <div className="flex space-x-2 text-gray-400 text-sm">
-              kljklj lkj lk jlk
-            </div>
-            <div className="flex space-x-2 text-gray-400 text-sm my-3">
-              dadasd
-            </div>
-            <div className="border-t-2"></div>
-
             <div className="flex justify-between">
               <div className="my-2">
                 <p className="font-semibold text-base mb-2">Your Investment</p>
@@ -30,6 +22,19 @@ function TierCards() {
                 </div>
               </div>
             </div>
+
+            <div className="border-t-2"></div>
+
+            <div className="flex flex-col justify-between">
+              <input
+                type="text"
+                className="mt-4 mb-4 pl-4 w-full text-md rounded-xl text-white bg-slate-600 h-10"
+                placeholder="Add DNOD amount"
+              />
+              <button className="text-green-300 dark:text-white border-1 border-pink-700 text-2xl rounded-xl h-10 bg-pink-500">
+                Lock
+              </button>
+            </div>
           </div>
         </div>
         <div className="relative card-main py-6 px-6 rounded-3xl w-64 my-4 shadow-xl">
@@ -37,15 +42,7 @@ function TierCards() {
             90d
           </div>
           <div className="mt-8">
-            <p className="text-xl font-semibold my-2">30 day Lockup</p>
-            <div className="flex space-x-2 text-gray-400 text-sm">
-              kljklj lkj lk jlk
-            </div>
-            <div className="flex space-x-2 text-gray-400 text-sm my-3">
-              dadasd
-            </div>
-            <div className="border-t-2"></div>
-
+            <p className="text-xl font-semibold my-2">90 day Lockup</p>
             <div className="flex justify-between">
               <div className="my-2">
                 <p className="font-semibold text-base mb-2">Your Investment</p>
@@ -58,6 +55,17 @@ function TierCards() {
                 </div>
               </div>
             </div>
+            <div className="border-t-2"></div>
+            <div className="flex flex-col justify-between">
+              <input
+                type="text"
+                className="mt-4 mb-4 pl-4 w-full text-md rounded-xl text-white bg-slate-600 h-10"
+                placeholder="Add DNOD amount"
+              />
+              <button className="text-white dark:text-white border-1 border-green-700 text-2xl rounded-xl h-10 bg-green-500">
+                Lock
+              </button>
+            </div>
           </div>
         </div>
         <div className="relative card-main py-6 px-6 rounded-3xl w-64 my-4 shadow-xl">
@@ -65,15 +73,7 @@ function TierCards() {
             180d
           </div>
           <div className="mt-8">
-            <p className="text-xl font-semibold my-2">30 day Lockup</p>
-            <div className="flex space-x-2 text-gray-400 text-sm">
-              kljklj lkj lk jlk
-            </div>
-            <div className="flex space-x-2 text-gray-400 text-sm my-3">
-              dadasd
-            </div>
-            <div className="border-t-2"></div>
-
+            <p className="text-xl font-semibold my-2">180 day Lockup</p>
             <div className="flex justify-between">
               <div className="my-2">
                 <p className="font-semibold text-base mb-2">Your Investment</p>
@@ -86,6 +86,17 @@ function TierCards() {
                 </div>
               </div>
             </div>
+            <div className="border-t-2"></div>
+            <div className="flex flex-col justify-between">
+              <input
+                type="text"
+                className="mt-4 mb-4 pl-4 w-full text-md rounded-xl text-white bg-slate-600 h-10"
+                placeholder="Add DNOD amount"
+              />
+              <button className="text-cyan-300 dark:text-white border-1 border-green-700 text-2xl rounded-xl h-10 bg-blue-500">
+                Lock
+              </button>
+            </div>
           </div>
         </div>
         <div className="relative card-main py-6 px-6 rounded-3xl w-64 my-4 shadow-xl">
@@ -93,15 +104,7 @@ function TierCards() {
             365d
           </div>
           <div className="mt-8">
-            <p className="text-xl font-semibold my-2">30 day Lockup</p>
-            <div className="flex space-x-2 text-gray-400 text-sm">
-              kljklj lkj lk jlk
-            </div>
-            <div className="flex space-x-2 text-gray-400 text-sm my-3">
-              dadasd
-            </div>
-            <div className="border-t-2"></div>
-
+            <p className="text-xl font-semibold my-2">365 day Lockup</p>
             <div className="flex justify-between">
               <div className="my-2">
                 <p className="font-semibold text-base mb-2">Your Investment</p>
@@ -113,6 +116,17 @@ function TierCards() {
                   <p>94%</p>
                 </div>
               </div>
+            </div>
+            <div className="border-t-2"></div>
+            <div className="flex flex-col justify-between">
+              <input
+                type="text"
+                className="mt-4 mb-4 pl-4 w-full text-md rounded-xl text-white bg-slate-600 h-10"
+                placeholder="Add DNOD amount"
+              />
+              <button className="text-white dark:text-white border-1 border-green-700 text-2xl rounded-xl h-10 bg-yellow-500">
+                Lock
+              </button>
             </div>
           </div>
         </div>
