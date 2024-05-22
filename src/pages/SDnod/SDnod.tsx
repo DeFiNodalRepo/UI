@@ -23,12 +23,23 @@ import {
   numberToHex,
   maxUint256,
 } from "viem";
+import useGetBalance from "../../hooks/web3/useGetBalance";
+import { sDNODAddress } from "../../constants/sdnod";
+import BouncingBalls from "../../ui/bouncingBalls";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 function SDnod({ chain, chainId, userAddress }: any) {
+  const sDnodBalanceConfig = [
+    {
+      address: sDNODAddress,
+      abi: erc20Abi,
+      functionName: "balanceOf",
+      args: [userAddress],
+    },
+  ] as const;
   const maxAllowance = numberToHex(maxUint256);
 
   let collateralsAvailable;
@@ -46,6 +57,16 @@ function SDnod({ chain, chainId, userAddress }: any) {
   const [inputValue, setInputValue] = useState("1");
 
   const { data: writeHash, isPending, writeContract } = useWriteContract();
+
+  const { balances: sdnodBalance } = useGetBalance(sDnodBalanceConfig);
+
+  // let sdnodUserBalance = 0;
+
+  let sdnodUserBalance = sdnodBalance[0] ? (
+    Number(formatUnits(sdnodBalance[0].result, 18)).toFixed(2)
+  ) : (
+    <BouncingBalls />
+  );
 
   // Allowances read
   const mintAllowance = useReadContract({
@@ -372,6 +393,17 @@ function SDnod({ chain, chainId, userAddress }: any) {
               onSubmit={handleTransactionSubmit}
             >
               <div className="w-full sm:max-w-xs">
+                <div className="flex items-center">
+                  <p className="mr-1">Your $SDNOD balance:</p>
+                  <div>
+                    {sdnodBalance[0] ? (
+                      Number(formatUnits(sdnodBalance[0].result, 18)).toFixed(2)
+                    ) : (
+                      <BouncingBalls />
+                    )}
+                  </div>
+                </div>
+
                 <label htmlFor="amount">
                   <h3 className="text-base font-semibold leading-6 pb-2">
                     Amount to {isMintClicked ? "Mint" : "Redeem"}

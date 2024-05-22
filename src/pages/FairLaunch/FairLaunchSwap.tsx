@@ -106,7 +106,7 @@ function FairLaunchSwap() {
         </button>
         <div className="flex items-center py-6 gap-6">
           <div className="flex items-center">
-            <p className="mr-1">$DNOD: </p>
+            <p className="mr-1">$sDNOD: </p>
             <div>
               {balances[0] ? (
                 Number(formatUnits(balances[0].result, 18)).toFixed(2)
@@ -116,7 +116,7 @@ function FairLaunchSwap() {
             </div>
           </div>
           <div className="flex items-center">
-            <p className="mr-1">$sDNOD:</p>
+            <p className="mr-1">$DNOD:</p>
             <div>
               {balances[0] ? (
                 Number(formatUnits(balances[1].result, 18)).toFixed(2)
