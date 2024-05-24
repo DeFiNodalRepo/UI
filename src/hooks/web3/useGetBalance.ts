@@ -3,10 +3,6 @@ import { formatUnits, erc20Abi } from "viem";
 import { allowedChains } from "../../constants/sideWide";
 import { platformAddress } from "../../constants/sideWide";
 
-// type BalanceProps = {
-//   balanceConfiq: [];
-// };
-
 type BalanceProps = {
   address?: `0x${string}`;
   abi?: readonly unknown[];
@@ -37,7 +33,7 @@ function useGetBalance(balanceConfig: BalanceProps) {
     },
   });
 
-  console.log(data);
+  // console.log(data);
 
   if (chainId && data && data.length > 0) {
     balances = data;

@@ -58,7 +58,8 @@ function SDnod({ chain, chainId, userAddress }: any) {
 
   const { data: writeHash, isPending, writeContract } = useWriteContract();
 
-  const { balances: sdnodBalance } = useGetBalance(sDnodBalanceConfig);
+  const { balances: sdnodBalance, refetch: refetchSDnod } =
+    useGetBalance(sDnodBalanceConfig);
 
   // let sdnodUserBalance = 0;
 
@@ -111,6 +112,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
   // Refetching balance when there is change in the writehash
   useEffect(() => {
     refetch();
+    refetchSDnod();
   }, [writeHash]);
 
   let collWithBalances = [];
@@ -274,10 +276,10 @@ function SDnod({ chain, chainId, userAddress }: any) {
     <DefaultLayout>
       {/* Header Section */}
       <header className="text-3xl">SDnod</header>
-      <div className="flex justify-center items-center mt-12 mb-8">
+      <div className="mb-8 mt-12 flex items-center justify-center">
         {!chain ? (
-          <div className="grid grid-cols-1 gap-y-6 place-items-center sm:gap-x-4">
-            <h1 className="text-xl w-2/3">
+          <div className="grid grid-cols-1 place-items-center gap-y-6 sm:gap-x-4">
+            <h1 className="w-2/3 text-xl">
               Currently your wallet is not connect to a network supported by
               DefiNodal. Please connect your wallet to the Polygon network. Once
               connected you will be able to exchange your stable coins with the
@@ -287,15 +289,15 @@ function SDnod({ chain, chainId, userAddress }: any) {
         ) : (
           <h1>
             Currently you are on the{" "}
-            <span className="text-red-500 font-bold">{chain.name}</span>. The
+            <span className="font-bold text-red-500">{chain.name}</span>. The
             following collaterals are available to be exchanged with SDnod
           </h1>
         )}
       </div>
       {/* Buttons Section */}
-      <div className="flex justify-center items-center mt-12 mb-8">
-        <div className="flex justify-center items-center w-1/2">
-          <span className="w-full rounded-md bg-main shadow-sm">
+      <div className="mb-8 mt-12 flex items-center justify-center">
+        <div className="flex w-1/2 items-center justify-center">
+          <span className="bg-main w-full rounded-md shadow-sm">
             <button
               type="button"
               className={`relative h-16 w-1/2 flex-1 rounded-l-md border-main  px-3 py-2 text-xl font-semibold shadow-sm ring-2 ring-inset ring-main  focus:z-10 ${
@@ -320,9 +322,9 @@ function SDnod({ chain, chainId, userAddress }: any) {
       </div>
 
       {/* Collateral List Section */}
-      <div className="flex justify-center items-center">
+      <div className="flex items-center justify-center">
         <RadioGroup value={selectedCollateral} onChange={setSelectedCollateral}>
-          <div className="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-3 sm:gap-x-4 ">
+          <div className="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-3 sm:gap-x-4">
             {collWithBalances.map((collateral) => (
               <RadioGroup.Option
                 key={collateral.name}
@@ -341,7 +343,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
                       <span className="flex flex-col">
                         <RadioGroup.Label
                           as="span"
-                          className="flex items-center text-sm font-medium gap-2"
+                          className="flex items-center gap-2 text-sm font-medium"
                         >
                           <img
                             src={collateral.icon}
@@ -354,7 +356,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
 
                         <RadioGroup.Description
                           as="span"
-                          className="mt-1 flex items-center text-sm "
+                          className="mt-1 flex items-center text-sm"
                         >
                           Available Balance: {collateral.balance}{" "}
                           {collateral.name}
@@ -385,8 +387,8 @@ function SDnod({ chain, chainId, userAddress }: any) {
       </div>
 
       {/* Form Section */}
-      <div className="flex justify-center items-center">
-        <div className="bg-main shadow sm:rounded-lg w-1/2 mt-8 px-6 py-5 ">
+      <div className="flex items-center justify-center">
+        <div className="bg-main mt-8 w-1/2 px-6 py-5 shadow sm:rounded-lg">
           <div className="px-4 py-2 sm:p-6">
             <form
               className="mt-5 sm:flex sm:items-center"
@@ -405,7 +407,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
                 </div>
 
                 <label htmlFor="amount">
-                  <h3 className="text-base font-semibold leading-6 pb-2">
+                  <h3 className="pb-2 text-base font-semibold leading-6">
                     Amount to {isMintClicked ? "Mint" : "Redeem"}
                   </h3>
                 </label>
@@ -413,7 +415,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
                   type="number"
                   name="amount"
                   id="amount"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-main focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 text-black pl-2"
+                  className="text-gray-900 ring-main block w-full rounded-md border-0 py-1.5 pl-2 text-black shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   placeholder="123"
                   onChange={handleInputChange}
                 />

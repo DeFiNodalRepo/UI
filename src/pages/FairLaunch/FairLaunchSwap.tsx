@@ -1,13 +1,7 @@
 import { useEffect, useState } from "react";
-import {
-  useWriteContract,
-  useReadContracts,
-  useAccount,
-  useReadContract,
-} from "wagmi";
+import { useWriteContract, useAccount, useReadContract } from "wagmi";
 import dnodABI from "../../abi/TokenExchange.json";
 import { platformAddress } from "../../constants/sideWide";
-import { allowedChains } from "../../constants/sideWide";
 import {
   formatUnits,
   numberToHex,
@@ -84,27 +78,27 @@ function FairLaunchSwap() {
 
   return (
     <form
-      className="flex justify-center my-5 h-78 pt-10"
+      className="h-78 my-5 flex justify-center pt-10"
       onSubmit={handleGetDNOD}
     >
-      <div className="bg-main  py-2 px-4 rounded-xl border border-main w-4/5 sm:w-1/3 flex flex-col items-center">
+      <div className="bg-main border-main flex w-4/5 flex-col items-center rounded-xl border px-4 py-2 sm:w-1/3">
         <input
           type="text"
           name="amount"
           placeholder="0.0"
-          className="w-5/6 rounded-xl dark:bg-boxdark-2 px-4 py-4 mt-6"
+          className="mt-6 w-5/6 rounded-xl px-4 py-4 dark:bg-boxdark-2"
           onChange={(e) =>
             setTimeout(() => setInputValue(e.target.value), 2000)
           }
         />
         <p className="pt-4 text-sm">You will receive {DNODAmmount} $DNOD</p>
         <button
-          className="w-5/6 rounded-xl bg-boxdark-2 px-4 py-4 mt-4  text-white text-bold"
+          className="text-bold mt-4 w-5/6 rounded-xl bg-boxdark-2 px-4 py-4 text-white"
           type="submit"
         >
           Get DNOD
         </button>
-        <div className="flex items-center py-6 gap-6">
+        <div className="flex items-center gap-6 py-6">
           <div className="flex items-center">
             <p className="mr-1">$sDNOD: </p>
             <div>
