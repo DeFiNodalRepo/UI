@@ -1,58 +1,7 @@
-import { useAccount } from "wagmi";
-import useGetBalance from "../../hooks/web3/useGetBalance";
-import { platformAddress } from "../../constants/sideWide";
-import { erc20Abi, formatUnits } from "viem";
-import BouncingBalls from "../../ui/bouncingBalls";
-import BRstats from "../../abi/BRManagement.json";
-
-function BoardroomStats() {
-  console.log(BRstats);
-
-  const { address: userAddress } = useAccount();
-
-  const dnodBalanceConfig = [
-    {
-      address: platformAddress.dnod,
-      abi: erc20Abi,
-      functionName: "balanceOf",
-      args: [userAddress],
-    },
-  ] as const;
-
-  const { balances: dnodBalance, refetch: userDnodBalance } =
-    useGetBalance(dnodBalanceConfig);
-
-  const availableDnodBalance = dnodBalance[0] ? (
-    Number(formatUnits(dnodBalance[0].result, 18)).toFixed(2)
-  ) : (
-    <BouncingBalls />
-  );
-
-  const dnodTotalUserBalanceConfig = [
-    {
-      address: platformAddress.dnod,
-      abi: [BRstats],
-      functionName: "getTotalDeposits",
-      args: [userAddress],
-    },
-  ] as const;
-
-  const {
-    balances: totalUserDnodBalance,
-    refetch: totalUserDnodBalanceRefetch,
-  } = useGetBalance(dnodTotalUserBalanceConfig);
-
-  const totalUserDnodBalanceStat = totalUserDnodBalance[0] ? (
-    Number(formatUnits(totalUserDnodBalance[0].result, 18)).toFixed(2)
-  ) : (
-    <BouncingBalls />
-  );
-
-  console.log(totalUserDnodBalance);
-
+function BoardroomStats({ totalUsersDnodBalance, availableUserDnodBalance }) {
   const stats = [
-    { name: "Total DNOD Staked", value: "405" },
-    { name: "Available DNOD Balance", value: availableDnodBalance },
+    { name: "Total DNOD Staked", value: totalUsersDnodBalance },
+    { name: "Available DNOD Balance", value: availableUserDnodBalance },
     { name: "Total User DNOD Stacked", value: "3" },
   ];
 

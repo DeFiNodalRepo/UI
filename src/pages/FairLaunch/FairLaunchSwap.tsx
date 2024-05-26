@@ -1,62 +1,64 @@
-import { useEffect, useState } from "react";
-import { useWriteContract, useAccount, useReadContract } from "wagmi";
-import dnodABI from "../../abi/TokenExchange.json";
-import { platformAddress } from "../../constants/sideWide";
+// Todo disable is no sDNOD balance
+
+import { useEffect, useState } from "react"
+import { useWriteContract, useAccount, useReadContract } from "wagmi"
+import dnodABI from "../../abi/TokenExchange.json"
+import { tokenAddresses } from "../../constants/sideWide"
 import {
   formatUnits,
   numberToHex,
   maxUint256,
   erc20Abi,
   parseUnits,
-} from "viem";
-import useGetBalance from "../../hooks/web3/useGetBalance";
-import BouncingBalls from "../../ui/bouncingBalls";
+} from "viem"
+import useGetBalance from "../../hooks/web3/useGetBalance"
+import BouncingBalls from "../../ui/bouncingBalls"
 
 function FairLaunchSwap() {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState("")
 
-  const maxAllowance = numberToHex(maxUint256);
-  const { address: userAddress, chainId } = useAccount();
+  const maxAllowance = numberToHex(maxUint256)
+  const { address: userAddress, chainId } = useAccount()
 
   const balanceConfig = [
     {
-      address: platformAddress.sdnod,
+      address: tokenAddresses.sdnod,
       abi: erc20Abi,
       functionName: "balanceOf",
       args: [userAddress],
     },
     {
-      address: platformAddress.dnod,
+      address: tokenAddresses.dnod,
       abi: erc20Abi,
       functionName: "balanceOf",
       args: [userAddress],
     },
-  ] as const;
+  ] as const
 
-  const { data: writeHash, isPending, writeContract } = useWriteContract();
+  const { data: writeHash, isPending, writeContract } = useWriteContract()
 
-  const { balances, refetch } = useGetBalance(balanceConfig);
+  const { balances, refetch } = useGetBalance(balanceConfig)
 
   useEffect(() => {
-    refetch();
-  }, [writeHash]);
+    refetch()
+  }, [writeHash])
 
-  console.log(maxAllowance);
+  console.log(maxAllowance)
 
   const mintAllowance = useReadContract({
     abi: erc20Abi,
     address: "0xb0e77224e214e902dE434b51125a775F6339F6C9",
     functionName: "allowance",
-    args: [userAddress, platformAddress.dnod],
+    args: [userAddress, tokenAddresses.dnod],
     account: userAddress,
-  });
+  })
 
-  console.log("mint allow", mintAllowance.data);
+  console.log("mint allow", mintAllowance.data)
 
-  const DNODAmmount = inputValue / 0.1;
+  const DNODAmmount = inputValue / 0.1
 
   async function handleGetDNOD(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+    e.preventDefault()
     // console.log(mintAllowance.data);
     // console.log(parseUnits(inputValue.toString(), 18));
 
@@ -65,15 +67,15 @@ function FairLaunchSwap() {
         abi: erc20Abi,
         address: "0xb0e77224e214e902dE434b51125a775F6339F6C9",
         functionName: "approve",
-        args: [platformAddress.dnod, maxAllowance],
-      });
+        args: [tokenAddresses.dnod, maxAllowance],
+      })
     }
     const writeTx = await writeContract({
       abi: dnodABI,
-      address: platformAddress.dnod,
+      address: tokenAddresses.dnod,
       functionName: "exchange",
       args: [parseUnits(inputValue.toString(), 18)],
-    });
+    })
   }
 
   return (
@@ -122,7 +124,7 @@ function FairLaunchSwap() {
         </div>
       </div>
     </form>
-  );
+  )
 }
 
-export default FairLaunchSwap;
+export default FairLaunchSwap

@@ -1,28 +1,30 @@
-import { useReadContracts, useAccount } from "wagmi";
-import { formatUnits, erc20Abi } from "viem";
-import { allowedChains } from "../../constants/sideWide";
-import { platformAddress } from "../../constants/sideWide";
+import { useReadContracts, useAccount } from "wagmi"
+import { formatUnits, erc20Abi } from "viem"
+import { allowedChains } from "../../constants/sideWide"
+import { tokenAddresses } from "../../constants/sideWide"
 
 type BalanceProps = {
-  address?: `0x${string}`;
-  abi?: readonly unknown[];
-  functionName?: string;
-  args?: readonly unknown[];
-  chainId?: number;
-}[];
+  address?: `0x${string}`
+  abi?: readonly unknown[]
+  functionName?: string
+  args?: readonly unknown[]
+  chainId?: number
+}[]
 
 function useGetBalance(balanceConfig: BalanceProps) {
-  const { address: userAddress, chainId } = useAccount();
+  const { address: userAddress, chainId } = useAccount()
 
-  let connectedWallet;
+  let connectedWallet
 
-  if (!chainId || !allowedChains.includes(chainId)) {
-    connectedWallet = false;
-  }
+  let defaultBalances = [
+    {
+      result: 0n,
+    },
+  ]
 
-  const isEnable = !!userAddress && !connectedWallet;
+  const isEnable = !!userAddress && !connectedWallet
 
-  let balances = [];
+  let balances = []
 
   const { data, refetch } = useReadContracts({
     contracts: balanceConfig,
@@ -31,17 +33,24 @@ function useGetBalance(balanceConfig: BalanceProps) {
       refetchOnWindowFocus: true,
       placeholderData: 0,
     },
-  });
+  })
 
   // console.log(data);
 
-  if (chainId && data && data.length > 0) {
-    balances = data;
+  if (!chainId || !allowedChains.includes(chainId)) {
+    connectedWallet = false
+    // return (balances = defaultBalances)
   }
-  return { balances, refetch };
+
+  if (chainId && data && data.length > 0) {
+    balances = data
+  } else {
+    balances = defaultBalances
+  }
+  return { balances, refetch }
 }
 
-export default useGetBalance;
+export default useGetBalance
 
 // const getIsSufficientAllowance = (
 //   allowanceOwned: bigint | undefined,
