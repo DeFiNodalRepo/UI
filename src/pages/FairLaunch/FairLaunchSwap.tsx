@@ -78,6 +78,8 @@ function FairLaunchSwap() {
     })
   }
 
+  console.log(balances)
+
   return (
     <form
       className="h-78 my-5 flex justify-center pt-10"
@@ -114,7 +116,7 @@ function FairLaunchSwap() {
           <div className="flex items-center">
             <p className="mr-1">$DNOD:</p>
             <div>
-              {balances[0] ? (
+              {balances[1] ? (
                 Number(formatUnits(balances[1].result, 18)).toFixed(2)
               ) : (
                 <BouncingBalls />

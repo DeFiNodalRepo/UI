@@ -20,6 +20,15 @@ function useGetBalance(balanceConfig: BalanceProps) {
     {
       result: 0n,
     },
+    {
+      result: 0n,
+    },
+    {
+      result: 0n,
+    },
+    {
+      result: 0n,
+    },
   ]
 
   const isEnable = !!userAddress && !connectedWallet
@@ -39,13 +48,12 @@ function useGetBalance(balanceConfig: BalanceProps) {
 
   if (!chainId || !allowedChains.includes(chainId)) {
     connectedWallet = false
-    // return (balances = defaultBalances)
+    balances = defaultBalances
+    return { balances, refetch }
   }
 
   if (chainId && data && data.length > 0) {
     balances = data
-  } else {
-    balances = defaultBalances
   }
   return { balances, refetch }
 }
