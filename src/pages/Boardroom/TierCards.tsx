@@ -5,7 +5,7 @@ import BoardroomABI from "../../abi/BRLogic.json"
 import BoardroomManagement from "../../abi/BRManagement.json"
 import { useErc20Allownce } from "../../hooks/web3/useErc20Allowance"
 import { useGetBalance } from "../../hooks/web3/useGetBalance"
-import { tokenAddresses, contractAddressess } from "../../constants/sideWide"
+import { web3Addresses } from "../../constants/sideWide"
 import { numberToHex, parseUnits, maxUint256, erc20Abi } from "viem"
 import { useWriteContract } from "wagmi"
 import BRBalanceNotification from "./BRBalanceNotification"
@@ -18,8 +18,8 @@ function TierCards({ availableUserDnodBalance }) {
   const { data: writeHash, isPending, writeContract } = useWriteContract()
   const { isLoading, isFetching, isSuccess, isError, allowance, refetch } =
     useErc20Allownce({
-      tokenAddress: tokenAddresses.dnod,
-      allowanceAddress: contractAddressess.boardroomContractAddress,
+      tokenAddress: web3Addresses.dnod,
+      allowanceAddress: web3Addresses.boardroomContractAddress,
       enabled: true,
     })
 
@@ -42,16 +42,16 @@ function TierCards({ availableUserDnodBalance }) {
     if (!allowance || allowance < parsedAmount) {
       const txAllowance = await writeContract({
         abi: erc20Abi,
-        address: tokenAddresses.dnod,
+        address: web3Addresses.dnod,
         functionName: "approve",
-        args: [contractAddressess.boardroomContractAddress, maxAllowance],
+        args: [web3Addresses.boardroomContractAddress, maxAllowance],
       })
       // console.log(allowance, amount);
     }
     try {
       const tx = await writeContract({
         abi: BoardroomABI,
-        address: contractAddressess.boardroomContractAddress,
+        address: web3Addresses.boardroomContractAddress,
         functionName: "deposit",
         args: [tier, parsedAmount],
       })

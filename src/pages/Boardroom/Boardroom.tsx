@@ -4,7 +4,7 @@ import TierCards from "./TierCards"
 import BoardroomStats from "./BoardroomStats"
 import BoardroomHistory from "./BoardroomHistory"
 import { useAccount } from "wagmi"
-import { contractAddressess, tokenAddresses } from "../../constants/sideWide"
+import { web3Addresses } from "../../constants/sideWide"
 import { erc20Abi, formatUnits } from "viem"
 import useGetBalance from "../../hooks/web3/useGetBalance"
 import BouncingBalls from "../../ui/bouncingBalls"
@@ -16,7 +16,7 @@ function Boardroom() {
 
   const dnodBalanceConfig = [
     {
-      address: tokenAddresses.dnod,
+      address: web3Addresses.dnod,
       abi: erc20Abi,
       functionName: "balanceOf",
       args: [userAddress],
@@ -34,7 +34,7 @@ function Boardroom() {
 
   const dnodTotalUserBalanceConfig = [
     {
-      address: contractAddressess.boardroomContractAddress,
+      address: web3Addresses.boardroomAddress,
       abi: BRstats,
       functionName: "getTotalDeposits",
       args: [],

@@ -1,7 +1,7 @@
 import { useReadContracts, useAccount } from "wagmi"
 import { formatUnits, erc20Abi } from "viem"
 import { allowedChains } from "../../constants/sideWide"
-import { tokenAddresses } from "../../constants/sideWide"
+import { web3Addresses } from "../../constants/sideWide"
 
 type BalanceProps = {
   address?: `0x${string}`
@@ -40,7 +40,6 @@ function useGetBalance(balanceConfig: BalanceProps) {
     query: {
       refetchOnMount: true,
       refetchOnWindowFocus: true,
-      placeholderData: 0,
     },
   })
 

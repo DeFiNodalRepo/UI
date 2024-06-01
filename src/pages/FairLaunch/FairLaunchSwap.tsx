@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { useWriteContract, useAccount, useReadContract } from "wagmi"
 import dnodABI from "../../abi/TokenExchange.json"
-import { tokenAddresses } from "../../constants/sideWide"
+import { web3Addresses } from "../../constants/sideWide"
 import {
   formatUnits,
   numberToHex,
@@ -22,13 +22,13 @@ function FairLaunchSwap() {
 
   const balanceConfig = [
     {
-      address: tokenAddresses.sdnod,
+      address: web3Addresses.sdnod,
       abi: erc20Abi,
       functionName: "balanceOf",
       args: [userAddress],
     },
     {
-      address: tokenAddresses.dnod,
+      address: web3Addresses.dnod,
       abi: erc20Abi,
       functionName: "balanceOf",
       args: [userAddress],
@@ -49,7 +49,7 @@ function FairLaunchSwap() {
     abi: erc20Abi,
     address: "0xb0e77224e214e902dE434b51125a775F6339F6C9",
     functionName: "allowance",
-    args: [userAddress, tokenAddresses.dnod],
+    args: [userAddress, web3Addresses.dnod],
     account: userAddress,
   })
 
@@ -67,12 +67,12 @@ function FairLaunchSwap() {
         abi: erc20Abi,
         address: "0xb0e77224e214e902dE434b51125a775F6339F6C9",
         functionName: "approve",
-        args: [tokenAddresses.dnod, maxAllowance],
+        args: [web3Addresses.dnod, maxAllowance],
       })
     }
     const writeTx = await writeContract({
       abi: dnodABI,
-      address: tokenAddresses.dnod,
+      address: web3Addresses.dnod,
       functionName: "exchange",
       args: [parseUnits(inputValue.toString(), 18)],
     })
