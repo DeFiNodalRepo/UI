@@ -3,7 +3,7 @@ function BoardroomStats({ totalUsersDnodBalance, availableUserDnodBalance }) {
     { name: "Total DNOD Staked", value: totalUsersDnodBalance },
     { name: "Available DNOD Balance", value: availableUserDnodBalance },
     { name: "Total User DNOD Stacked", value: "3" },
-  ];
+  ]
 
   return (
     <>
@@ -44,7 +44,7 @@ function BoardroomStats({ totalUsersDnodBalance, availableUserDnodBalance }) {
         </dl>
       </div>
     </>
-  );
+  )
 }
 
-export default BoardroomStats;
+export default BoardroomStats

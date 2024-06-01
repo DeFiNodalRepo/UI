@@ -26,18 +26,20 @@ function FairLaunchSwap() {
       abi: erc20Abi,
       functionName: "balanceOf",
       args: [userAddress],
+      id: "sdnod",
     },
     {
       address: web3Addresses.dnod,
       abi: erc20Abi,
       functionName: "balanceOf",
       args: [userAddress],
+      id: "dnod",
     },
   ] as const
 
   const { data: writeHash, isPending, writeContract } = useWriteContract()
 
-  const { balances, refetch } = useGetBalance(balanceConfig)
+  const { balanceResult, refetch } = useGetBalance(balanceConfig)
 
   useEffect(() => {
     refetch()
@@ -53,7 +55,7 @@ function FairLaunchSwap() {
     account: userAddress,
   })
 
-  console.log("mint allow", mintAllowance.data)
+  // console.log("mint allow", mintAllowance.data)
 
   const DNODAmmount = inputValue / 0.1
 
@@ -65,7 +67,7 @@ function FairLaunchSwap() {
     if (mintAllowance.data < parseUnits(inputValue.toString(), 18)) {
       const txAllowance = await writeContract({
         abi: erc20Abi,
-        address: "0xb0e77224e214e902dE434b51125a775F6339F6C9",
+        address: web3Addresses.sdnod,
         functionName: "approve",
         args: [web3Addresses.dnod, maxAllowance],
       })
@@ -78,7 +80,21 @@ function FairLaunchSwap() {
     })
   }
 
-  console.log(balances)
+  let sdnodBalance =
+    balanceResult.sdnod.status === "success" ? (
+      Number(formatUnits(balanceResult.sdnod.result, 18)).toFixed(2)
+    ) : (
+      <BouncingBalls />
+    )
+
+  let dnodBalance =
+    balanceResult.dnod.status === "success" ? (
+      Number(formatUnits(balanceResult.dnod.result, 18)).toFixed(2)
+    ) : (
+      <BouncingBalls />
+    )
+
+  // console.log(balances)
 
   return (
     <form
@@ -105,23 +121,11 @@ function FairLaunchSwap() {
         <div className="flex items-center gap-6 py-6">
           <div className="flex items-center">
             <p className="mr-1">$sDNOD: </p>
-            <div>
-              {balances[0] ? (
-                Number(formatUnits(balances[0].result, 18)).toFixed(2)
-              ) : (
-                <BouncingBalls />
-              )}
-            </div>
+            <div>{sdnodBalance}</div>
           </div>
           <div className="flex items-center">
             <p className="mr-1">$DNOD:</p>
-            <div>
-              {balances[1] ? (
-                Number(formatUnits(balances[1].result, 18)).toFixed(2)
-              ) : (
-                <BouncingBalls />
-              )}
-            </div>
+            <div>{dnodBalance}</div>
           </div>
         </div>
       </div>

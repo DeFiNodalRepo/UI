@@ -1,7 +1,5 @@
 import { useReadContracts, useAccount } from "wagmi"
-import { formatUnits, erc20Abi } from "viem"
 import { allowedChains } from "../../constants/sideWide"
-import { web3Addresses } from "../../constants/sideWide"
 
 type BalanceProps = {
   address?: `0x${string}`
@@ -15,19 +13,34 @@ function useGetBalance(balanceConfig: BalanceProps) {
   const { address: userAddress, chainId } = useAccount()
 
   let connectedWallet
+  console.log(balanceConfig)
+
+  let balanceResult = {}
+  let balanceMap = []
+  balanceConfig.map((token) => {
+    balanceResult[token.id] = { result: 0n, status: "failure" }
+    balanceMap.push(token.id)
+  })
+
+  console.log(balanceResult)
+  console.log(balanceMap)
 
   let defaultBalances = [
     {
       result: 0n,
+      status: "failure",
     },
     {
       result: 0n,
+      status: "failure",
     },
     {
       result: 0n,
+      status: "failure",
     },
     {
       result: 0n,
+      status: "failure",
     },
   ]
 
@@ -42,19 +55,28 @@ function useGetBalance(balanceConfig: BalanceProps) {
       refetchOnWindowFocus: true,
     },
   })
-
-  // console.log(data);
-
-  if (!chainId || !allowedChains.includes(chainId)) {
-    connectedWallet = false
-    balances = defaultBalances
-    return { balances, refetch }
+  if (data) {
+    balanceMap.map((item, i) => {
+      balanceResult[item] = data[i]
+    })
   }
 
-  if (chainId && data && data.length > 0) {
-    balances = data
-  }
-  return { balances, refetch }
+  console.log(balanceResult)
+
+  console.log(chainId, allowedChains.includes(chainId))
+
+  console.log(data)
+  balances = data ? data : defaultBalances
+  // if (!allowedChains.includes(chainId)) {
+  //   connectedWallet = false
+  //   balances = defaultBalances
+  //   return { balances, refetch }
+  // }
+
+  // if (chainId && data && data.length > 0) {
+  //   balances = data
+  // }
+  return { balanceResult, refetch }
 }
 
 export default useGetBalance
