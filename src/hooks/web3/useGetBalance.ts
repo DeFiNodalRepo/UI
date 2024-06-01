@@ -13,7 +13,6 @@ function useGetBalance(balanceConfig: BalanceProps) {
   const { address: userAddress, chainId } = useAccount()
 
   let connectedWallet
-  console.log(balanceConfig)
 
   let balanceResult = {}
   let balanceMap = []
@@ -21,28 +20,6 @@ function useGetBalance(balanceConfig: BalanceProps) {
     balanceResult[token.id] = { result: 0n, status: "failure" }
     balanceMap.push(token.id)
   })
-
-  console.log(balanceResult)
-  console.log(balanceMap)
-
-  let defaultBalances = [
-    {
-      result: 0n,
-      status: "failure",
-    },
-    {
-      result: 0n,
-      status: "failure",
-    },
-    {
-      result: 0n,
-      status: "failure",
-    },
-    {
-      result: 0n,
-      status: "failure",
-    },
-  ]
 
   const isEnable = !!userAddress && !connectedWallet
 
@@ -61,21 +38,6 @@ function useGetBalance(balanceConfig: BalanceProps) {
     })
   }
 
-  console.log(balanceResult)
-
-  console.log(chainId, allowedChains.includes(chainId))
-
-  console.log(data)
-  balances = data ? data : defaultBalances
-  // if (!allowedChains.includes(chainId)) {
-  //   connectedWallet = false
-  //   balances = defaultBalances
-  //   return { balances, refetch }
-  // }
-
-  // if (chainId && data && data.length > 0) {
-  //   balances = data
-  // }
   return { balanceResult, refetch }
 }
 
