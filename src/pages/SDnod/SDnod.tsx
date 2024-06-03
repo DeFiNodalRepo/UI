@@ -3,32 +3,32 @@
 // Todo Simulate contract 1 to 0.995 if no simulation is found
 // Todo note in front end when chain is down
 
-import DefaultLayout from "../../layout/DefaultLayout";
-import { useState, useCallback, useEffect } from "react";
-import { RadioGroup } from "@headlessui/react";
-import { CheckCircleIcon } from "@heroicons/react/20/solid";
-import { collateralSelection } from "../../constants/sdnod";
+import DefaultLayout from "../../layout/DefaultLayout"
+import { useState, useCallback, useEffect } from "react"
+import { RadioGroup } from "@headlessui/react"
+import { CheckCircleIcon } from "@heroicons/react/20/solid"
+import { collateralSelection } from "../../constants/sdnod"
 import {
   useSimulateContract,
   useReadContract,
   useReadContracts,
   useWriteContract,
   useWaitForTransactionReceipt,
-} from "wagmi";
-import CollSdnodABI from "../../abi/STBalancer.json";
+} from "wagmi"
+import CollSdnodABI from "../../abi/STBalancer.json"
 import {
   formatUnits,
   parseUnits,
   erc20Abi,
   numberToHex,
   maxUint256,
-} from "viem";
-import useGetBalance from "../../hooks/web3/useGetBalance";
-import { sDNODAddress } from "../../constants/sdnod";
-import BouncingBalls from "../../ui/bouncingBalls";
+} from "viem"
+import useGetBalance from "../../hooks/web3/useGetBalance"
+import { sDNODAddress } from "../../constants/sdnod"
+import BouncingBalls from "../../ui/bouncingBalls"
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(" ")
 }
 
 function SDnod({ chain, chainId, userAddress }: any) {
@@ -38,36 +38,38 @@ function SDnod({ chain, chainId, userAddress }: any) {
       abi: erc20Abi,
       functionName: "balanceOf",
       args: [userAddress],
+      id: "sdnod",
     },
-  ] as const;
-  const maxAllowance = numberToHex(maxUint256);
+  ] as const
+  const maxAllowance = numberToHex(maxUint256)
 
-  let collateralsAvailable;
+  let collateralsAvailable
 
   if (chainId !== 1337 || !chainId) {
-    collateralsAvailable = collateralSelection[1];
+    collateralsAvailable = collateralSelection[1]
   } else {
-    collateralsAvailable = collateralSelection[chainId];
+    collateralsAvailable = collateralSelection[chainId]
   }
-  const [isMintClicked, setIsMintClicked] = useState(false);
-  const [isRedeemClicked, setIsRedeemClicked] = useState(false);
+  const [isMintClicked, setIsMintClicked] = useState(false)
+  const [isRedeemClicked, setIsRedeemClicked] = useState(false)
   const [selectedCollateral, setSelectedCollateral] = useState(
     collateralsAvailable[0]
-  );
-  const [inputValue, setInputValue] = useState("1");
+  )
+  const [inputValue, setInputValue] = useState("1")
 
-  const { data: writeHash, isPending, writeContract } = useWriteContract();
+  const { data: writeHash, isPending, writeContract } = useWriteContract()
 
-  const { balances: sdnodBalance, refetch: refetchSDnod } =
-    useGetBalance(sDnodBalanceConfig);
+  const { balanceResult, refetch: refetchSDnod } =
+    useGetBalance("erc20Platform")
 
   // let sdnodUserBalance = 0;
 
-  let sdnodUserBalance = sdnodBalance[0] ? (
-    Number(formatUnits(sdnodBalance[0].result, 18)).toFixed(2)
-  ) : (
-    <BouncingBalls />
-  );
+  let sdnodBalance =
+    balanceResult.sdnod.status === "success" ? (
+      Number(formatUnits(balanceResult.sdnod.result, 18)).toFixed(2)
+    ) : (
+      <BouncingBalls />
+    )
 
   // Allowances read
   const mintAllowance = useReadContract({
@@ -76,7 +78,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
     functionName: "allowance",
     args: [userAddress, "0xb0e77224e214e902dE434b51125a775F6339F6C9"],
     account: userAddress,
-  });
+  })
 
   const redeemAllowance = useReadContract({
     abi: erc20Abi,
@@ -84,38 +86,36 @@ function SDnod({ chain, chainId, userAddress }: any) {
     functionName: "allowance",
     args: [userAddress, "0xb0e77224e214e902dE434b51125a775F6339F6C9"],
     account: userAddress,
-  });
-
-  console.log(erc20Abi);
+  })
 
   const balancesConfig = {
     abi: erc20Abi,
     functionName: "balanceOf",
     args: [userAddress],
-  };
+  }
 
-  let balancesToGet = [];
+  let balancesToGet = []
 
   collateralsAvailable.map((collateral) => {
     balancesToGet.push({
       address: collateral.address,
       ...balancesConfig,
-    });
-  });
+    })
+  })
 
   const { data, refetch } = useReadContracts({
     contracts: balancesToGet,
-  });
+  })
 
-  console.log(data);
+  console.log(data)
 
   // Refetching balance when there is change in the writehash
   useEffect(() => {
-    refetch();
-    refetchSDnod();
-  }, [writeHash]);
+    refetch()
+    refetchSDnod()
+  }, [writeHash])
 
-  let collWithBalances = [];
+  let collWithBalances = []
 
   if (data) {
     data.map((balance: any, i) => {
@@ -126,57 +126,55 @@ function SDnod({ chain, chainId, userAddress }: any) {
             balance.result,
             collateralsAvailable[i].numberOfDecimals
           ),
-        });
+        })
       } else {
         // Correctly handle the case where balance.result is undefined
-        console.warn(
-          `Balance result is undefined for collateral at index ${i}`
-        );
+        console.warn(`Balance result is undefined for collateral at index ${i}`)
         collWithBalances.push({
           ...collateralsAvailable[i],
           balance: "0", // Default value or handle as needed
-        });
+        })
       }
-    });
+    })
   } else {
     // Handle the case where data is not available
-    collWithBalances = collateralsAvailable;
+    collWithBalances = collateralsAvailable
   }
 
   const handleMintClick = useCallback(() => {
-    setIsMintClicked(true);
-    setIsRedeemClicked(false);
-  }, []);
+    setIsMintClicked(true)
+    setIsRedeemClicked(false)
+  }, [])
 
   const handleRedeemClick = useCallback(() => {
-    setIsRedeemClicked(true);
-    setIsMintClicked(false);
-  }, []);
+    setIsRedeemClicked(true)
+    setIsMintClicked(false)
+  }, [])
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value === "") {
-      setInputValue("1");
+      setInputValue("1")
     } else {
-      setTimeout(() => setInputValue(event.target.value), 2000);
+      setTimeout(() => setInputValue(event.target.value), 2000)
     }
-  };
+  }
 
   const handleClearInput = () => {
-    setInputValue("");
-  };
+    setInputValue("")
+  }
 
-  let balanceCheck;
+  let balanceCheck
 
   collWithBalances.map((coll) => {
     if (coll.address === selectedCollateral.address) {
       if (coll.balance < inputValue) {
-        balanceCheck = <p>You do not have enough balance</p>;
-        console.log(coll.balance);
+        balanceCheck = <p>You do not have enough balance</p>
+        console.log(coll.balance)
       }
     }
-  });
+  })
 
-  const buttonSelected = isMintClicked ? "Mint" : "Redeem";
+  const buttonSelected = isMintClicked ? "Mint" : "Redeem"
 
   const simulateResult = useSimulateContract({
     abi: CollSdnodABI,
@@ -193,9 +191,9 @@ function SDnod({ chain, chainId, userAddress }: any) {
       refetchOnWindowFocus: false,
       retry: false,
     },
-  });
+  })
 
-  let renderedSimulatedResult;
+  let renderedSimulatedResult
   if (
     inputValue > 10 &&
     simulateResult &&
@@ -206,15 +204,15 @@ function SDnod({ chain, chainId, userAddress }: any) {
       <span className="text-bold">
         You will receive {formatUnits(simulateResult.data.result, 18)} sDNOD
       </span>
-    );
+    )
   } else {
     renderedSimulatedResult = (
       <div>The amount should be higher than 10 units</div>
-    );
+    )
   }
 
   async function handleTransactionSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+    e.preventDefault()
 
     if (isMintClicked) {
       if (
@@ -226,7 +224,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
           address: selectedCollateral.address,
           functionName: "approve",
           args: ["0xb0e77224e214e902dE434b51125a775F6339F6C9", maxAllowance],
-        });
+        })
       }
       const tx = await writeContract({
         abi: CollSdnodABI,
@@ -240,7 +238,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
           ),
           0,
         ],
-      });
+      })
       // handleClearInput();
     } else {
       if (
@@ -252,7 +250,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
           address: "0xb0e77224e214e902dE434b51125a775F6339F6C9",
           functionName: "approve",
           args: ["0xb0e77224e214e902dE434b51125a775F6339F6C9", maxAllowance],
-        });
+        })
       }
       const tx = await writeContract({
         abi: CollSdnodABI,
@@ -263,14 +261,14 @@ function SDnod({ chain, chainId, userAddress }: any) {
           parseUnits(inputValue.toString(), 18),
           0,
         ],
-      });
+      })
     }
   }
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
       hash: writeHash,
-    });
+    })
 
   return (
     <DefaultLayout>
@@ -300,7 +298,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
           <span className="bg-main w-full rounded-md shadow-sm">
             <button
               type="button"
-              className={`relative h-16 w-1/2 flex-1 rounded-l-md border-main  px-3 py-2 text-xl font-semibold shadow-sm ring-2 ring-inset ring-main  focus:z-10 ${
+              className={`border-main ring-main relative h-16 w-1/2 flex-1  rounded-l-md px-3 py-2 text-xl font-semibold shadow-sm ring-2 ring-inset  focus:z-10 ${
                 isMintClicked ? "bg-red-500" : ""
               }`}
               onClick={handleMintClick}
@@ -310,7 +308,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
 
             <button
               type="button"
-              className={`relative h-16 w-1/2 rounded-r-md  px-3 py-2 text-xl font-semibold ring-2 ring-inset ring-main  focus:z-10 ${
+              className={`ring-main relative h-16 w-1/2  rounded-r-md px-3 py-2 text-xl font-semibold ring-2 ring-inset  focus:z-10 ${
                 isRedeemClicked ? "bg-red-500" : ""
               }`}
               onClick={handleRedeemClick}
@@ -333,7 +331,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
                   classNames(
                     checked ? "border-transparent" : "border-main",
                     active ? "border-indigo-600 ring-2 ring-indigo-600" : "",
-                    "relative flex cursor-pointer rounded-lg border bg-main p-4 shadow-sm focus:outline-none min-w-64"
+                    "bg-main relative flex min-w-64 cursor-pointer rounded-lg border p-4 shadow-sm focus:outline-none"
                   )
                 }
               >
@@ -397,13 +395,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
               <div className="w-full sm:max-w-xs">
                 <div className="flex items-center">
                   <p className="mr-1">Your $SDNOD balance:</p>
-                  <div>
-                    {sdnodBalance[0] ? (
-                      Number(formatUnits(sdnodBalance[0].result, 18)).toFixed(2)
-                    ) : (
-                      <BouncingBalls />
-                    )}
-                  </div>
+                  <div>{sdnodBalance}</div>
                 </div>
 
                 <label htmlFor="amount">
@@ -444,7 +436,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
         </div>
       </div>
     </DefaultLayout>
-  );
+  )
 }
 
-export default SDnod;
+export default SDnod

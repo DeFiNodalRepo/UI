@@ -20,32 +20,13 @@ function FairLaunchSwap() {
   const maxAllowance = numberToHex(maxUint256)
   const { address: userAddress, chainId } = useAccount()
 
-  const balanceConfig = [
-    {
-      address: web3Addresses.sdnod,
-      abi: erc20Abi,
-      functionName: "balanceOf",
-      args: [userAddress],
-      id: "sdnod",
-    },
-    {
-      address: web3Addresses.dnod,
-      abi: erc20Abi,
-      functionName: "balanceOf",
-      args: [userAddress],
-      id: "dnod",
-    },
-  ] as const
-
   const { data: writeHash, isPending, writeContract } = useWriteContract()
 
-  const { balanceResult, refetch } = useGetBalance(balanceConfig)
+  const { balanceResult, refetch } = useGetBalance("erc20Platform")
 
   useEffect(() => {
     refetch()
   }, [writeHash])
-
-  console.log(maxAllowance)
 
   const mintAllowance = useReadContract({
     abi: erc20Abi,
@@ -55,14 +36,10 @@ function FairLaunchSwap() {
     account: userAddress,
   })
 
-  // console.log("mint allow", mintAllowance.data)
-
   const DNODAmmount = inputValue / 0.1
 
   async function handleGetDNOD(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    // console.log(mintAllowance.data);
-    // console.log(parseUnits(inputValue.toString(), 18));
 
     if (mintAllowance.data < parseUnits(inputValue.toString(), 18)) {
       const txAllowance = await writeContract({
@@ -93,8 +70,6 @@ function FairLaunchSwap() {
     ) : (
       <BouncingBalls />
     )
-
-  // console.log(balances)
 
   return (
     <form

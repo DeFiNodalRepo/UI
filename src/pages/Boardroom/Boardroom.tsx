@@ -4,57 +4,56 @@ import TierCards from "./TierCards"
 import BoardroomStats from "./BoardroomStats"
 import BoardroomHistory from "./BoardroomHistory"
 import { useAccount } from "wagmi"
-import { web3Addresses } from "../../constants/sideWide"
+import {
+  allowedChains,
+  web3Addresses,
+  web3Addresses2,
+} from "../../constants/sideWide"
 import { erc20Abi, formatUnits } from "viem"
 import useGetBalance from "../../hooks/web3/useGetBalance"
 import BouncingBalls from "../../ui/bouncingBalls"
 import BRstats from "../../abi/BRManagement.json"
 import BRBalanceNotification from "./BRBalanceNotification"
+import { erc20Config } from "../../constants/balancesConfig"
 
 function Boardroom() {
-  const { address: userAddress } = useAccount()
+  const { address: userAddress, chainId } = useAccount()
 
-  const dnodBalanceConfig = [
+  let currentChainId = 1
+  if (!chainId) {
+    currentChainId = allowedChains[0]
+  } else {
+    currentChainId = chainId
+  }
+
+  const totalBoardroomBalance = [
     {
-      address: web3Addresses.dnod,
-      abi: erc20Abi,
-      functionName: "balanceOf",
-      args: [userAddress],
-    },
-  ] as const
-
-  const { balances: dnodBalance, refetch: userDnodBalance } =
-    useGetBalance(dnodBalanceConfig)
-
-  const availableUserDnodBalance = dnodBalance[0] ? (
-    Number(formatUnits(dnodBalance[0].result, 18)).toFixed(2)
-  ) : (
-    <BouncingBalls />
-  )
-
-  const dnodTotalUserBalanceConfig = [
-    {
-      address: web3Addresses.boardroomAddress,
+      address: web3Addresses2[currentChainId]["boardroomAddress"],
       abi: BRstats,
       functionName: "getTotalDeposits",
       args: [],
+      id: "totalDnod",
     },
   ] as const
 
-  const {
-    balances: totalUserDnodBalance,
-    refetch: totalUserDnodBalanceRefetch,
-  } = useGetBalance(dnodTotalUserBalanceConfig)
-
-  const totalUserDnodBalanceStat = totalUserDnodBalance[0] ? (
-    Number(formatUnits(totalUserDnodBalance[0].result, 18)).toFixed(2)
-  ) : (
-    <BouncingBalls />
+  const { balanceResult, refetch: refetchUserDnodBalance } = useGetBalance(
+    "erc20Platform",
+    totalBoardroomBalance
   )
 
-  console.log(totalUserDnodBalance)
+  const availableUserDnodBalance =
+    balanceResult.dnod.status === "success" ? (
+      Number(formatUnits(balanceResult.dnod.result, 18)).toFixed(2)
+    ) : (
+      <BouncingBalls />
+    )
 
-  // console.log(totalUserDnodBalance[0].result);
+  const totalUserDnodBalanceStat =
+    balanceResult.totalDnod.status === "success" ? (
+      Number(formatUnits(balanceResult.totalDnod.result, 18)).toFixed(2)
+    ) : (
+      <BouncingBalls />
+    )
 
   return (
     <DefaultLayout>
