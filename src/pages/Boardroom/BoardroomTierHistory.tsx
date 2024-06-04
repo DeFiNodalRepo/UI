@@ -5,11 +5,12 @@ const tierHistory = [
     expiryDate: "kjhkjhkjh",
     amountStacked: 9878,
     unlockable: false,
-    tierId: 45646,
+    tierId: 1,
     tierAllocPoint: 5675,
     withdrawn: false,
     unlockRate: 5,
     unlockFeeLimit: 12,
+    index: 1212, // index of getAllDepositInfo
   },
   {
     dateStacked: "kjhjkh",
@@ -17,7 +18,7 @@ const tierHistory = [
     expiryDate: "kjhkjhkjh",
     amountStacked: 9878,
     unlockable: false,
-    tierId: 45646,
+    tierId: 1,
     tierAllocPoint: 5675,
     withdrawn: false,
     unlockRate: 5,

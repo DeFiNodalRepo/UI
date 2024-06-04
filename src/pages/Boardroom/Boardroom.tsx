@@ -58,6 +58,7 @@ function Boardroom() {
     )
 
   console.log(pasrsedAvailableUserDnodBalance > 50)
+  console.log("first")
 
   return (
     <DefaultLayout>

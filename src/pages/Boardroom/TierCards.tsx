@@ -1,6 +1,6 @@
 // Todo: Check dnod balance and disable the lock button, check amount and if dnod balance is less than the amount disable
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import BoardroomABI from "../../abi/BRLogic.json"
 import { useErc20Allownce } from "../../hooks/web3/useErc20Allowance"
 import { web3Addresses } from "../../constants/sideWide"
@@ -8,7 +8,7 @@ import { numberToHex, parseUnits, maxUint256, erc20Abi } from "viem"
 import { useAccount, useReadContract, useWriteContract } from "wagmi"
 import BRBalanceNotification from "./BRBalanceNotification"
 
-function TierCards({ availableUserDnodBalance }) {
+function TierCards({ availableUserDnodBalance, refetchUserDnodBalance }) {
   const [tier, setTier] = useState(0)
   const [amount, setAmount] = useState("")
 
@@ -20,12 +20,6 @@ function TierCards({ availableUserDnodBalance }) {
     writeContract,
     writeContractAsync: allowanceWriteContractAsync,
   } = useWriteContract()
-  const { isLoading, isFetching, isSuccess, isError, allowance, refetch } =
-    useErc20Allownce({
-      tokenAddress: web3Addresses.dnod,
-      allowanceAddress: web3Addresses.boardroomContractAddress,
-      enabled: true,
-    })
 
   const btnDisabled = availableUserDnodBalance < 50 ? true : false
 
@@ -70,6 +64,10 @@ function TierCards({ availableUserDnodBalance }) {
       args: [tier, parsedAmount],
     })
   }
+
+  useEffect(() => {
+    refetchUserDnodBalance()
+  }, [writeHash])
 
   const handleButtonClick = async (days) => {
     setTier(days)
@@ -156,6 +154,7 @@ function TierCards({ availableUserDnodBalance }) {
                   type="text"
                   className="text-md mb-4 mt-4 h-10 w-full rounded-xl bg-slate-600 pl-4 text-white"
                   placeholder="Add DNOD amount"
+                  onChange={handleDnodStackedAmount}
                 />
                 <button
                   className="border-1 h-10 rounded-xl border-green-700 bg-green-500 text-2xl text-white dark:text-white"
@@ -193,6 +192,7 @@ function TierCards({ availableUserDnodBalance }) {
                   type="text"
                   className="text-md mb-4 mt-4 h-10 w-full rounded-xl bg-slate-600 pl-4 text-white"
                   placeholder="Add DNOD amount"
+                  onChange={handleDnodStackedAmount}
                 />
                 <button
                   className="border-1 h-10 rounded-xl border-green-700 bg-blue-500 text-2xl text-cyan-300 dark:text-white"
@@ -230,6 +230,7 @@ function TierCards({ availableUserDnodBalance }) {
                   type="text"
                   className="text-md mb-4 mt-4 h-10 w-full rounded-xl bg-slate-600 pl-4 text-white"
                   placeholder="Add DNOD amount"
+                  onChange={handleDnodStackedAmount}
                 />
                 <button
                   className="border-1 h-10 rounded-xl border-green-700 bg-yellow-500 text-2xl text-white dark:text-white"
