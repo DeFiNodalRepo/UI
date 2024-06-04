@@ -15,6 +15,7 @@ import BouncingBalls from "../../ui/bouncingBalls"
 import BRstats from "../../abi/BRManagement.json"
 import BRBalanceNotification from "./BRBalanceNotification"
 import { erc20Config } from "../../constants/balancesConfig"
+import TierCards2 from "./TierCards2"
 
 function Boardroom() {
   const { address: userAddress, chainId } = useAccount()
@@ -72,6 +73,11 @@ function Boardroom() {
       ) : null}
 
       <TierCards
+        availableUserDnodBalance={pasrsedAvailableUserDnodBalance}
+        refetchUserDnodBalance={refetchUserDnodBalance}
+        currentChainId={currentChainId}
+      />
+      <TierCards2
         availableUserDnodBalance={pasrsedAvailableUserDnodBalance}
         refetchUserDnodBalance={refetchUserDnodBalance}
         currentChainId={currentChainId}

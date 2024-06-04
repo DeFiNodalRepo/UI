@@ -29,9 +29,7 @@ const tierDataArray = [
   },
 ]
 
-const tierData = 
-
-export default function TierCardUi() {
+export default function TierCardUi({ handleDnodStackedAmount, btnDisabled }) {
   return (
     <div className="card-main relative my-4 w-64 rounded-3xl px-6 py-6 shadow-xl">
       <div className="absolute -top-6 left-4 flex h-16 w-16 items-center justify-center rounded-full bg-pink-500 px-4 py-4 text-white shadow-xl">
