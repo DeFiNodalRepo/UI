@@ -32,8 +32,8 @@ function useGetBalance(readConfig = "erc20Platform", additionalConfig = []) {
   ////////////////////////////////////
   // console.log(web3Addresses2[chainId])
   // console.log(chainId)
-  let currentChainId = 1
-  if (!chainId) {
+  let currentChainId = 1337
+  if (!chainId || !allowedChains.includes(chainId)) {
     currentChainId = allowedChains[0]
   } else {
     currentChainId = chainId

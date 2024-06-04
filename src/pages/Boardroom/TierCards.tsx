@@ -42,13 +42,13 @@ function TierCards({ availableUserDnodBalance, refetchUserDnodBalance }) {
     account: userAddress,
   })
 
-  // console.log("mintAllowance", mintAllowance)
+  console.log("mintAllowance", mintAllowance)
 
   const checkAllowance = async () => {
     if (mintAllowance.data < parseUnits(amount.toString(), 18)) {
       await allowanceWriteContractAsync({
         abi: erc20Abi,
-        address: web3Addresses.sdnod,
+        address: web3Addresses.dnod,
         functionName: "approve",
         args: [web3Addresses.boardroomAddress, maxAllowance],
       })
@@ -63,6 +63,7 @@ function TierCards({ availableUserDnodBalance, refetchUserDnodBalance }) {
       functionName: "deposit",
       args: [tier, parsedAmount],
     })
+    console.log("write")
   }
 
   useEffect(() => {
@@ -73,11 +74,11 @@ function TierCards({ availableUserDnodBalance, refetchUserDnodBalance }) {
     setTier(days)
 
     await checkAllowance()
-    await writeTx()
+    writeTx()
   }
 
   // console.log(amount);
-  // console.log(BoardroomABI);
+  console.log(BoardroomABI)
   // console.log(allowance, isFetching);
   // console.log(formatUnits(allowance, 18));
 
@@ -85,6 +86,9 @@ function TierCards({ availableUserDnodBalance, refetchUserDnodBalance }) {
     <>
       {availableUserDnodBalance < amount ? (
         <BRBalanceNotification text="You have insufficient DNOD balance" />
+      ) : null}
+      {isPending ? (
+        <BRBalanceNotification text="Transaction pending, please wait" />
       ) : null}
       <div className="flex items-center justify-center">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4">

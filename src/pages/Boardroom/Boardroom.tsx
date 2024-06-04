@@ -19,8 +19,8 @@ import { erc20Config } from "../../constants/balancesConfig"
 function Boardroom() {
   const { address: userAddress, chainId } = useAccount()
 
-  let currentChainId = 1
-  if (!chainId) {
+  let currentChainId = 1337
+  if (!chainId || !allowedChains.includes(chainId)) {
     currentChainId = allowedChains[0]
   } else {
     currentChainId = chainId
@@ -74,6 +74,7 @@ function Boardroom() {
       <TierCards
         availableUserDnodBalance={pasrsedAvailableUserDnodBalance}
         refetchUserDnodBalance={refetchUserDnodBalance}
+        currentChainId={currentChainId}
       />
       <BoardroomHistory />
     </DefaultLayout>
