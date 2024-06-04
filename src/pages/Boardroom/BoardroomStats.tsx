@@ -8,7 +8,7 @@ function BoardroomStats({ totalUsersDnodBalance, availableUserDnodBalance }) {
   return (
     <>
       <div className="my-10 flex items-center justify-center">
-        <div className="card-main flex justify-center rounded-3xl shadow-md">
+        <div className="card-main flex justify-center rounded-3xl shadow-xl">
           <div className="mx-10 grid grid-cols-1 gap-20 sm:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat) => (
               <div key={stat.name} className="px-4 py-6 sm:px-6 lg:px-8">
@@ -31,7 +31,7 @@ function BoardroomStats({ totalUsersDnodBalance, availableUserDnodBalance }) {
           {stats.map((item) => (
             <div
               key={item.name}
-              className="card-main overflow-hidden rounded-3xl px-4 py-5 shadow sm:p-6"
+              className="card-main overflow-hidden rounded-3xl px-4 py-5 shadow-xl sm:p-6"
             >
               <dt className="text-gray-500 truncate text-sm font-medium">
                 {item.name}

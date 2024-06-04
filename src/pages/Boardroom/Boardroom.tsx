@@ -48,12 +48,16 @@ function Boardroom() {
       <BouncingBalls />
     )
 
+  const pasrsedAvailableUserDnodBalance = parseFloat(availableUserDnodBalance)
+
   const totalUserDnodBalanceStat =
     balanceResult.totalDnod.status === "success" ? (
       Number(formatUnits(balanceResult.totalDnod.result, 18)).toFixed(2)
     ) : (
       <BouncingBalls />
     )
+
+  console.log(pasrsedAvailableUserDnodBalance > 50)
 
   return (
     <DefaultLayout>
@@ -62,11 +66,14 @@ function Boardroom() {
         totalUsersDnodBalance={totalUserDnodBalanceStat}
         availableUserDnodBalance={availableUserDnodBalance}
       />
-      {availableUserDnodBalance < 50 ? (
+      {pasrsedAvailableUserDnodBalance < 50 ? (
         <BRBalanceNotification text="You need atleast 50 DNOD" />
       ) : null}
 
-      <TierCards availableUserDnodBalance={availableUserDnodBalance} />
+      <TierCards
+        availableUserDnodBalance={pasrsedAvailableUserDnodBalance}
+        refetchUserDnodBalance={refetchUserDnodBalance}
+      />
       <BoardroomHistory />
     </DefaultLayout>
   )

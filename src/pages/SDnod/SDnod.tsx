@@ -107,7 +107,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
     contracts: balancesToGet,
   })
 
-  console.log(data)
+  // console.log(data)
 
   // Refetching balance when there is change in the writehash
   useEffect(() => {
@@ -169,7 +169,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
     if (coll.address === selectedCollateral.address) {
       if (coll.balance < inputValue) {
         balanceCheck = <p>You do not have enough balance</p>
-        console.log(coll.balance)
+        // console.log(coll.balance)
       }
     }
   })

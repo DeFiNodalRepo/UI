@@ -20,7 +20,20 @@ function FairLaunchSwap() {
   const maxAllowance = numberToHex(maxUint256)
   const { address: userAddress, chainId } = useAccount()
 
-  const { data: writeHash, isPending, writeContract } = useWriteContract()
+  const {
+    data: writeHash,
+    isPending,
+    isSuccess,
+    writeContract,
+    writeContractAsync,
+  } = useWriteContract()
+
+  const {
+    data: writeHashAllowance,
+    isPending: allowancePending,
+    isSuccess: allowanceIsSuccess,
+    writeContractAsync: allowanceWriteContractAsync,
+  } = useWriteContract()
 
   const { balanceResult, refetch } = useGetBalance("erc20Platform")
 
@@ -38,23 +51,30 @@ function FairLaunchSwap() {
 
   const DNODAmmount = inputValue / 0.1
 
-  async function handleGetDNOD(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-
+  const checkAllowance = async () => {
     if (mintAllowance.data < parseUnits(inputValue.toString(), 18)) {
-      const txAllowance = await writeContract({
+      await allowanceWriteContractAsync({
         abi: erc20Abi,
         address: web3Addresses.sdnod,
         functionName: "approve",
         args: [web3Addresses.dnod, maxAllowance],
       })
     }
-    const writeTx = await writeContract({
+  }
+
+  const writeTx = async () => {
+    await writeContract({
       abi: dnodABI,
       address: web3Addresses.dnod,
       functionName: "exchange",
       args: [parseUnits(inputValue.toString(), 18)],
     })
+  }
+
+  async function handleGetDNOD(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    await checkAllowance()
+    await writeTx()
   }
 
   let sdnodBalance =
@@ -90,6 +110,7 @@ function FairLaunchSwap() {
         <button
           className="text-bold mt-4 w-5/6 rounded-xl bg-boxdark-2 px-4 py-4 text-white"
           type="submit"
+          disabled={isPending}
         >
           Get DNOD
         </button>

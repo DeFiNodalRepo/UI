@@ -75,12 +75,10 @@ function useGetBalance(readConfig = "erc20Platform", additionalConfig = []) {
 
   ///////////////////////////////////
 
-  console.log(balancesConfig)
-
   additionalConfig.map((item) => {
     balancesConfig.push(item)
   })
-  console.log(balancesConfig)
+
   let connectedWallet
 
   let balanceResult = {}
@@ -108,7 +106,7 @@ function useGetBalance(readConfig = "erc20Platform", additionalConfig = []) {
     },
   })
 
-  console.log(data)
+  // console.log(data)
 
   if (data) {
     balanceMap.map((item, i) => {

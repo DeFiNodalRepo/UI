@@ -5,7 +5,7 @@ import BoardroomABI from "../../abi/BRLogic.json"
 import { useErc20Allownce } from "../../hooks/web3/useErc20Allowance"
 import { web3Addresses } from "../../constants/sideWide"
 import { numberToHex, parseUnits, maxUint256, erc20Abi } from "viem"
-import { useWriteContract } from "wagmi"
+import { useAccount, useReadContract, useWriteContract } from "wagmi"
 import BRBalanceNotification from "./BRBalanceNotification"
 
 function TierCards({ availableUserDnodBalance }) {
@@ -13,7 +13,13 @@ function TierCards({ availableUserDnodBalance }) {
   const [amount, setAmount] = useState("")
 
   const maxAllowance = numberToHex(maxUint256)
-  const { data: writeHash, isPending, writeContract } = useWriteContract()
+  const { address: userAddress, chainId } = useAccount()
+  const {
+    data: writeHash,
+    isPending,
+    writeContract,
+    writeContractAsync: allowanceWriteContractAsync,
+  } = useWriteContract()
   const { isLoading, isFetching, isSuccess, isError, allowance, refetch } =
     useErc20Allownce({
       tokenAddress: web3Addresses.dnod,
@@ -32,31 +38,44 @@ function TierCards({ availableUserDnodBalance }) {
   //   console.log("write func");
   // }
 
+  let parsedAmount = parseUnits(amount.toString(), 18)
+
+  const mintAllowance = useReadContract({
+    abi: erc20Abi,
+    address: "0xb0e77224e214e902dE434b51125a775F6339F6C9",
+    functionName: "allowance",
+    args: [userAddress, web3Addresses.dnod],
+    account: userAddress,
+  })
+
+  // console.log("mintAllowance", mintAllowance)
+
+  const checkAllowance = async () => {
+    if (mintAllowance.data < parseUnits(amount.toString(), 18)) {
+      await allowanceWriteContractAsync({
+        abi: erc20Abi,
+        address: web3Addresses.sdnod,
+        functionName: "approve",
+        args: [web3Addresses.boardroomAddress, maxAllowance],
+      })
+      console.log(mintAllowance.data, amount)
+    }
+  }
+
+  const writeTx = async () => {
+    await writeContract({
+      abi: BoardroomABI,
+      address: web3Addresses.boardroomAddress,
+      functionName: "deposit",
+      args: [tier, parsedAmount],
+    })
+  }
+
   const handleButtonClick = async (days) => {
     setTier(days)
 
-    let parsedAmount = parseUnits(amount.toString(), 18)
-
-    if (!allowance || allowance < parsedAmount) {
-      const txAllowance = await writeContract({
-        abi: erc20Abi,
-        address: web3Addresses.dnod,
-        functionName: "approve",
-        args: [web3Addresses.boardroomContractAddress, maxAllowance],
-      })
-      // console.log(allowance, amount);
-    }
-    try {
-      const tx = await writeContract({
-        abi: BoardroomABI,
-        address: web3Addresses.boardroomContractAddress,
-        functionName: "deposit",
-        args: [tier, parsedAmount],
-      })
-      console.log("tx success") // Handle the transaction result as needed
-    } catch (error) {
-      console.error(error) // Handle any errors that occur during the transaction
-    }
+    await checkAllowance()
+    await writeTx()
   }
 
   // console.log(amount);
