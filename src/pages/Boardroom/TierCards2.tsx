@@ -42,6 +42,17 @@ function TierCards2({ availableUserDnodBalance, refetchUserDnodBalance }) {
   const [tier, setTier] = useState(0)
   const [amount, setAmount] = useState("")
 
+  ////////////////////////////
+  const [showHistory, setShowHistory] = useState([false, false, false, false])
+
+  const handleShowHistory = (index) => {
+    const newShowHistory = [...showHistory]
+    newShowHistory[index] = !newShowHistory[index]
+    console.log([...showHistory])
+    setShowHistory(newShowHistory)
+  }
+  ////////////////////////////////
+
   const maxAllowance = numberToHex(maxUint256)
   const { address: userAddress, chainId } = useAccount()
   const {

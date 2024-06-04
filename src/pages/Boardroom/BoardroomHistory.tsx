@@ -43,7 +43,7 @@ function BoardroomHistory() {
   const handleShowHistory = (index) => {
     const newShowHistory = [...showHistory]
     newShowHistory[index] = !newShowHistory[index]
-    console.log(newShowHistory)
+    console.log([...showHistory])
     setShowHistory(newShowHistory)
   }
 
