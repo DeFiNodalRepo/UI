@@ -37,9 +37,9 @@ function TierCards({ availableUserDnodBalance, refetchUserDnodBalance }) {
 
   const mintAllowance = useReadContract({
     abi: erc20Abi,
-    address: "0xb0e77224e214e902dE434b51125a775F6339F6C9",
+    address: web3Addresses.dnod,
     functionName: "allowance",
-    args: [userAddress, web3Addresses.dnod],
+    args: [userAddress, web3Addresses.boardroomAddress],
     account: userAddress,
   })
 
@@ -75,7 +75,7 @@ function TierCards({ availableUserDnodBalance, refetchUserDnodBalance }) {
     setTier(days)
 
     await checkAllowance()
-    writeTx()
+    await writeTx()
   }
 
   // console.log(amount);

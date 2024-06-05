@@ -66,7 +66,7 @@ function Boardroom() {
       <div>Boardroom</div>
       <BoardroomStats
         totalUsersDnodBalance={totalUserDnodBalanceStat}
-        availableUserDnodBalance={availableUserDnodBalance}
+        availableUserDnodBalance={pasrsedAvailableUserDnodBalance}
       />
       {pasrsedAvailableUserDnodBalance < 50 ? (
         <BRBalanceNotification text="You need atleast 50 DNOD" />
