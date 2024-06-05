@@ -1,7 +1,10 @@
 function BoardroomStats({ totalUsersDnodBalance, availableUserDnodBalance }) {
   const stats = [
     { name: "Total DNOD Staked", value: totalUsersDnodBalance },
-    { name: "Available DNOD Balance", value: availableUserDnodBalance },
+    {
+      name: "Available DNOD Balance",
+      value: availableUserDnodBalance,
+    },
     { name: "Total User DNOD Stacked", value: "3" },
   ]
 

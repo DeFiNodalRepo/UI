@@ -42,6 +42,8 @@ function Boardroom() {
     totalBoardroomBalance
   )
 
+  console.log(balanceResult.dnod)
+
   const availableUserDnodBalance =
     balanceResult.dnod.status === "success" ? (
       Number(formatUnits(balanceResult.dnod.result, 18)).toFixed(2)
@@ -66,7 +68,7 @@ function Boardroom() {
       <div>Boardroom</div>
       <BoardroomStats
         totalUsersDnodBalance={totalUserDnodBalanceStat}
-        availableUserDnodBalance={pasrsedAvailableUserDnodBalance}
+        availableUserDnodBalance={availableUserDnodBalance}
       />
       {pasrsedAvailableUserDnodBalance < 50 ? (
         <BRBalanceNotification text="You need atleast 50 DNOD" />

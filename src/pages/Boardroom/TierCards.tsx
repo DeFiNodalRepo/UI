@@ -1,4 +1,5 @@
 // Todo: Check dnod balance and disable the lock button, check amount and if dnod balance is less than the amount disable
+// Todo fix webbaddressess
 
 import { useEffect, useState } from "react"
 import BoardroomABI from "../../abi/BRLogic.json"
@@ -29,10 +30,6 @@ function TierCards({ availableUserDnodBalance, refetchUserDnodBalance }) {
     setTimeout(() => setAmount(e.target.value), 2000)
   }
 
-  // if (allowance && formatUnits(allowance, 18) < amount) {
-  //   console.log("write func");
-  // }
-
   let parsedAmount = parseUnits(amount.toString(), 18)
 
   const mintAllowance = useReadContract({
@@ -43,8 +40,6 @@ function TierCards({ availableUserDnodBalance, refetchUserDnodBalance }) {
     account: userAddress,
   })
 
-  console.log("mintAllowance", mintAllowance)
-
   const checkAllowance = async () => {
     if (mintAllowance.data < parseUnits(amount.toString(), 18)) {
       await allowanceWriteContractAsync({
@@ -53,7 +48,6 @@ function TierCards({ availableUserDnodBalance, refetchUserDnodBalance }) {
         functionName: "approve",
         args: [web3Addresses.boardroomAddress, maxAllowance],
       })
-      console.log(mintAllowance.data, amount)
     }
   }
 
@@ -64,12 +58,16 @@ function TierCards({ availableUserDnodBalance, refetchUserDnodBalance }) {
       functionName: "deposit",
       args: [tier, parsedAmount],
     })
-    console.log("write")
   }
 
   useEffect(() => {
     refetchUserDnodBalance()
   }, [writeHash])
+
+  // useEffect(() => {
+  //   checkAllowance()
+  //   writeTx()
+  // }, [tier])
 
   const handleButtonClick = async (days) => {
     setTier(days)
