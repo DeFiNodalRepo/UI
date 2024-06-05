@@ -1,4 +1,5 @@
-// Todo disable is no sDNOD balance
+// Todo notification when no sDNOD balance
+// Todo disable button when pending allowance
 
 import { useEffect, useState } from "react"
 import { useWriteContract, useAccount, useReadContract } from "wagmi"

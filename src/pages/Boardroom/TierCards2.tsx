@@ -40,7 +40,9 @@ const tierDataArray = [
 
 function TierCards2({ availableUserDnodBalance, refetchUserDnodBalance }) {
   const [tier, setTier] = useState(0)
-  const [amount, setAmount] = useState("")
+  const [amount, setAmount] = useState([0, 0, 0, 0])
+
+  const handleSetAmount = ()
 
   ////////////////////////////
   const [showHistory, setShowHistory] = useState([false, false, false, false])
