@@ -1,7 +1,6 @@
 // Todo Check why checkboxes are not checked when the input field is clicked
 // Todo: Do not allow minting if balance is less than zero or there is no value for inputValue
 // Todo Simulate contract 1 to 0.995 if no simulation is found
-// Todo note in front end when chain is down
 
 import DefaultLayout from "../../layout/DefaultLayout"
 import { useState, useCallback, useEffect } from "react"
@@ -159,9 +158,9 @@ function SDnod({ chain, chainId, userAddress }: any) {
     }
   }
 
-  const handleClearInput = () => {
-    setInputValue("")
-  }
+  // const handleClearInput = () => {
+  //   setInputValue("")
+  // }
 
   let balanceCheck
 
@@ -211,8 +210,15 @@ function SDnod({ chain, chainId, userAddress }: any) {
     )
   }
 
+  let btnSimulateStatus = false
+
+  if (simulateResult.status === "pending") {
+    btnSimulateStatus = true
+  }
+
   async function handleTransactionSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    console.log("btnclicked")
 
     if (isMintClicked) {
       if (
@@ -386,7 +392,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
 
       {/* Form Section */}
       <div className="flex items-center justify-center">
-        <div className="bg-main mt-8 w-1/2 px-6 py-5 shadow sm:rounded-lg">
+        <div className="bg-main mt-8 w-full rounded-lg px-6 py-5 shadow sm:w-1/2">
           <div className="px-4 py-2 sm:p-6">
             <form
               className="mt-5 sm:flex sm:items-center"
@@ -403,36 +409,41 @@ function SDnod({ chain, chainId, userAddress }: any) {
                     Amount to {isMintClicked ? "Mint" : "Redeem"}
                   </h3>
                 </label>
-                <input
-                  type="number"
-                  name="amount"
-                  id="amount"
-                  className="text-gray-900 ring-main block w-full rounded-md border-0 py-1.5 pl-2 text-black shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  placeholder="123"
-                  onChange={handleInputChange}
-                />
-              </div>
-              <button
-                type="submit"
-                disabled={isPending}
-                className={`mt-3 inline-flex w-full items-center justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:ml-3 sm:mt-0 sm:w-auto ${
-                  isPending
-                    ? "bg-gray-900"
-                    : "bg-indigo-600 hover:bg-indigo-500"
-                }`}
-              >
-                {buttonSelected}
-              </button>
-            </form>
-          </div>
-          {balanceCheck}
-          <p>
-            {isPending ? "Please confirm transaction in your wallet" : null}
-          </p>
+                <div className="flex flex-col items-center space-y-4 md:flex-row md:justify-center md:space-x-4 md:space-y-0">
+                  <input
+                    type="number"
+                    name="amount"
+                    id="amount"
+                    className="text-gray-900 ring-main block w-full rounded-md border-0 py-1.5 pl-2 text-black shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    placeholder="123"
+                    onChange={handleInputChange}
+                  />
 
-          {isConfirming && <div>Waiting for confirmation...</div>}
-          {isConfirmed && <div>Transaction confirmed.</div>}
-          {renderedSimulatedResult}
+                  <button
+                    type="submit"
+                    disabled={isPending || btnSimulateStatus || !chainId}
+                    className={`mt-3 inline-flex w-full items-center justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:ml-3 sm:mt-0 sm:w-auto ${
+                      isPending || btnSimulateStatus || !chainId
+                        ? "bg-indigo-400"
+                        : "bg-indigo-600 hover:bg-indigo-500"
+                    }`}
+                  >
+                    {buttonSelected}
+                  </button>
+                </div>
+              </div>
+            </form>
+            <div className="mt-6">
+              {balanceCheck}
+              <p>
+                {isPending ? "Please confirm transaction in your wallet" : null}
+              </p>
+
+              {isConfirming && <div>Waiting for confirmation...</div>}
+              {isConfirmed && <div>Transaction confirmed.</div>}
+              {renderedSimulatedResult}
+            </div>
+          </div>
         </div>
       </div>
     </DefaultLayout>
