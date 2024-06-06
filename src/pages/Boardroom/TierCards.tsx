@@ -68,7 +68,7 @@ function TierCards({ availableUserDnodBalance, refetchUserDnodBalance }) {
   //   checkAllowance()
   //   writeTx()
   // }, [tier])
-
+  console.log("tier", tier, "amount", amount)
   const handleButtonClick = async (days) => {
     setTier(days)
 

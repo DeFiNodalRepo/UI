@@ -79,11 +79,11 @@ function Boardroom() {
         refetchUserDnodBalance={refetchUserDnodBalance}
         currentChainId={currentChainId}
       />
-      {/* <TierCards2
+      <TierCards2
         availableUserDnodBalance={pasrsedAvailableUserDnodBalance}
         refetchUserDnodBalance={refetchUserDnodBalance}
         currentChainId={currentChainId}
-      /> */}
+      />
       <BoardroomHistory />
     </DefaultLayout>
   )

@@ -19,6 +19,7 @@ function FairLaunchSwap() {
   const [inputValue, setInputValue] = useState("")
 
   const maxAllowance = numberToHex(maxUint256)
+
   const { address: userAddress, chainId } = useAccount()
 
   const {
@@ -62,6 +63,8 @@ function FairLaunchSwap() {
       })
     }
   }
+
+  console.log(maxAllowance)
 
   const writeTx = async () => {
     await writeContract({
