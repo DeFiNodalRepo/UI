@@ -40,7 +40,7 @@ const tierDataArray = [
 
 function TierCards2({ availableUserDnodBalance, refetchUserDnodBalance }) {
   const [tier, setTier] = useState(0)
-  const [amount, setAmount] = useState("")
+  const [amount, setAmount] = useState(["", "", "", ""])
 
   // const handleSetAmount = ()
 
@@ -66,7 +66,7 @@ function TierCards2({ availableUserDnodBalance, refetchUserDnodBalance }) {
 
   const btnDisabled = availableUserDnodBalance < 50 ? true : false
 
-  const handleDnodStackedAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDnodStackedAmount = ({ e, index }) => {
     e.preventDefault()
     setTimeout(() => setAmount(e.target.value), 2000)
   }
@@ -122,7 +122,7 @@ function TierCards2({ availableUserDnodBalance, refetchUserDnodBalance }) {
   }
 
   // console.log(amount);
-  console.log(BoardroomABI)
+  // console.log(BoardroomABI)
   // console.log(allowance, isFetching);
   // console.log(formatUnits(allowance, 18));
 
@@ -168,7 +168,7 @@ function TierCards2({ availableUserDnodBalance, refetchUserDnodBalance }) {
               type="text"
               className="text-md mb-4 mt-4 h-10 w-full rounded-xl bg-slate-600 pl-4 text-white"
               placeholder="Add DNOD amount"
-              onChange={handleDnodStackedAmount}
+              onChange={(e) => handleDnodStackedAmount(e, index)}
             />
             <button
               className={`border-1 h-10 rounded-xl ${
