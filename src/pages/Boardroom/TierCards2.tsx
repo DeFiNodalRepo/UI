@@ -82,7 +82,7 @@ function TierCards2({ availableUserDnodBalance, refetchUserDnodBalance }) {
   //   console.log("write func");
   // }
 
-  let parsedAmount = parseUnits(amount.toString(), 18)
+  let parsedAmount = parseUnits(amount[0].toString(), 18)
 
   const mintAllowance = useReadContract({
     abi: erc20Abi,
@@ -175,7 +175,7 @@ function TierCards2({ availableUserDnodBalance, refetchUserDnodBalance }) {
               type="text"
               className="text-md mb-4 mt-4 h-10 w-full rounded-xl bg-slate-600 pl-4 text-white"
               placeholder="Add DNOD amount"
-              onChange={(e) => handleDnodStackedAmount(e, index)}
+              onChange={(e) => handleDnodStackedAmount({ e, index })}
             />
             <button
               className={`border-1 h-10 rounded-xl ${
