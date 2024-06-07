@@ -42,19 +42,6 @@ function TierCards2({ availableUserDnodBalance, refetchUserDnodBalance }) {
   const [tier, setTier] = useState(0)
   const [amount, setAmount] = useState([0, 0, 0, 0])
 
-  // const handleSetAmount = ()
-
-  ////////////////////////////
-  const [showHistory, setShowHistory] = useState([false, false, false, false])
-
-  const handleShowHistory = (index) => {
-    const newShowHistory = [...showHistory]
-    newShowHistory[index] = !newShowHistory[index]
-    console.log([...showHistory])
-    setShowHistory(newShowHistory)
-  }
-  ////////////////////////////////
-
   const maxAllowance = numberToHex(maxUint256)
   const { address: userAddress, chainId } = useAccount()
   const {
@@ -68,21 +55,15 @@ function TierCards2({ availableUserDnodBalance, refetchUserDnodBalance }) {
 
   const handleDnodStackedAmount = ({ e, index }) => {
     e.preventDefault()
-    const newAmount = e.target.value
-    let indexedValue = []
-    let indexedValue[index] = newAmount
-
-
-    // [...amount]
-    console.log("amount", indexedValue[index])
-    setTimeout(() => setAmount(e.target.value), 2000)
+    const newValue = e.target.value
+    const updatedAmount = [...amount]
+    updatedAmount[index] = newValue
+    console.log("updatedAmount", updatedAmount)
+    console.log("amount at index", index, " ", updatedAmount[index])
+    setAmount(updatedAmount)
   }
 
-  // if (allowance && formatUnits(allowance, 18) < amount) {
-  //   console.log("write func");
-  // }
-
-  let parsedAmount = parseUnits(amount[0].toString(), 18)
+  let parsedAmount = parseUnits(amount[tier].toString(), 18)
 
   const mintAllowance = useReadContract({
     abi: erc20Abi,
@@ -92,46 +73,37 @@ function TierCards2({ availableUserDnodBalance, refetchUserDnodBalance }) {
     account: userAddress,
   })
 
-  console.log("mintAllowance", mintAllowance)
-
   const checkAllowance = async () => {
-    if (mintAllowance.data < parseUnits(amount[0].toString(), 18)) {
+    if (mintAllowance.data < parseUnits(amount[tier].toString(), 18)) {
       await allowanceWriteContractAsync({
         abi: erc20Abi,
         address: web3Addresses.dnod,
         functionName: "approve",
         args: [web3Addresses.boardroomAddress, maxAllowance],
       })
-      console.log(mintAllowance.data, amount)
     }
   }
 
-  const writeTx = async () => {
+  const writeTx = async (tier, parsedAmount) => {
     await writeContract({
       abi: BoardroomABI,
       address: web3Addresses.boardroomAddress,
       functionName: "deposit",
       args: [tier, parsedAmount],
     })
-    console.log("write")
   }
 
   useEffect(() => {
     refetchUserDnodBalance()
   }, [writeHash])
 
-  const handleButtonClick = async (days) => {
-    setTier(days)
-
+  const handleButtonClick = async (tier) => {
+    await setTier(tier)
+    console.log("tier", tier)
     await checkAllowance()
-    writeTx()
-    console.log(days)
+    const currentParsedAmount = parseUnits(amount[tier].toString(), 18) // Assuming `amount` is an array and `tier` is the index
+    writeTx(tier, currentParsedAmount) // Use the recalculated `parsedAmount`
   }
-
-  // console.log(amount);
-  // console.log(BoardroomABI)
-  // console.log(allowance, isFetching);
-  // console.log(formatUnits(allowance, 18));
 
   const renderedCards = tierDataArray.map((item, index) => {
     return (

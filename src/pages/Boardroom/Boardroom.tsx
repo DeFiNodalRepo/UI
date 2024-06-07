@@ -42,8 +42,6 @@ function Boardroom() {
     totalBoardroomBalance
   )
 
-  console.log(balanceResult.dnod)
-
   const availableUserDnodBalance =
     balanceResult.dnod.status === "success" ? (
       Number(formatUnits(balanceResult.dnod.result, 18)).toFixed(2)
@@ -59,9 +57,6 @@ function Boardroom() {
     ) : (
       <BouncingBalls />
     )
-
-  console.log(pasrsedAvailableUserDnodBalance > 50)
-  console.log("first")
 
   return (
     <DefaultLayout>

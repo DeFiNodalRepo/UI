@@ -68,18 +68,13 @@ function TierCards({ availableUserDnodBalance, refetchUserDnodBalance }) {
   //   checkAllowance()
   //   writeTx()
   // }, [tier])
-  console.log("tier", tier, "amount", amount)
+
   const handleButtonClick = async (days) => {
     setTier(days)
 
     await checkAllowance()
     await writeTx()
   }
-
-  // console.log(amount);
-  console.log(BoardroomABI)
-  // console.log(allowance, isFetching);
-  // console.log(formatUnits(allowance, 18));
 
   return (
     <>
