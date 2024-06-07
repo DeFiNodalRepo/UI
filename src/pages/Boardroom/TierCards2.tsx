@@ -40,7 +40,7 @@ const tierDataArray = [
 
 function TierCards2({ availableUserDnodBalance, refetchUserDnodBalance }) {
   const [tier, setTier] = useState(0)
-  const [amount, setAmount] = useState(["", "", "", ""])
+  const [amount, setAmount] = useState([0, 0, 0, 0])
 
   // const handleSetAmount = ()
 
@@ -68,6 +68,13 @@ function TierCards2({ availableUserDnodBalance, refetchUserDnodBalance }) {
 
   const handleDnodStackedAmount = ({ e, index }) => {
     e.preventDefault()
+    const newAmount = e.target.value
+    let indexedValue = []
+    let indexedValue[index] = newAmount
+
+
+    // [...amount]
+    console.log("amount", indexedValue[index])
     setTimeout(() => setAmount(e.target.value), 2000)
   }
 
@@ -88,7 +95,7 @@ function TierCards2({ availableUserDnodBalance, refetchUserDnodBalance }) {
   console.log("mintAllowance", mintAllowance)
 
   const checkAllowance = async () => {
-    if (mintAllowance.data < parseUnits(amount.toString(), 18)) {
+    if (mintAllowance.data < parseUnits(amount[0].toString(), 18)) {
       await allowanceWriteContractAsync({
         abi: erc20Abi,
         address: web3Addresses.dnod,
