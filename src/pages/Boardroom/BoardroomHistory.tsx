@@ -2,7 +2,7 @@ import { ChevronRightIcon } from "@heroicons/react/20/solid"
 import { useEffect, useState } from "react"
 import BoardroomTierHistory from "./BoardroomTierHistory"
 
-const boardroomTierHistory = [
+const boardroomTierArray = [
   {
     tierName: "30days",
     id: 0,
@@ -47,7 +47,7 @@ function BoardroomHistory() {
     setShowHistory(newShowHistory)
   }
 
-  const tierHistoryList = boardroomTierHistory.map((item, index) => {
+  const tierHistoryList = boardroomTierArray.map((item, index) => {
     return (
       <>
         <li
@@ -55,9 +55,9 @@ function BoardroomHistory() {
           className={`hover:bg-gray-50 relative flex justify-between gap-x-6  px-4 py-5 sm:px-6 ${item.multiplier === "1" ? "bg-slate-500 dark:bg-pink-800" : null} ${item.multiplier === "2.5" ? "bg-slate-600 dark:bg-green-800" : null} ${item.multiplier === "6" ? "bg-slate-700 dark:bg-blue-800" : null} ${item.multiplier === "15" ? "bg-yellow-800" : null}`}
           onClick={() => handleShowHistory(index)}
         >
-          <div className="flex gap-x-4 ">
+          <div className="flex gap-x-4">
             <div className="min-w-0 flex-auto">
-              <p className="text-xl leading-6  text-white">
+              <p className="text-xl leading-6 text-white">
                 <span className="absolute inset-x-0 -top-px bottom-0" />
                 {item.tierName}
               </p>
@@ -88,7 +88,7 @@ function BoardroomHistory() {
           />
           <div></div>
         </li>
-        {showHistory[index] ? <BoardroomTierHistory /> : null}
+        {showHistory[index] ? <BoardroomTierHistory tierIndex={index} /> : null}
       </>
     )
   })
