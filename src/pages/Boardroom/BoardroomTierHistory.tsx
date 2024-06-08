@@ -1,6 +1,6 @@
 import React from "react"
 
-const tierHistory = [
+const tierHistory: History[] = [
   {
     dateStacked: "kjhjkh",
     timeLeft: "876 calculated",
@@ -12,7 +12,6 @@ const tierHistory = [
     withdrawn: false,
     unlockRate: 5,
     unlockFeeLimit: 12,
-    index: 1212, // index of getAllDepositInfo
   },
   {
     dateStacked: "kjhjkh",
@@ -196,22 +195,51 @@ const tierHistory = [
   },
 ]
 
-function BoardroomTierHistory({ tierIndex }) {
-  // Transform tierHistory into a grouped structure
+interface History {
+  dateStacked: string
+  timeLeft: string
+  expiryDate: string
+  amountStacked: number
+  unlockable: boolean
+  tierId: number
+  tierAllocPoint: number
+  withdrawn: boolean
+  unlockRate: number
+  unlockFeeLimit: number
+}
+
+function BoardroomTierHistory({
+  tierIndex = {
+    dateStacked: "default",
+    timeLeft: "default",
+    expiryDate: "default",
+    amountStacked: 9878,
+    unlockable: false,
+    tierId: 3,
+    tierAllocPoint: 5675,
+    withdrawn: false,
+    unlockRate: 5,
+    unlockFeeLimit: 12,
+  },
+}) {
+  if (!tierHistory) {
+    return <div>Loading...</div>
+  }
+
   const groupedByTierId = tierHistory.reduce((acc, history) => {
     ;(acc[history.tierId] = acc[history.tierId] || []).push(history)
     return acc
   }, {})
 
-  const tierHistoryView = groupedByTierId[tierIndex].map((histories, index) => {
-    return histories
-  })
+  // const tierHistoryView = groupedByTierId[tierIndex].map((histories, index) => {
+  //   return histories
+  // })
 
-  console.log(tierHistoryView)
+  // console.log(tierHistoryView)
 
   return (
     <ul role="list" className="divide-gray-100 divide-y">
-      {groupedByTierId[tierIndex].map((history, index) => (
+      {groupedByTierId[tierIndex]?.map((history: History, index: number) => (
         <li
           key={index}
           className="flex flex-wrap items-center justify-between gap-x-6 gap-y-4 py-5 sm:flex-nowrap"
@@ -222,9 +250,6 @@ function BoardroomTierHistory({ tierIndex }) {
             </p>
             <div className="text-gray-500 mt-1 flex items-center gap-x-2 text-xs leading-5">
               <p>{history.amountStacked}</p>
-              <svg viewBox="0 0 2 2" className="h-0.5 w-0.5 fill-current">
-                <circle cx={1} cy={1} r={1} />
-              </svg>
               <p>
                 expiryDate
                 {history.expiryDate}
