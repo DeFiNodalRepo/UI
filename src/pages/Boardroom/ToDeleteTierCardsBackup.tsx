@@ -8,7 +8,7 @@ import { web3Addresses } from "../../constants/sideWide"
 import { numberToHex, parseUnits, maxUint256, erc20Abi } from "viem"
 import { useAccount, useReadContract, useWriteContract } from "wagmi"
 import BRBalanceNotification from "./BRBalanceNotification"
-import TierCardUi from "./tierCardUi/tierCardUi"
+import TierCardUi from "./tierCardUi/ToDeleteTierCardUi"
 
 function TierCards({ availableUserDnodBalance, refetchUserDnodBalance }) {
   const [tier, setTier] = useState(0)
