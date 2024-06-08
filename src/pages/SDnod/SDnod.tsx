@@ -299,12 +299,13 @@ function SDnod({ chain, chainId, userAddress }: any) {
         )}
       </div>
       {/* Buttons Section */}
-      <div className="mb-8 mt-12 flex items-center justify-center">
-        <div className="flex w-1/2 items-center justify-center">
-          <span className="bg-main w-full rounded-md shadow-sm">
+
+      <div className="mb-8 mt-12 flex items-center justify-center md:flex-row">
+        <div className="flex w-full flex-col items-center justify-center md:flex-row">
+          <span className="bg-main w-full rounded-md shadow-sm md:w-1/2">
             <button
               type="button"
-              className={`border-main ring-main relative h-16 w-1/2 flex-1  rounded-l-md px-3 py-2 text-xl font-semibold shadow-sm ring-2 ring-inset  focus:z-10 ${
+              className={`border-main ring-main relative h-16 w-full flex-1 rounded-l-md px-3 py-2 text-xl font-semibold shadow-sm ring-2 ring-inset focus:z-10 md:w-1/2 ${
                 isMintClicked ? "bg-red-500" : ""
               }`}
               onClick={handleMintClick}
@@ -314,7 +315,7 @@ function SDnod({ chain, chainId, userAddress }: any) {
 
             <button
               type="button"
-              className={`ring-main relative h-16 w-1/2  rounded-r-md px-3 py-2 text-xl font-semibold ring-2 ring-inset  focus:z-10 ${
+              className={`ring-main relative h-16 w-full rounded-r-md px-3 py-2 text-xl font-semibold ring-2 ring-inset focus:z-10 md:w-1/2 ${
                 isRedeemClicked ? "bg-red-500" : ""
               }`}
               onClick={handleRedeemClick}

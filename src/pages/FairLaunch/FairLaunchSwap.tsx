@@ -118,7 +118,7 @@ function FairLaunchSwap() {
         >
           Get DNOD
         </button>
-        <div className="flex items-center gap-6 py-6">
+        <div className=" flex flex-col items-center gap-6 py-6 sm:flex-row">
           <div className="flex items-center">
             <p className="mr-1">$sDNOD: </p>
             <div>{sdnodBalance}</div>
