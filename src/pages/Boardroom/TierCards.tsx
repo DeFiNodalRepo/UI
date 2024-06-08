@@ -86,6 +86,8 @@ function TierCards2({ availableUserDnodBalance, refetchUserDnodBalance }) {
     }
   }
 
+  console.log(mintAllowance.data)
+
   useEffect(() => {
     refetchUserDnodBalance()
   }, [writeHash])
@@ -94,18 +96,30 @@ function TierCards2({ availableUserDnodBalance, refetchUserDnodBalance }) {
     await setTier(tier)
     console.log("tier", tier)
     await checkAllowance()
-    const currentParsedAmount = parseUnits(amount[tier].toString(), 18) // Assuming `amount` is an array and `tier` is the index
-    writeTx(tier, currentParsedAmount) // Use the recalculated `parsedAmount`
-  }
-
-  const writeTx = async (tier, parsedAmount) => {
+    // const currentParsedAmount = parseUnits(amount[tier].toString(), 18)
+    // writeTx(tier, currentParsedAmount)
     await writeContract({
       abi: BoardroomABI,
       address: web3Addresses.boardroomAddress,
       functionName: "deposit",
-      args: [tier, parsedAmount],
+      args: [tier, parseUnits(amount[tier].toString(), 18)],
     })
+    console.log(
+      "tier:",
+      tier,
+      "amount:",
+      parseUnits(amount[tier].toString(), 18)
+    )
   }
+
+  // const writeTx = async (tier, parsedAmount) => {
+  //   await writeContract({
+  //     abi: BoardroomABI,
+  //     address: web3Addresses.boardroomAddress,
+  //     functionName: "deposit",
+  //     args: [tier, parsedAmount],
+  //   })
+  // }
 
   const renderedCards = tierDataArray.map((item, index) => {
     return (
